@@ -1,0 +1,152 @@
+:root {
+  --unmh: 40px;
+}
+
+.u_modal_container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  display: none;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  /* background: #0005; */
+  z-index: 99;
+}
+
+.u_modal_container.open {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+}
+
+.u_modal_box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.u_modal_box > i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.u_modal {
+  max-width: 500px;
+  width: 100%;
+  max-height: 500px;
+  padding: 2% 2% 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap6);
+  background: #fff;
+  border-radius: 20px;
+  color: #222;
+  z-index: 99;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.u_modal.dark-mode {
+  background: #454545;
+  color: #fff;
+  box-shadow: rgba(54, 207, 202, 0.37) 0px 1px 4px;
+}
+
+.u_modal > p {
+  font-size: var(--fs3);
+}
+
+.u_modal > :where(select, input, label) {
+  width: 100%;
+  height: var(--unmh);
+  padding: 0 3%;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #eee;
+  font-size: var(--fs6);
+  letter-spacing: 1px;
+}
+
+.u_modal > label {
+  display: flex;
+  align-items: center;
+  gap: var(--gap5);
+  border: none;
+  background: none;
+  padding: 0;
+}
+.u_modal > label > :where(input, select) {
+  width: calc(100% / 2 - var(--gap5) / 2);
+  height: 100%;
+  padding: 0 3%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #eee;
+  font-size: var(--fs6);
+  letter-spacing: 1px;
+}
+
+.u_modal.dark-mode > :where(select, input, label),
+.u_modal > label > :where(input, select) {
+  background: #454545;
+  color: #fff;
+  border: 1px solid #36cfc9;
+}
+
+.u_modal > select > option {
+  line-height: 2;
+  font-size: var(--fs6);
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+}
+
+.u_modal > button {
+  width: 100%;
+  height: var(--unmh);
+  padding: 0 3%;
+  border: none;
+  border-radius: 10px;
+  background: #787aff;
+  color: #fff;
+  font-size: var(--fs6);
+}
+
+.u_modal.dark-mode > button {
+  background: #36cfc9;
+}
+
+.u_modal > button:active {
+  opacity: 0.7;
+}
+
+.close_btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #d12c2c;
+  color: #fff;
+  font-size: var(--fs6);
+  cursor: pointer;
+}

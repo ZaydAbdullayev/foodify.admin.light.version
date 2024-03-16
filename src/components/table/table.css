@@ -1,0 +1,79 @@
+:root {
+  --table-w-1: calc(50px + (100 - 50) * (100vw - 320px) / (1440 - 320));
+  --table-w-2: calc(75px + (150 - 75) * (100vw - 320px) / (1440 - 320));
+  --table-w-3: calc(100px + (200 - 100) * (100vw - 320px) / (1440 - 320));
+}
+
+.table_box {
+  width: var(--table-w);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table {
+  position: relative;
+  width: 100%;
+  height: var(--table-w-1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: var(--fs4);
+  font-weight: 500;
+  color: #333;
+  background: #eee;
+  z-index: 99;
+}
+
+.people {
+  position: absolute;
+  top: 3%;
+  left: 3%;
+  display: flex;
+  align-items: center;
+  color: #333;
+  font-size: var(--fs7);
+}
+
+.chair {
+  width: calc(100% / var(--chair-w) - var(--gap6));
+  aspect-ratio: 1/1;
+  border: 1px solid #ccc;
+  border-radius: 100%;
+  margin: 7% 2%;
+  background: #eee;
+}
+
+.busy_chair {
+  margin: -10% 2%;
+  background: #555;
+  border: 2px solid #787aff;
+}
+
+.busy_table {
+  background: #555;
+  border: 2px solid #787aff;
+  color: #787aff;
+}
+
+.served_table {
+  background: #787aff;
+  border: 1px solid #787aff;
+  color: #eee;
+}
+
+.served_chair {
+  margin: -10% 2%;
+  background: #787aff;
+  border: 1px solid #787aff;
+}
+
+@media (max-width: 500px) {
+  .chair {
+    width: calc(100% / var(--chair-w) - var(--gap6) * 1.2);
+  }
+}

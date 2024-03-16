@@ -1,0 +1,70 @@
+.storage_body_item > :where(label, p) {
+  font-size: var(--fs7);
+  text-align: center;
+  gap: 0;
+}
+
+.storage_body_item > p {
+  border-right: 1px solid #eee2;
+}
+
+.storage_body_item > p:last-child {
+  border-right: none;
+}
+
+.storage_body_item {
+  border-bottom: 1px solid #eee2;
+}
+
+.storage_body_item:last-child {
+  border-bottom: none;
+}
+
+.reports_item > :where(p, label) {
+  height: calc(var(--univslH) * 2);
+  flex-wrap: wrap;
+}
+
+.reports_item > :where(p, label) > p {
+  width: 100%;
+}
+
+.reports_item > :where(p, label) > span {
+  width: 50%;
+  border-top: 1px solid #eee2;
+}
+
+.reports_item > :where(p, label) > :nth-child(2) {
+  border-right: 1px solid #eee2;
+}
+.reports_span {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.reports_span:first-child {
+  border-right: 1px solid #eee2;
+  padding-right: 5%;
+}
+
+.reports_item > :where(p, label) > :where(p, span) {
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reports_item > label {
+  border-right: 1px solid #eee2;
+}
+
+.reports_item > label:last-child {
+  border-right: none;
+}
+
+.small-font .storage_body_item > :where(p, label) {
+  font-size: var(--fs8);
+}

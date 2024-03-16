@@ -1,0 +1,141 @@
+:root {
+  --option-h: 90px;
+}
+
+.resolve_container{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  display: none;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  z-index: 99;
+}
+
+.resolve_container.open{
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resolve_item {
+  width: calc(320px + (600 - 320) * (100vw - 320px) / (1440 - 320));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: var(--pd3);
+  gap: var(--gap3);
+  background: #424242;
+  border-radius: 20px;
+  color: #eee;
+}
+
+.resolve_item > p {
+  font-size: var(--fs4);
+  text-transform: capitalize;
+}
+
+.resolve_options {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap3);
+}
+
+.resolve_option {
+  width: calc(100% / 3 - calc(var(--gap3) * 2 / 3));
+}
+
+.resolve_option,
+.resolve_option2 {
+  height: var(--option-h);
+  padding: 2%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  font-size: var(--fs6);
+  font-weight: 600;
+  text-align: center;
+  border: 2px solid #eee2;
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+}
+
+.resolve_option > input {
+  display: none;
+}
+
+.resolve_option:hover,
+.resolve_option.active {
+  box-shadow: 0 0 5px #eee9;
+}
+
+.resolve_item :where(input, button) {
+  width: 100%;
+  height: 45px;
+  border-radius: 10px;
+  border: 1px solid #eee2;
+  background: inherit;
+  color: #eee;
+  padding: 0 5%;
+  font-size: var(--fs6);
+}
+
+.resolve_btn_box {
+  justify-content: space-between;
+}
+
+.resolve_btn_box > button {
+  position: relative;
+  width: calc(100% / 2.1 - var(--gap3) / 2);
+  background: #787aff;
+  font-weight: 600;
+  border: none;
+}
+
+.resolve_btn_box > button:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 50px;
+  height: 100%;
+  transform: skew(-50deg, 0deg);
+  border-radius: 6px;
+  background: #787aff;
+}
+
+.resolve_btn_box > :first-child {
+  border-radius: 6px 6px 30px 6px;
+}
+
+.resolve_btn_box > :first-child::after {
+  right: -5%;
+}
+
+.resolve_btn_box > :last-child {
+  border-radius: 30px 6px 6px 6px;
+}
+
+.resolve_btn_box > :last-child::after {
+  left: -5%;
+}
+
+.resolve_option2 {
+  width: calc(100% / 2 - calc(var(--gap3) * 2 / 3));
+  border-color: #ff0000;
+}
+
+.resolve_option2.active {
+  border-color: limegreen;
+}

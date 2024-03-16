@@ -1,0 +1,20 @@
+{
+  "extends": [
+    "development"
+  ],
+  "browserslist": [
+    "defaults",
+    "not ie 11",
+    "not chrome <= 79",
+    "not ios_saf <= 14.8",
+    "not safari <= 14.1"
+  ],
+  "hints": {
+    "detect-css-reflows/composite": "off",
+    "detect-css-reflows/paint": "off",
+    "compat-api/css": "off",
+    "css-prefix-order": "off",
+    "meta-viewport": "off",
+    "highest-available-document-mode": "off"
+  }
+}

@@ -1,0 +1,94 @@
+:root {
+  --us: calc(20px + (30 - 20) * (100vw - 320px) / (1440 - 320));
+}
+
+.document_box {
+  position: relative;
+  min-height: 90vh;
+}
+
+.document_header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.document_header > h1 {
+  font-size: var(--fs3);
+  font-weight: 400;
+  padding-left: 1%;
+}
+
+.document_header > h1 > span {
+  font-size: var(--fs5);
+}
+.filter_date {
+  display: flex;
+  align-items: center;
+  gap: var(--gap5);
+}
+
+.document_body {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap3);
+}
+
+.document_item {
+  width: calc(100% / 4 - var(--gap3));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #222;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: var(--fs6);
+  /* line-height: 1.6; */
+}
+
+.document_item > p {
+  inline-size: 100%;
+  display: flex;
+  padding: var(--pd2);
+  align-items: center;
+  font-size: var(--fs7);
+  gap: var(--gap5);
+  background: #333;
+  border-bottom: 1px solid #555;
+
+  > svg {
+    font-size: var(--fs6);
+  }
+}
+
+.document_item > p > :nth-child(2) {
+  flex: 1;
+}
+
+.document_item > span {
+  inline-size: 100%;
+  padding: 0 5% 5%;
+  display: flex;
+  align-items: center;
+  gap: var(--gap5);
+}
+
+.document_item > h3 {
+  line-height: 2;
+}
+
+@media (max-width: 650px) {
+  .document_header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap5);
+  }
+  .filter_date > label > span {
+    padding: 6px 10px 9px;
+  }
+}

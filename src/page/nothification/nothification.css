@@ -1,0 +1,122 @@
+:root {
+  --n-wh: 50px;
+}
+
+.nothification > p {
+  font-size: var(--fs2);
+}
+
+.nothification_box {
+  padding: 0;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--gap3);
+  color: #484d53;
+  /* text-shadow: 1px 1px 3px #444; */
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.nothification-item {
+  position: relative;
+  width: calc(100% / 2 - (var(--gap3) / 2));
+  display: flex;
+  align-items: center;
+  padding: calc(var(--pd3) / 2.5) calc(var(--pd3) / 2);
+  gap: var(--gap6);
+  border-radius: 10px;
+}
+
+.nothification-item.success {
+  background: rgb(228, 255, 209);
+  background: linear-gradient(
+    to right,
+    rgba(228, 255, 209, 1) 0%,
+    rgba(144, 228, 193, 1) 40%
+  );
+}
+
+.nothification-item.error {
+  background: rgb(249, 228, 188);
+  background: linear-gradient(
+    to right,
+    rgb(230, 168, 168) 0%,
+    rgba(224, 122, 122, 1) 40%
+  );
+}
+
+.nothification-item.warning {
+  background: rgb(254, 246, 158);
+  background: linear-gradient(
+    to right,
+    rgba(254, 246, 158, 1) 0%,
+    rgba(224, 185, 116, 1) 40%
+  );
+}
+
+.nothification-item.seen {
+  opacity: 0.3;
+  /* color: #ee; */
+}
+
+.nothification-item .time {
+  position: absolute;
+  top: 2%;
+  right: 0;
+  font-size: var(--fs7);
+  color: #111;
+}
+
+.nathification-table {
+  height: 100%;
+  aspect-ratio: 1/1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.nathification-table > span {
+  font-size: var(--fs4);
+}
+
+.y-line {
+  height: 100%;
+  width: 4px;
+  background: #484d53;
+  border-radius: 30px;
+}
+/* 
+.seen .y-line {
+  background: #eee;
+} */
+
+.nothification-item-info {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-size: var(--fs6);
+  line-height: 1.5;
+}
+
+.nothification-item-info > span {
+  font-size: var(--fs5);
+}
+
+.nothification-item-info > :first-child {
+  width: 100%;
+  border-bottom: 1px solid #3335;
+}
+
+.nothification-item-info > :last-child {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .nothification-item {
+    width: 100%;
+  }
+}

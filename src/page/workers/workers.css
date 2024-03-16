@@ -1,0 +1,164 @@
+:root {
+  --bwh: 35px;
+  --adwh: 85px;
+}
+
+.worker_container {
+  min-height: 90vh;
+  overflow-x: auto;
+}
+.worker_container::-webkit-scrollbar {
+  display: none;
+}
+
+.workers_header {
+  position: sticky;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc6;
+  line-height: 1.5;
+}
+
+.workers_header > p {
+  font-size: var(--fs3);
+}
+
+.workers_header > button {
+  min-width: 100px;
+  height: 35px;
+  padding: 0.5% 2%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap5);
+  background: #787aff;
+  color: #fff;
+  font-size: var(--fs6);
+  border-radius: 10px;
+}
+
+.workers_header > button svg {
+  font-size: var(--fs3);
+}
+
+.worker {
+  width: 100%;
+  padding: 1% 2%;
+  display: flex;
+  align-items: center;
+  font-size: var(--fs9);
+}
+
+.worker > :first-child {
+  padding-top: 0.5%;
+  cursor: pointer;
+}
+
+.worker > :where(p, div) {
+  width: var(--worker-t-w);
+}
+
+.worker > :first-child span {
+  font-size: var(--fs4);
+}
+
+.worker > :nth-child(4) > span {
+  padding: 0.5% 5% 1%;
+  border-radius: 20px;
+}
+
+.worker input {
+  width: 85%;
+  height: var(--bwh);
+  padding: 0 10px;
+  border: none;
+  background: #eee;
+  color: #222;
+  font-size: var(--fs6);
+  border-radius: 10px;
+}
+
+.workers_body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.workers_body > :nth-child(odd) {
+  background: #eee2;
+}
+
+.w_pin {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.w_pin > :nth-child(2) {
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.w_pin:hover > :nth-child(2) {
+  opacity: 1;
+}
+
+.w_btns {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--gap6);
+}
+
+.w_btns > button {
+  width: var(--bwh);
+  height: var(--bwh);
+  border-radius: 10px;
+  font-size: var(--fs5);
+}
+
+.w_btns > button,
+.universal_key {
+  border: none;
+  background: #787aff !important;
+  color: #fff;
+}
+
+.universal_key {
+  width: var(--adwh);
+  height: var(--adwh);
+  margin: 2% auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: var(--fs2);
+}
+
+.universal_key > span {
+  margin-bottom: 7%;
+}
+
+@media (max-width: 1150px) {
+  .worker {
+    width: 900px;
+  }
+}
+
+@media (max-width: 768px) {
+  .workers_header {
+    align-items: flex-end;
+    padding-bottom: 2%;
+  }
+
+  .workers_header > button {
+    height: 30px;
+    padding: 0.5% 2%;
+    border-radius: 5px;
+  }
+}

@@ -1,0 +1,6 @@
+.short_hands
+  :where(.css-dev-only-do-not-override-1qxsxy1).ant-select
+  .ant-select-arrow
+  svg {
+  font-size: var(--fs8);
+}

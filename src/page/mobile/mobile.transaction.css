@@ -1,0 +1,245 @@
+.mobile-invoice {
+  gap: 0;
+}
+
+.mobile-invoice > p {
+  inline-size: 100%;
+  padding: 0.5% 1.5%;
+  background: #353535;
+  border-radius: 10px 10px 0 0;
+  font-size: var(--fs5);
+}
+
+.mobile-invoice-content {
+  display: flex;
+  flex-direction: column;
+  padding: 0 2%;
+  background: #454545;
+  border-left: 4px solid #353535;
+  border-right: 4px solid #353535;
+}
+
+.activity-type {
+  position: relative;
+  width: 100%;
+  padding: 1.5% 2%;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap3);
+  background: #454545;
+  border-bottom: 0.13rem solid #353535;
+}
+
+.activity-type:last-child {
+  border-bottom: none;
+}
+
+.activity-type > p {
+  inline-size: 150px;
+  margin-top: 2px;
+  font-size: var(--fs6);
+  color: #fff;
+}
+
+.activity-types {
+  width: calc(100% - 150px - var(--gap3));
+  display: flex;
+  align-items: center;
+  gap: var(--gap3);
+  overflow-x: auto;
+}
+
+.activity-types.short {
+  width: calc(70% - 150px - var(--gap3));
+  height: calc((40px + (60 - 40) * (100vw - 320px) / (1440 - 320)) * 2);
+}
+
+.activity-types::-webkit-scrollbar {
+  display: none;
+}
+
+.activity-types > :where(textarea, input) {
+  height: calc(40px + (60 - 40) * (100vw - 320px) / (1440 - 320));
+  padding: 0.5% 1%;
+  background: #454545;
+  border: 1px solid #5cdbd380;
+  border-radius: 7px;
+  font-size: var(--fs6);
+  color: #fff;
+  resize: none;
+}
+
+.activity-types.short > textarea {
+  width: 100%;
+  height: 100%;
+}
+
+.activity-types > input {
+  width: calc(75% - calc(var(--gap3) / 2));
+}
+
+.activity-types :where(textarea, input):focus {
+  border: 1px solid #5cdbd3;
+}
+
+.activity-type > svg {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  font-size: var(--fs4);
+  color: #5cdbd3;
+  cursor: pointer;
+}
+
+.amount-and-date {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap3);
+  font-size: var(--fs8);
+  text-align: center;
+  padding-left: var(--gap1);
+}
+
+.amount-and-date::after {
+  position: absolute;
+  content: "";
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 94%;
+  background: #353535;
+  border-radius: 10px;
+}
+
+.amount-and-date .activity-types {
+  width: 100%;
+}
+
+.amount-and-date > label {
+  display: flex;
+  align-items: center;
+  gap: var(--gap3);
+}
+
+.amount-and-date > label > svg {
+  font-size: var(--fs4);
+}
+
+.amount-and-date > label:first-child > svg {
+  font-size: calc(var(--fs4) + 3px);
+}
+
+.date-picker,
+.amount-and-date .activity-types > input {
+  height: calc(35px + (50 - 35) * (100vw - 320px) / (1440 - 320));
+  flex: 1;
+  padding: 0 3%;
+  border: 1px solid #5cdbd380;
+}
+
+._invoice-footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: var(--gap6);
+  gap: var(--gap2);
+  background: #454545;
+  border-radius: 0 0 10px 10px;
+  border: 4px solid #353535;
+}
+
+.history-screen {
+  width: calc(70% - var(--gap2));
+  height: 100px;
+  padding: 1%;
+  border: 1px solid #5cdbd380;
+  border-radius: 10px;
+}
+
+.activity-btn {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap1);
+}
+
+.activity-btn > button {
+  position: relative;
+  width: calc(100% / 2.15);
+  height: 50px;
+  background: tomato;
+  border: none;
+  border-radius: 7px;
+  font-size: var(--fs6);
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 1px;
+  z-index: 99;
+}
+
+.activity-btn > button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 50px;
+  height: 100%;
+  transform: skew(-50deg, 0deg);
+  border-radius: 6px;
+  z-index: -99;
+}
+
+.activity-btn > button:nth-child(2) {
+  background: #4caf50;
+}
+
+.activity-btn > :first-child {
+  border-radius: 6px 0px 30px 6px;
+}
+
+.activity-btn > :first-child::after {
+  background: tomato;
+  right: -7%;
+}
+
+.activity-btn > :last-child {
+  border-radius: 30px 6px 6px 0px;
+}
+
+.activity-btn > :last-child::after {
+  left: -7%;
+  background: #4caf50;
+}
+
+._invoice-footer > button {
+  width: 30%;
+  height: 50px;
+  background: #36cfc9;
+  border: none;
+  border-radius: 50px 5px 50px 5px;
+  font-size: var(--fs6);
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.segmented {
+  padding: 6px 4px;
+  border-radius: 6px 6px 0 0;
+}
+
+.add-tr-group {
+  height: calc(40px + (60 - 40) * (100vw - 320px) / (1440 - 320));
+  aspect-ratio: 3/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid #36cfc9;
+  border-radius: 7px;
+  font-size: var(--fs3);
+  color: #ddd;
+}

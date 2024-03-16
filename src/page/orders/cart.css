@@ -1,0 +1,213 @@
+:root {
+  --wh1: 30px;
+  --ipd: 1.5% 3%;
+}
+
+.cart_box {
+  position: fixed;
+  top: 120%;
+  left: calc(var(--nwh) - 1);
+  width: calc(100% - var(--nwh));
+  height: 100dvh;
+  padding: 2% 0% var(--iwh);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #222;
+  overflow-y: auto;
+  z-index: 9999;
+  transition: all 0.3s ease-in-out;
+  overflow-y: auto;
+}
+
+.cart_box::-webkit-scrollbar{
+  width: 0;
+}
+
+.cart_box.open {
+  top: 0;
+}
+
+.cart_box > p {
+  inline-size: 100%;
+  text-align: center;
+  font-size: var(--fs4);
+  color: #fff;
+  line-height: 1.8;
+  border-bottom: 1px solid #ccc7;
+}
+
+.cart_body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #eee;
+  flex: 1;
+}
+
+.cart_body > p {
+  inline-size: 100%;
+  padding: var(--ipd);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--fs4);
+}
+
+.cart_body__item {
+  width: 100%;
+  padding: var(--ipd);
+  display: flex;
+  align-items: center;
+  gap: var(--gap1);
+  font-size: var(--fs6);
+  border-bottom: 1px solid #ccc7cc;
+}
+
+.cart_body__item > :first-child {
+  inline-size: 28%;
+  display: flex;
+  flex-direction: column;
+  text-transform: capitalize;
+}
+
+.cart_body__item > :first-child :where(span, b) {
+  display: none;
+}
+
+.cart_body__item > :nth-child(2) {
+  inline-size: 18%;
+}
+
+.cart_body > :last-child {
+  border: none;
+}
+
+.cart_body__item > span {
+  flex: 1;
+}
+
+.update_item {
+  display: flex;
+  align-items: center;
+  gap: var(--gap3);
+}
+
+.update_item :where(button, input) {
+  height: var(--wh1);
+  background: #ccc;
+  border-radius: 10px;
+  color: #111;
+  border: none;
+  font-size: var(--fs4);
+}
+
+.update_item > button {
+  width: var(--wh1);
+}
+
+.update_item > input {
+  width: calc(var(--wh1) * 1.5);
+  text-align: center;
+}
+
+.update_item > input::-webkit-inner-spin-button {
+  display: none;
+}
+
+.takeaway {
+  position: fixed;
+  bottom: calc(var(--iwh2) + 2.5%);
+  left: calc(var(--nwh) + 3%);
+  padding: 0.5% 1%;
+  display: flex;
+  align-items: center;
+  gap: var(--gap3);
+  background: #ccc;
+  font-size: var(--fs6);
+  border-radius: 30px;
+  font-weight: 600;
+  color: #222;
+  cursor: pointer;
+}
+
+.takeaway.active {
+  background: lime;
+  color: #fff;
+}
+
+.takeaway > svg {
+  font-size: var(--fs5);
+}
+
+@media (max-width: 730px) {
+  .cart_body__item > :first-child {
+    inline-size: 24%;
+  }
+
+  .cart_body__item > :nth-child(2) {
+    inline-size: 16%;
+  }
+}
+
+@media (max-width: 650px) {
+  :root {
+    --wh1: 35px;
+  }
+
+  .cart_box {
+    left: 0;
+    width: 100%;
+  }
+
+  .cart_body__item > :first-child {
+    flex: 1;
+  }
+
+  .cart_body__item > :first-child > b {
+    text-transform: lowercase;
+    font-weight: 400;
+    display: flex;
+    font-size: var(--fs6);
+    color: #ccc;
+  }
+
+  .cart_body__item > :nth-child(2) {
+    display: none;
+  }
+
+  .cart_body__item > span {
+    flex: none;
+  }
+
+  .takeaway {
+    left: 3%;
+    bottom: calc(var(--iwh2) + 4%);
+  }
+}
+
+@media (max-width: 550px) {
+  .update_item {
+    gap: var(--gap6);
+  }
+
+  .update_item :where(button, input) {
+    border-radius: 7px;
+  }
+}
+
+@media (max-width: 450px) {
+  .cart_body__item > :first-child > span {
+    display: flex;
+  }
+
+  .cart_body__item > :nth-child(3) {
+    display: none;
+  }
+
+  .takeaway {
+    position: fixed;
+    bottom: calc(var(--iwh2) + 1.5%);
+  }
+}

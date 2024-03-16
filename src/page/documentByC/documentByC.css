@@ -1,0 +1,98 @@
+:root {
+  --pdc: 1.3% 3%;
+  --cwh: 30px;
+}
+
+.document_conatainer {
+  position: absolute;
+  top: 0;
+  left: 200%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+  background: #0006;
+  z-index: 9999;
+}
+
+.category_box {
+  max-width: 600px;
+  max-height: 400px;
+  width: 100%;
+  height: 100%;
+  background: #222;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid #444;
+  box-shadow: rgba(21, 21, 22, 0.2) 0px 7px 29px 0px;
+}
+
+.open {
+  left: 0;
+}
+
+/* ========== category header ========== */
+.category_box > h1 {
+  inline-size: 100%;
+  font-size: var(--fs4);
+  font-weight: 400;
+  padding: var(--pd3);
+  background: #444;
+  border-bottom: 1px solid #444;
+}
+
+.category_body {
+  width: 100%;
+  height: 65%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow-y: auto;
+}
+
+.category_body::-webkit-scrollbar {
+  display: none;
+}
+
+/* ========== category item ========== */
+.category_item {
+  width: 100%;
+  padding: 1.3% 3%;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #444;
+}
+
+.category_item > h3 {
+  flex: 1;
+  letter-spacing: 1px;
+}
+
+.category_item > :last-child {
+  width: 30%;
+  text-align: end;
+}
+
+/* =========== category footer ==========  */
+.category_footer {
+  width: 100%;
+  padding: var(--pd3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #444;
+  border-top: 1px solid #444;
+}
+
+.category_footer > button {
+  padding: 1% 4%;
+  border-radius: 5px;
+  border: none;
+  background: #222;
+  color: #eee;
+  font-size: var(--fs5);
+  font-weight: 400;
+  cursor: pointer;
+}

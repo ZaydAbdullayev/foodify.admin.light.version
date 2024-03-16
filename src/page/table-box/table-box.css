@@ -1,0 +1,40 @@
+.home {
+  max-width: 1440px;
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-size: var(--fs4);
+}
+
+.home_filter {
+  border-bottom: 1px solid #ccc4;
+}
+
+.home_filter__item {
+  padding: 0 3%;
+  height: calc(30px + (35 - 30) * (100vw - 320px) / (1440 - 320));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc6;
+  border-radius: 6px;
+  font-size: var(--fs6);
+  letter-spacing: 1px;
+}
+
+.home_filter__item.active {
+  background: #ccc;
+  color: #333;
+  font-weight: 600;
+}
+
+.home_table_box {
+  width: 100%;
+  padding: var(--pd5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap4);
+}

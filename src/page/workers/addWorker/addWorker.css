@@ -1,0 +1,109 @@
+:root {
+  --ih: 40px;
+}
+
+.addWorker_container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.addWorker_container.open {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+}
+
+.add_worker_box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add_worker_box > i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.add_worker {
+  max-width: 500px;
+  width: 100%;
+  padding: 2% 2% 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap6);
+  background: #fff;
+  border-radius: 20px;
+  color: #222;
+  z-index: 99;
+}
+
+.add_worker > p {
+  font-size: var(--fs3);
+}
+
+.add_worker > :where(select, input) {
+  width: 100%;
+  height: var(--ih);
+  padding: 0 3%;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #eee;
+  font-size: var(--fs6);
+  letter-spacing: 1px;
+}
+
+.add_worker > select > option {
+  line-height: 2;
+  font-size: var(--fs6);
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+}
+
+.add_worker > button {
+  width: 100%;
+  height: var(--ih);
+  padding: 0 3%;
+  border: none;
+  border-radius: 10px;
+  background: #787aff;
+  color: #fff;
+  font-size: var(--fs6);
+}
+
+.add_worker > button:active {
+  opacity: 0.7;
+}
+
+.close_btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #d12c2c;
+  color: #fff;
+  font-size: var(--fs6);
+  cursor: pointer;
+}

@@ -1,0 +1,27 @@
+.loading_btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: inherit;
+  color: inherit;
+  font-size: var(--fs1);
+}
+
+.loading_btn > svg {
+  animation: loader 1s linear infinite;
+}
+
+@keyframes loader {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}

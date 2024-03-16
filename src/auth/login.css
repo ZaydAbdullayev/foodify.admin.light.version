@@ -1,0 +1,167 @@
+.login {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #333;
+}
+
+.login > form {
+  width: calc(310px + (650 - 310) * (100vw - 320px) / (1440 - 320));
+  padding: 4%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #444;
+  border-radius: 12px;
+  border: 1px solid #666;
+  gap: 20px;
+}
+
+.role {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  row-gap: 15px;
+}
+
+.role > p {
+  font-size: var(--fs6);
+  color: #ddd;
+  text-align: center;
+}
+
+.role > label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #ddd;
+}
+
+.role > label > input {
+  width: 20px;
+  height: 20px;
+}
+
+.login > form > label {
+  position: relative;
+  width: 100%;
+}
+
+.login > form > h1 {
+  font-size: var(--fs4);
+  cursor: pointer;
+  color: tomato;
+}
+
+.login > form > h1 > span {
+  color: #ddd;
+}
+
+.login > form > label > span {
+  position: absolute;
+  top: 8px;
+  right: 13px;
+  font-size: 20px;
+  color: #ddd;
+  cursor: pointer;
+}
+
+.failed {
+  display: none;
+  font-size: 12px;
+  color: tomato;
+  line-height: 2;
+}
+
+.input {
+  outline: none;
+  padding: 0 3%;
+  background: #444;
+  color: #ddd;
+  border: 1px solid #666;
+  font-size: 16px;
+}
+
+.input,
+.log_btn {
+  width: 100%;
+  height: 45px;
+  letter-spacing: 1px;
+  border-radius: 5px;
+}
+
+.log_btn {
+  border: none;
+  background: #ddd;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.log_btn:active {
+  background: #aaa;
+}
+
+.cheack_d {
+  max-width: 300px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap3);
+  color: #eee;
+}
+
+.cheack_d > p {
+  font-size: var(--fs4);
+}
+
+.cheack_d > label {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap3);
+}
+
+.cheack_d > label > input {
+  width: 100%;
+  height: 40px;
+  padding: 0 2%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222;
+  font-size: var(--fs6);
+  text-align: center;
+  border-radius: 5px;
+  letter-spacing: 2px;
+  color: #eee;
+  border: none;
+}
+
+.cheack_d button {
+  font-size: var(--fs4);
+  color: #eee;
+  background: #222;
+  border-radius: 5px;
+  border: none;
+}
+
+.cheack_d > label > button {
+  width: calc(100% / 3 - calc(var(--gap3) * 2 / 3));
+  aspect-ratio: 2/1;
+}
+
+.cheack_d > button {
+  width: 100%;
+  height: 40px;
+}
+
+.cheack_d > button:active {
+  background: #333;
+}

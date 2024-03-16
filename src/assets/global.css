@@ -1,0 +1,155 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+body {
+  width: 100%;
+}
+
+#root {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  background: #555;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  background: #444;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1486d3;
+  border-radius: 20px;
+}
+
+a {
+  text-decoration: none;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  outline: none;
+}
+
+.skeleton {
+  object-fit: cover;
+  background: linear-gradient(-90deg, #eee, #aaa, #eee, #eee, #eee);
+  background-size: 400%;
+  animation: skeleton 4s linear infinite;
+}
+
+.stm-animate {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  position: fixed;
+  left: 50%;
+  transform: scale(0.5);
+  display: none;
+  z-index: 9999999999999;
+}
+
+.stm-animate.active {
+  display: block;
+  animation: mtanimation 0.4s ease-out forwards;
+}
+
+.container_box {
+  width: 100%;
+  padding: var(--pd3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap3);
+  color: #eee;
+}
+
+.universal_box {
+  width: 100%;
+  padding: var(--pd5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap3);
+}
+
+.box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.no_result {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap1);
+}
+
+.no_result > img {
+  width: 35%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+.relative {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-self: start;
+}
+
+.loader_box {
+  width: 10vw;
+  height: 10vw;
+  margin: auto;
+  color: #eee;
+}
+
+@keyframes mtanimation {
+  from {
+    transform: scale(0.2);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes skeleton {
+  0% {
+    background-position: 0%;
+  }
+
+  100% {
+    background-position: 400%;
+  }
+}
+
+@media (max-width: 500px) {
+  ::selection {
+    display: none;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}

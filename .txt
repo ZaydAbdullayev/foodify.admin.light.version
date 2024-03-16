@@ -1,0 +1,250 @@
+product_data
+:
+"[{\"id\":\"0d6aaa3c\",\"name\":\"tandir lavash\",\"price\":36000,\"img\":\"https://backend.foodify.uz/add/product/img_0d5449ae.jpg\",\"description\":\"pishloqli\",\"restaurant\":\"bd81c3\",\"category\":\"lavash\",\"status\":1,\"department\":\"fast food\",\"quantity\":1}]"
+
+id:"6781c84f"
+product_data:"[{\"id\":\"86ae1c6d\",\"name\":\"lavash\",\"price\":30000,\"img\":\"https://backend.foodify.uz/add/product/img_cf663a89.jpg\",\"description\":\"original\",\"restaurant\":\"bd81c3\",\"category\":\"lavash\",\"status\":1,\"department\":\"bar\",\"quantity\":1}]"
+receivedAt:"2023-10-11T12:43:03.000Z"
+status:1
+
+new update
+
+Settings:
+
+Storages (Add/Edit)
+Departments (Add/Edit)
+Categories
+Ingredients' Groups
+Ingredients
+Items
+Modifiers
+Invoice Groups
+Suppliers
+
+Operations:
+
+Invoice (Received Goods)
+Expenses Invoices (Used Goods)
+Seperation Acts (Activity Logs)
+Write-offs (Wasted Goods)
+Movement (Storage Transfer)
+Ingredient Production (Food Production)
+Inventory Checkup
+
+Orders:
+
+Pre Order
+Monitoring (Food Monitoring)
+
+Financials:
+
+Cashboxes (Money Collection)
+Transactions Groups
+Transactions
+Cashbox Report
+
+const data = [
+  {
+    id: "1123ef",
+    order_type: "indoor",
+    payment_status: "paid",
+    date: "2021-05-05 12:00:00",
+    worker_name: "Ivan",
+    table_name: "1",
+    worker_id: "1",
+    t_location: "ichkari",
+    payment_type: "cash",
+    food_total: "1000",
+    service: "100",
+    prime_cost: "500",
+    total: "1100",
+    paid: "1100",
+    product_data: [
+      {
+        id: "04a421e6",
+        name: "test bar 1",
+        price: 15000,
+        img: "https://localhost:8081/add/product/img_3be92846.jpg",
+        description: "test suv 1",
+        restaurant: "2899b5",
+        category: "ichimlik",
+        status: 2,
+        department: "bar",
+        quantity: 1,
+      },
+      {
+        id: "0a591be9",
+        name: "test Milliy taom 1",
+        price: 24000,
+        img: "https://localhost:8081/add/product/img_39361730.jpg",
+        description: "test 1",
+        restaurant: "2899b5",
+        category: "Milliy Taomlar",
+        status: 2,
+        department: "milliy taomlar",
+        quantity: 1,
+      },
+      {
+        id: "32a55b6d",
+        name: "Test Bar",
+        price: 12000,
+        img: "https://localhost:8081/add/product/img_f01245ee.jpg",
+        description: "test suv",
+        restaurant: "2899b5",
+        category: "ichimlik",
+        status: 2,
+        department: "bar",
+        quantity: 1,
+      },
+      {
+        id: "86c3e007",
+        name: "test Milliy taom 2",
+        price: 28000,
+        img: "https://localhost:8081/add/product/img_35b929f8.jpg",
+        description: "test 2",
+        restaurant: "2899b5",
+        category: "Milliy Taomlar",
+        status: 2,
+        department: "milliy taomlar",
+        quantity: 1,
+      },
+    ],
+  },
+];
+
+// const tables = [
+//   {
+//     id: 1,
+//     type: "tashqari",
+//     name: 1,
+//     people: 4,
+//     status: 0,
+//   },
+//   {
+//     id: 2,
+//     type: "tashqari",
+//     name: 2,
+//     people: 6,
+//     status: 1,
+//   },
+//   {
+//     id: 3,
+//     type: "tashqari",
+//     name: 3,
+//     people: 4,
+//     status: 2,
+//   },
+//   {
+//     id: 4,
+//     type: "tashqari",
+//     name: 4,
+//     people: 8,
+//     status: 0,
+//   },
+//   {
+//     id: 7,
+//     type: "ichkari",
+//     name: 3,
+//     people: 6,
+//     status: 2,
+//   },
+//   {
+//     id: 5,
+//     type: "ichkari",
+//     name: 1,
+//     people: 4,
+//     status: 0,
+//   },
+//   {
+//     id: 6,
+//     type: "ichkari",
+//     name: 2,
+//     people: 8,
+//     status: 1,
+//   },
+//   {
+//     id: 8,
+//     type: "ichkari",
+//     name: 4,
+//     people: 4,
+//     status: 0,
+//   },
+//   {
+//     id: 9,
+//     type: "padval",
+//     name: 1,
+//     people: 6,
+//     status: 0,
+//   },
+//   {
+//     id: 11,
+//     type: "padval",
+//     name: 3,
+//     people: 4,
+//     status: 2,
+//   },
+//   {
+//     id: 10,
+//     type: "padval",
+//     name: 2,
+//     people: 8,
+//     status: 1,
+//   },
+//   {
+//     id: 12,
+//     type: "padval",
+//     name: 4,
+//     people: 4,
+//     status: 0,
+//   },
+//   {
+//     id: 13,
+//     type: "padval",
+//     name: 1,
+//     people: 6,
+//     status: 0,
+//   },
+//   {
+//     id: 14,
+//     type: "padval",
+//     name: 2,
+//     people: 4,
+//     status: 1,
+//   },
+//   {
+//     id: 15,
+//     type: "padval",
+//     name: 3,
+//     people: 6,
+//     status: 2,
+//   },
+//   {
+//     id: 16,
+//     type: "padval",
+//     name: 4,
+//     people: 6,
+//     status: 0,
+//   },
+// ];
+
+// const category = [
+//   {
+//     id: 1,
+//     name: "tashqari",
+//   },
+//   {
+//     id: 2,
+//     name: "ichkari",
+//   },
+//   {
+//     id: 3,
+//     name: "2-qavat",
+//   },
+//   {
+//     id: 4,
+//     name: "padval",
+//   },
+// ];
+zayyad_a@icloud.com
+Zxcvbnm-789
+

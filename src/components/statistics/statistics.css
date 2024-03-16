@@ -1,0 +1,134 @@
+:root {
+  --bg-blue: #337ab7;
+  --bg-hoki: #67809f;
+  --bg-red: #e7505a;
+  --bg-purple: #8e44ad;
+}
+
+.statistic_box {
+  padding: 5%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap1);
+}
+
+.statistic_box > h1 {
+  inline-size: 100%;
+  font-size: var(--fs2);
+  color: #eee;
+  font-weight: 300;
+}
+
+.wrapper_item {
+  position: relative;
+  width: calc(100% - 40% - 30px);
+}
+
+.row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.dashboard-stat {
+  position: relative;
+  width: calc(100% / 2 - 10px);
+  height: 100px;
+  overflow: hidden;
+  border-radius: 4px;
+
+  .visual {
+    width: 80px;
+    height: 80px;
+    display: block;
+    float: left;
+    padding-top: 10px;
+    padding-left: 15px;
+    margin-bottom: 15px;
+    font-size: 35px;
+    line-height: 35px;
+
+    > i {
+      margin-left: -15px;
+      font-size: 110px;
+      line-height: 110px;
+      color: #fff;
+      opacity: 0.1;
+    }
+  }
+
+  .details {
+    position: absolute;
+    right: 15px;
+    padding-right: 15px;
+    color: #fff;
+
+    .number {
+      padding-top: 25px;
+      text-align: right;
+      font-size: 34px;
+      line-height: 36px;
+      letter-spacing: -1px;
+      margin-bottom: 0;
+      font-weight: 300;
+
+      .desc {
+        text-transform: capitalize;
+        text-align: right;
+        font-size: 16px;
+        letter-spacing: 0;
+        font-weight: 300;
+      }
+    }
+  }
+
+  &.blue {
+    background-color: var(--bg-blue);
+  }
+
+  &.red {
+    background-color: var(--bg-red);
+  }
+
+  &.purple {
+    background-color: var(--bg-purple);
+  }
+
+  &.hoki {
+    background-color: var(--bg-hoki);
+  }
+}
+
+.statistic_product {
+  width: 40%;
+  height: 300px;
+  user-select: none;
+}
+
+.statistic_product * {
+  color: #eee;
+  font-size: 18px;
+}
+
+.full_analystic {
+  width: 100%;
+  padding: 2%;
+  background: #333333a1;
+  border-radius: 30px;
+}
+
+@media (max-width: 600px) {
+  .wrapper_item {
+    width: 100%;
+  }
+
+  .statistic_product {
+    width: 100%;
+    height: 300px;
+  }
+}
