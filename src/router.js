@@ -42,6 +42,7 @@ import { ReportOneIngredient } from "./page/reports/report-one-ingredient/report
 import { FullReportById } from "./page/reports/full-report-by-id/full-report.jsx";
 import { Result, Button } from "antd";
 import { MobileInvoice } from "./page/mobile/mobile.transaction.jsx";
+import { Chat } from "./page/chat/chat.jsx";
 
 export const Router = () => {
   // const department = useSelector((state) => state.permission);
@@ -142,6 +143,7 @@ export const Router = () => {
           {/* ============== pages of the other ================= */}
           <Route path="sidebar" element={<Sidebar />} />
           <Route path="mobile-invoices" element={<MobileInvoice />} />
+          <Route path="chat-restaurant-staff" element={<Chat />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>

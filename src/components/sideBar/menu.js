@@ -47,15 +47,15 @@ export const Menu_customer = [
   {
     id: "4",
     path: "/restaurant-all-items",
-    name: "Ombor boshqaruvi",
+    name: "Barcha mahsulotlar",
     icon: <HiRectangleGroup />,
     list: true,
     permission: true,
   },
   {
     id: "5",
-    path: "/sections",
-    name: "Bo'limlar boshqaruvi",
+    path: "/chat-restaurant-staff",
+    name: "Chatlar",
     icon: <HiMiniChatBubbleLeftRight />,
     list: true,
     permission: true,
