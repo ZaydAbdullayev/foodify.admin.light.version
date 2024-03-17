@@ -48,6 +48,7 @@ const api = createApi({
     "add-order",
     "inventory",
     "transaction-report",
+    "chat",
   ],
   endpoints: (builder) => ({
     fetchData: builder.query({
