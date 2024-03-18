@@ -96,7 +96,15 @@ export const Navbar = () => {
   return (
     <div className="navbar">
       {contextHolder}
-      <span className="backword" onClick={() => navigate(-1)}>
+      <span
+        className="backword"
+        onClick={() => {
+          if (window.location.pathname === "/chat-restaurant-staff") {
+            navigate("?closeChat");
+          } else {
+            navigate(-1);
+          }
+        }}>
         <SlArrowLeft /> orqaga
       </span>
       <div
