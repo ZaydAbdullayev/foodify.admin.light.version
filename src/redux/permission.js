@@ -25,4 +25,3 @@ export const acPermission = (payload) => ({
   type: "SET_PERMISSION",
   payload,
 });
-

@@ -137,7 +137,6 @@
   width: 100%;
   height: calc(100% - 70px);
   padding: 1% 2%;
-  justify-content: flex-end;
   gap: var(--gap6);
   overflow-y: auto;
 }

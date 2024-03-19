@@ -31,6 +31,7 @@ export const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const name = user?.user?.username?.split("_")?.join(" ");
+  const w_name = user?.user?.name?.split("_")?.join(" ");
   const status = useSelector((state) => state.status);
   const media = useSelector((state) => state.media);
   const delDocuments = useSelector((state) => state.delRouter);
@@ -202,7 +203,7 @@ export const Navbar = () => {
         className={modal ? "modal_box" : "modal_box close_modal"}
         onMouseLeave={closeModal}>
         <div className="user">
-          <b>{name}</b>
+          <b>{department === "owner" ? name : w_name}</b>
           <figure>
             <img src={user?.user?.img || default_img} alt="user_photo" />
             <button

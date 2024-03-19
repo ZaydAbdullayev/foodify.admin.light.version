@@ -77,8 +77,8 @@ export const MobileInvoice = () => {
       data: {
         ...value,
         res_id: user?.id,
-        worker: user?.worker_name || "owner",
-        worker_id: user?.worker_id || user?.id,
+        worker: user?.name || user?.username,
+        worker_id: user?.user_id || user?.id,
         transaction_type: type,
       },
       tags: ["cashbox-transaction"],

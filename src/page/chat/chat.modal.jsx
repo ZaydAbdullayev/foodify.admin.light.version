@@ -5,13 +5,13 @@ import { LoadingBtn } from "../../components/loading/loading";
 
 const ChatModal = ({ getChat, activeAcc, setAddNewChat }) => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || {};
+  const id = user?.user_id || user?.id;
 
-  const { data: workersd, isLoading } = useFetchDataQuery({
-    url: `get/workersList/${user?.id}/${user?.id}`,
+  const { data: workers = {}, isLoading } = useFetchDataQuery({
+    url: `get/workersList/${user?.id}/${id}`,
     tags: ["workers"],
   });
 
-  const workers = { data: [] };
 
   return (
     <div className={`workers-modal_container`}>

@@ -38,7 +38,8 @@ export const Login = () => {
       handleLoginError();
       return;
     }
-    const role = data?.innerData?.user?.user?.role;
+    console.log(data?.innerData);
+    const role = data?.innerData?.user?.user?.role || "check";
     localStorage.setItem("user", JSON.stringify(data.innerData.user));
     localStorage.setItem("department", JSON.stringify(role));
     localStorage.setItem("check", JSON.stringify(true));
@@ -108,8 +109,7 @@ export const Login = () => {
           <span
             onClick={handleShow}
             style={show ? {} : { color: "orange" }}
-            aria-label="parolni ko'rish"
-          >
+            aria-label="parolni ko'rish">
             {show ? <BsEyeSlash /> : <BsEye />}
           </span>
           <p style={err ? { display: "flex" } : {}} className="failed">
@@ -163,6 +163,7 @@ export const CheackDepartment = () => {
         setPass("");
         return;
       }
+      console.log(data?.innerData);
       const dep = data?.innerData?.user?.user?.department;
       const mergedUser = {
         ...user,
@@ -228,8 +229,7 @@ export const CheackDepartment = () => {
             <button
               key={digit}
               onClick={() => setPass(`${pass}${digit}`)}
-              aria-label="son yozish"
-            >
+              aria-label="son yozish">
               {digit}
             </button>
           ))}

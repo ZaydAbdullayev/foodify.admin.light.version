@@ -2,98 +2,133 @@ import React, { useState, useEffect, Suspense, lazy } from "react";
 import "./chat.css";
 import socket from "../../socket.config";
 import { useFetchDataQuery } from ".././../service/fetch.service";
-import { usePostDataMutation } from ".././../service/fetch.service";
 import { useLocation, useNavigate } from "react-router-dom";
+import { generateUniqueId } from "../../service/unique.service";
+import { notification } from "antd";
 
 import { ImUserPlus } from "react-icons/im";
 import { FaArrowUp } from "react-icons/fa6";
 import { IoCheckmarkDoneOutline, IoCheckmark } from "react-icons/io5";
-import { IoMdArrowBack } from "react-icons/io";
 import { LoadingBtn } from "../../components/loading/loading";
 
 const ChatModal = lazy(() => import("./chat.modal"));
 // message tick border radius
 export const Chat = () => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || {};
-  const [activeChat, setActiveChat] = useState(null);
+  // const dep = JSON.parse(localStorage.getItem("department")) || [];
+  const [activeChat, setActiveChat] = useState([]);
   const [activeAcc, setActiveAcc] = useState(null);
   const [addNewChat, setAddNewChat] = useState(false);
-  const [workers, setWorkers] = useState([]);
+  const [addfetch, setAddFetch] = useState(false);
   const path = useLocation().search;
   const navigate = useNavigate();
-  const [postData] = usePostDataMutation();
+  const [api, contextHolder] = notification.useNotification();
+  const id = user?.user_id || user?.id;
+  const chatContainer = document.getElementById("chat-body");
   const { data: usersD, isLoading } = useFetchDataQuery({
-    url: `get/chats/${user?.id}`,
+    url: `get/chats/${id}`,
     tags: ["chat"],
   });
+
+  function scrollToBottom() {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
 
   useEffect(() => {
     if (path === "?closeChat") {
       setActiveAcc(null);
-      setActiveChat(null);
+      setActiveChat([]);
     }
   }, [path]);
 
-  socket.on("/get/newChat", (data) => {
+  socket.on(`/get/newChat`, (data) => {
     console.log(data);
   });
 
+  useEffect(() => {
+    if (activeAcc?.chat_id) {
+      socket.on(`/get/newMessage/${activeAcc?.chat_id}`, (data) => {
+        console.log("gelen son mesaj:", data);
+        setActiveChat((prev) => {
+          const prevChat = activeChat.find(
+            (item) => item?.message_id === data?.message_id
+          );
+          if (prevChat) {
+            return prev;
+          } else {
+            return [...prev, data];
+          }
+        });
+      });
+      return () => {
+        socket.off(`/get/newMessage/${activeAcc?.chat_id}`);
+      };
+    }
+  }, [activeAcc, activeChat]);
+
   // when get chat add location's sercha user id
   const getChat = (user) => {
-    navigate(`?chat=${user?.chat_id}`);
+    navigate(`?chat=${user?.chat_id || "no-chat-yet"}`);
     setActiveAcc(user);
-    const chat = chats?.find((chat) => chat?.chat_id === user?.chat_id) || null;
-    setActiveChat(chat);
+    setAddNewChat(false);
   };
-
-  function generate_l_g() {
-    let color = "#";
-    for (let i = 0; i < 3; i++) {
-      color += ("0" + Math.floor(Math.random() * 240).toString(16)).slice(-2);
-    }
-    return color;
-  }
 
   const addChat = async () => {
     setAddNewChat(!addNewChat);
+    setAddFetch(true);
     setActiveAcc(null);
-    setActiveChat(null);
-
-    if (!addNewChat) {
-      const data = {};
-      const res = await postData({
-        url: `get/workersList/${user?.id}/${user?.id}`,
-        data,
-        tags: [""],
-      });
-      setWorkers(res?.data?.data);
-    }
+    setActiveChat([]);
   };
 
   const sendMessage = async (e) => {
     e.preventDefault();
     const formdata = new FormData(e.target);
     const value = Object.fromEntries(formdata.entries());
-    const data = {
-      user1: user?.worker_id || user?.id,
+    scrollToBottom();
+    if (value?.text === "") {
+      const placement = "topRight";
+      return api.warning({
+        message: "Habar yozilmadi!",
+        description: "Iltimos, habar yuborish uchun matn kiriting!",
+        placement,
+      });
+    }
+    const add_chat = {
+      user1: user?.user_id || user?.id,
       user2: activeAcc?.id,
       last_messages: value?.text,
-      user1_name: user?.worker_name || "Owner",
-      user2_name: activeAcc?.[addNewChat ? "name" : "fullname"],
+      user1_name: user?.name,
+      user2_name: activeAcc?.name,
     };
-    if (addNewChat) {
-      socket.emit("/create/chat", data);
+    const msg = {
+      message_id: generateUniqueId(16),
+      content: value?.text,
+      sender_id: user?.user_id || user?.id,
+      read_status: 0,
+      received_at: new Date().toLocaleTimeString().slice(0, 5),
+    };
+    if (addfetch) {
+      socket.emit("/create/chat", add_chat);
       e.target.reset();
       setAddNewChat(false);
+      setAddFetch(false);
+    } else {
+      setActiveChat((prev) => [...prev, msg]);
+      socket.emit("/send/message", {
+        ...msg,
+        chat_id: activeAcc?.chat_id,
+        receiver_id: activeAcc?.id,
+      });
+      e.target.reset();
     }
   };
-  const usersData = addNewChat ? workers : usersD?.data;
   return (
     <>
+      {contextHolder}
       <div className="df aic chat-container">
         <div
           className={`df flc aic chat-accounts ${
-            activeAcc?.firstname && "close"
+            (activeAcc?.user2_name || activeAcc?.name) && "close"
           }`}>
           <h1 className="df aic _accounts-header">
             <span>Chat</span>
@@ -113,33 +148,38 @@ export const Chat = () => {
                 <LoadingBtn />
               </span>
             ) : usersD?.data !== "there are no Chats" ? (
-              usersD?.data?.map((user) => {
+              usersD?.data?.map((inUser, ind) => {
+                const last_m = JSON.parse(inUser?.last_messages || "[]");
+                const name =
+                  inUser?.user2_name === (user?.name || user?.username)
+                    ? inUser?.user1_name
+                    : inUser?.user2_name;
                 return (
                   <div
                     className={`df aic _user-item 
-                ${activeAcc?.id === user?.id ? "active" : ""}
+                ${activeAcc?.id === inUser?.id ? "active" : ""}
                 `}
-                    key={user?.id}
-                    onClick={() => getChat(user)}>
+                    key={`${inUser?.user2_id}_${ind}`}
+                    onClick={() => getChat(inUser)}>
                     <div
                       className="df aic jcc user-img"
-                      style={{ background: user?.bg || "#666" }}>
-                      {user?.img ? (
+                      style={{ background: inUser?.bg || "#666" }}>
+                      {inUser?.img ? (
                         <img
                           src="https://via.placeholder.com/40"
                           alt="user"
                           aria-label="user's image"
                         />
                       ) : (
-                        user?.user2_name?.charAt(0).toUpperCase()
+                        name?.charAt(0).toUpperCase()
                       )}
                     </div>
                     <div className="df flc user-info">
-                      <p>{user?.user2_name}</p>
-                      <small>{user?.last_messages?.[0]?.text || ""}</small>
-                      {!user?.read_status ? (
+                      <p>{name}</p>
+                      <small>{last_m?.[0]?.content || ""}</small>
+                      {!inUser?.read_status ? (
                         <span className="df aic jcc badge">
-                          {user?.last_messages?.length + 1}
+                          {last_m?.length + 1}
                         </span>
                       ) : (
                         ""
@@ -154,24 +194,36 @@ export const Chat = () => {
           </div>
         </div>
         <div className="df flc chat-content">
-          <div className="df flc chat-body">
+          <div className="df flc chat-body" id="chat-body">
             <p className="df aic jcc chat-body-header">
-              <span>{activeAcc?.user2_name || "Chat tanlang"}</span>
+              <span>
+                {activeAcc?.user2_name || activeAcc?.name || "Chat tanlang"}
+              </span>
             </p>
-            {activeChat?.messages?.length ? (
-              activeChat?.messages?.map((message) => {
+            {activeChat?.length ? (
+              activeChat?.map((message, ind) => {
                 return (
                   <div
                     className={`df aic ${
-                      message?.user_id === user?.id ? "chat-right" : "chat-left"
+                      message?.sender_id === (user?.user_id || user?.id)
+                        ? "chat-right"
+                        : "chat-left"
                     }`}
-                    key={message?.id}>
+                    key={`${message?.message_id}_${ind}`}>
                     <div className="df chat-message">
-                      <p>{message?.text}</p>
+                      <p>{message?.content}</p>
                       <sup>
                         <small className="df aic">
-                          {message?.time}{" "}
-                          {message?.user_id === user?.id ? <IoCheckmark /> : ""}
+                          {message?.received_at}{" "}
+                          {message?.sender_id === user?.id ? (
+                            message?.read_status === 0 ? (
+                              <IoCheckmark />
+                            ) : (
+                              <IoCheckmarkDoneOutline />
+                            )
+                          ) : (
+                            ""
+                          )}
                         </small>
                       </sup>
                     </div>
@@ -184,10 +236,15 @@ export const Chat = () => {
           </div>
           <form
             className={`df aic chat-footer ${
-              activeAcc?.user2_name ? "" : "hide"
+              activeAcc?.user2_name || activeAcc?.name ? "" : "hide"
             }`}
             onSubmit={(e) => sendMessage(e)}>
-            <input type="text" name="text" placeholder="Habar yozing" />
+            <input
+              type="text"
+              name="text"
+              placeholder="Habar yozing"
+              autoComplete="off"
+            />
             <button>
               <FaArrowUp />
             </button>
@@ -206,86 +263,3 @@ export const Chat = () => {
     </>
   );
 };
-
-const chats = [
-  {
-    chat_id: 1,
-    messages: [
-      {
-        id: 1,
-        user_id: 100,
-        text: `Hello Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor et totam impedit quis reiciendis iusto nobis eveniet illo repellat dignissimos nam id, provident temporibus at doloribus. Quos qui nesciunt quasi a aliquam adipisci quam, ullam iste soluta ad. Reiciendis, iusto`,
-        date: "2021-06-01",
-        time: "12:00",
-      },
-      {
-        id: 2,
-        user_id: 200,
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor et totam impedit quis reiciendis iusto nobis eveniet illo repellat dignissimos nam id, provident temporibus at doloribus. Quos qui nesciunt quasi a aliquam adipisci quam, ullam iste soluta ad. Reiciendis, iusto",
-        date: "2021-06-01",
-        time: "12:01",
-      },
-    ],
-  },
-  {
-    chat_id: 2,
-    messages: [],
-  },
-  {
-    chat_id: 3,
-    messages: [
-      {
-        id: 5,
-        user_id: 104,
-        text: "Hello",
-        date: "2021-06-01",
-        time: "12:00",
-      },
-      {
-        id: 6,
-        user_id: 200,
-        text: "Hi",
-        date: "2021-06-01",
-        time: "12:01",
-      },
-    ],
-  },
-  {
-    chat_id: 4,
-    messages: [
-      {
-        id: 7,
-        user_id: 106,
-        text: "Hello",
-        date: "2021-06-01",
-        time: "12:00",
-      },
-      {
-        id: 8,
-        user_id: 200,
-        text: "Hi",
-        date: "2021-06-01",
-        time: "12:01",
-      },
-    ],
-  },
-  {
-    chat_id: 5,
-    messages: [
-      {
-        id: 9,
-        user_id: 108,
-        text: "Hello",
-        date: "2021-06-01",
-        time: "12:00",
-      },
-      {
-        id: 10,
-        user_id: 200,
-        text: "Hi",
-        date: "2021-06-01",
-        time: "12:01",
-      },
-    ],
-  },
-];

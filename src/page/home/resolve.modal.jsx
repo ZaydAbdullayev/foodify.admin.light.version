@@ -36,7 +36,7 @@ const ResolveModal = () => {
             ...resolve?.product,
             status: resolve?.status,
           }),
-          worker_id: user?.user?.worker_id || user?.user?.id,
+          worker_id: user?.user?.user_id || user?.user?.id,
           res_id: user?.user?.id,
           storage,
           dailyLimit,
