@@ -2,6 +2,7 @@ import React, { useState, useEffect, Suspense, lazy } from "react";
 import "./chat.css";
 import socket from "../../socket.config";
 import { useFetchDataQuery } from ".././../service/fetch.service";
+import { usePostDataMutation } from ".././../service/fetch.service";
 import { useLocation, useNavigate } from "react-router-dom";
 import { generateUniqueId } from "../../service/unique.service";
 import { notification } from "antd";
@@ -23,6 +24,7 @@ export const Chat = () => {
   const path = useLocation().search;
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
+  const [postData] = usePostDataMutation();
   const id = user?.user_id || user?.id;
   const chatContainer = document.getElementById("chat-body");
   const { data: usersD, isLoading } = useFetchDataQuery({
@@ -49,12 +51,17 @@ export const Chat = () => {
     if (activeAcc?.chat_id) {
       socket.on(`/get/newMessage/${activeAcc?.chat_id}`, (data) => {
         console.log("gelen son mesaj:", data);
+        if (data?.sender_id !== (user?.user_id || user?.id)) {
+          socket.emit("/mark/asRead", data);
+        }
         setActiveChat((prev) => {
           const prevChat = activeChat.find(
             (item) => item?.message_id === data?.message_id
           );
           if (prevChat) {
-            return prev;
+            return prev.map((item) =>
+              item?.message_id === data?.message_id ? data : item
+            );
           } else {
             return [...prev, data];
           }
@@ -64,13 +71,18 @@ export const Chat = () => {
         socket.off(`/get/newMessage/${activeAcc?.chat_id}`);
       };
     }
-  }, [activeAcc, activeChat]);
+  }, [activeAcc?.chat_id, activeChat, user]);
 
   // when get chat add location's sercha user id
-  const getChat = (user) => {
+  const getChat = async (user) => {
     navigate(`?chat=${user?.chat_id || "no-chat-yet"}`);
     setActiveAcc(user);
     setAddNewChat(false);
+    const { data = {} } = await postData({
+      url: `get/messages/${user?.chat_id}`,
+      tags: ["chat"],
+    });
+    setActiveChat(data?.data || []);
   };
 
   const addChat = async () => {
@@ -84,7 +96,6 @@ export const Chat = () => {
     e.preventDefault();
     const formdata = new FormData(e.target);
     const value = Object.fromEntries(formdata.entries());
-    scrollToBottom();
     if (value?.text === "") {
       const placement = "topRight";
       return api.warning({
@@ -93,27 +104,28 @@ export const Chat = () => {
         placement,
       });
     }
-    const add_chat = {
-      user1: user?.user_id || user?.id,
-      user2: activeAcc?.id,
-      last_messages: value?.text,
-      user1_name: user?.name,
-      user2_name: activeAcc?.name,
-    };
     const msg = {
       message_id: generateUniqueId(16),
       content: value?.text,
       sender_id: user?.user_id || user?.id,
+      receiver_id: activeAcc?.id,
       read_status: 0,
-      received_at: new Date().toLocaleTimeString().slice(0, 5),
+      received_at: new Date().toLocaleString(),
     };
+    const add_chat = {
+      user1: user?.user_id || user?.id,
+      user2: activeAcc?.id,
+      last_messages: JSON.stringify([msg]),
+      user1_name: user?.name,
+      user2_name: activeAcc?.name,
+    };
+    setActiveChat((prev) => [...prev, msg]);
     if (addfetch) {
       socket.emit("/create/chat", add_chat);
       e.target.reset();
       setAddNewChat(false);
       setAddFetch(false);
     } else {
-      setActiveChat((prev) => [...prev, msg]);
       socket.emit("/send/message", {
         ...msg,
         chat_id: activeAcc?.chat_id,
@@ -121,7 +133,9 @@ export const Chat = () => {
       });
       e.target.reset();
     }
+    scrollToBottom();
   };
+  console.log("activechat", activeChat);
   return (
     <>
       {contextHolder}
@@ -176,10 +190,12 @@ export const Chat = () => {
                     </div>
                     <div className="df flc user-info">
                       <p>{name}</p>
-                      <small>{last_m?.[0]?.content || ""}</small>
-                      {!inUser?.read_status ? (
+                      <small>
+                        {last_m?.[last_m?.length - 1]?.content || ""}
+                      </small>
+                      {!inUser?.read_status && last_m?.length ? (
                         <span className="df aic jcc badge">
-                          {last_m?.length + 1}
+                          {last_m?.length}
                         </span>
                       ) : (
                         ""
@@ -197,36 +213,36 @@ export const Chat = () => {
           <div className="df flc chat-body" id="chat-body">
             <p className="df aic jcc chat-body-header">
               <span>
-                {activeAcc?.user2_name || activeAcc?.name || "Chat tanlang"}
+                {activeAcc?.name ||
+                activeAcc?.user2_name === (user?.name || user?.username)
+                  ? activeAcc?.user1_name
+                  : activeAcc?.user2_name || "Chat tanlang"}
               </span>
             </p>
             {activeChat?.length ? (
               activeChat?.map((message, ind) => {
+                console.log(message?.received_at?.split(" ")[1]);
                 return (
                   <div
-                    className={`df aic ${
+                    className={`df flc ${
                       message?.sender_id === (user?.user_id || user?.id)
                         ? "chat-right"
                         : "chat-left"
                     }`}
                     key={`${message?.message_id}_${ind}`}>
-                    <div className="df chat-message">
-                      <p>{message?.content}</p>
-                      <sup>
-                        <small className="df aic">
-                          {message?.received_at}{" "}
-                          {message?.sender_id === user?.id ? (
-                            message?.read_status === 0 ? (
-                              <IoCheckmark />
-                            ) : (
-                              <IoCheckmarkDoneOutline />
-                            )
-                          ) : (
-                            ""
-                          )}
-                        </small>
-                      </sup>
-                    </div>
+                    <p>{message?.content}</p>
+                    <span className="df aic">
+                      {message?.received_at?.split(" ")[1].slice(0, 5)}{" "}
+                      {message?.sender_id === (user?.user_id || user?.id) ? (
+                        message?.read_status === 0 ? (
+                          <IoCheckmark />
+                        ) : (
+                          <IoCheckmarkDoneOutline />
+                        )
+                      ) : (
+                        ""
+                      )}
+                    </span>
                   </div>
                 );
               })
