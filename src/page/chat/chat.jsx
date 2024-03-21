@@ -13,10 +13,8 @@ import { IoCheckmarkDoneOutline, IoCheckmark } from "react-icons/io5";
 import { LoadingBtn } from "../../components/loading/loading";
 
 const ChatModal = lazy(() => import("./chat.modal"));
-// message tick border radius
 export const Chat = () => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || {};
-  // const dep = JSON.parse(localStorage.getItem("department")) || [];
   const [activeChat, setActiveChat] = useState([]);
   const [activeAcc, setActiveAcc] = useState(null);
   const [addNewChat, setAddNewChat] = useState(false);
@@ -26,15 +24,15 @@ export const Chat = () => {
   const [api, contextHolder] = notification.useNotification();
   const [postData] = usePostDataMutation();
   const id = user?.user_id || user?.id;
-  const chatContainer = document.getElementById("chat-body");
   const { data: usersD, isLoading } = useFetchDataQuery({
     url: `get/chats/${id}`,
     tags: ["chat"],
   });
 
-  function scrollToBottom() {
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-  }
+  const scrollToBottom = async () => {
+    const chatContainer = document.getElementById("chat-body");
+    chatContainer.scrollTop = chatContainer?.scrollHeight;
+  };
 
   useEffect(() => {
     if (path === "?closeChat") {
@@ -51,7 +49,7 @@ export const Chat = () => {
     if (activeAcc?.chat_id) {
       socket.on(`/get/newMessage/${activeAcc?.chat_id}`, (data) => {
         console.log("gelen son mesaj:", data);
-        if (data?.sender_id !== (user?.user_id || user?.id)) {
+        if (data?.sender_id !== id) {
           socket.emit("/mark/asRead", data);
         }
         setActiveChat((prev) => {
@@ -71,7 +69,7 @@ export const Chat = () => {
         socket.off(`/get/newMessage/${activeAcc?.chat_id}`);
       };
     }
-  }, [activeAcc?.chat_id, activeChat, user]);
+  }, [activeAcc?.chat_id, activeChat, id]);
 
   // when get chat add location's sercha user id
   const getChat = async (user) => {
@@ -107,13 +105,13 @@ export const Chat = () => {
     const msg = {
       message_id: generateUniqueId(16),
       content: value?.text,
-      sender_id: user?.user_id || user?.id,
+      sender_id: id,
       receiver_id: activeAcc?.id,
       read_status: 0,
       received_at: new Date().toLocaleString(),
     };
     const add_chat = {
-      user1: user?.user_id || user?.id,
+      user1: id,
       user2: activeAcc?.id,
       last_messages: JSON.stringify([msg]),
       user1_name: user?.name,
@@ -135,7 +133,6 @@ export const Chat = () => {
     }
     scrollToBottom();
   };
-  console.log("activechat", activeChat);
   return (
     <>
       {contextHolder}
@@ -168,10 +165,14 @@ export const Chat = () => {
                   inUser?.user2_name === (user?.name || user?.username)
                     ? inUser?.user1_name
                     : inUser?.user2_name;
+                const uid =
+                  inUser?.user2 === id ? inUser?.user1 : inUser?.user2;
                 return (
                   <div
                     className={`df aic _user-item 
-                ${activeAcc?.id === inUser?.id ? "active" : ""}
+                ${
+                  uid === (activeAcc?.user1 || activeAcc?.user1) ? "active" : ""
+                }
                 `}
                     key={`${inUser?.user2_id}_${ind}`}
                     onClick={() => getChat(inUser)}>
@@ -210,30 +211,28 @@ export const Chat = () => {
           </div>
         </div>
         <div className="df flc chat-content">
-          <div className="df flc chat-body" id="chat-body">
-            <p className="df aic jcc chat-body-header">
-              <span>
-                {activeAcc?.name ||
-                activeAcc?.user2_name === (user?.name || user?.username)
-                  ? activeAcc?.user1_name
-                  : activeAcc?.user2_name || "Chat tanlang"}
-              </span>
-            </p>
-            {activeChat?.length ? (
-              activeChat?.map((message, ind) => {
-                console.log(message?.received_at?.split(" ")[1]);
+          <p className="df aic jcc chat-body-header">
+            <span>
+              {activeAcc?.name ||
+              activeAcc?.user2_name === (user?.name || user?.username)
+                ? activeAcc?.user1_name
+                : activeAcc?.user2_name || "Chat tanlang"}
+            </span>
+          </p>
+          {activeChat?.length ? (
+            <div className="df flc chat-body" id="chat-body">
+              {activeChat?.map((message, ind) => {
                 return (
                   <div
                     className={`df flc ${
-                      message?.sender_id === (user?.user_id || user?.id)
-                        ? "chat-right"
-                        : "chat-left"
+                      message?.sender_id === id ? "chat-right" : "chat-left"
                     }`}
                     key={`${message?.message_id}_${ind}`}>
-                    <p>{message?.content}</p>
-                    <span className="df aic">
-                      {message?.received_at?.split(" ")[1].slice(0, 5)}{" "}
-                      {message?.sender_id === (user?.user_id || user?.id) ? (
+                    <p id="paragraf">{message?.content}</p>
+                    <span>
+                      {" "}
+                      {message?.received_at?.split(" ")[1].slice(0, 5)}
+                      {message?.sender_id === id ? (
                         message?.read_status === 0 ? (
                           <IoCheckmark />
                         ) : (
@@ -245,25 +244,27 @@ export const Chat = () => {
                     </span>
                   </div>
                 );
-              })
-            ) : (
-              <span className="empty-chat">Chat bo'sh</span>
-            )}
-          </div>
+              })}
+            </div>
+          ) : (
+            <span className="empty-chat">Chat bo'sh</span>
+          )}
           <form
             className={`df aic chat-footer ${
               activeAcc?.user2_name || activeAcc?.name ? "" : "hide"
             }`}
             onSubmit={(e) => sendMessage(e)}>
-            <input
-              type="text"
-              name="text"
-              placeholder="Habar yozing"
-              autoComplete="off"
-            />
-            <button>
-              <FaArrowUp />
-            </button>
+            <label>
+              <input
+                type="text"
+                name="text"
+                placeholder="Habar yozing"
+                autoComplete="off"
+              />
+              <button>
+                <FaArrowUp />
+              </button>
+            </label>
           </form>
         </div>
       </div>
