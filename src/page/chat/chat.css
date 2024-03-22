@@ -138,6 +138,7 @@
   position: relative;
   width: 100%;
   max-height: calc(100% - 70px);
+  justify-items: flex-end;
   padding: 1% 2%;
   gap: var(--gap6);
   overflow-y: auto;
@@ -180,7 +181,7 @@
   position: relative;
   max-width: calc(90% + (50 - 95) * (100vw - 320px) / (1440 - 320));
   display: inline-block;
-  padding: 0.5% 1.5%;
+  padding: 0.5% 2% 0.5% 1.5%;
   border-radius: 15px;
   color: #fff;
   word-spacing: 2px;
@@ -234,17 +235,33 @@
   position: absolute;
   bottom: 0;
   left: -50px;
-  display: flex;
-  align-items: center;
   padding: 1px 5px;
   font-size: var(--fs6);
   font-size: 10px;
   z-index: 99999;
   background: rgba(0, 0, 0, 0.333);
   border-radius: 15px;
-  > svg {
-    font-size: var(--fs7);
-  }
+}
+
+.chat-left i,
+.chat-right i {
+  position: absolute;
+  bottom: 3px;
+  right: 1px;
+  display: flex;
+  align-items: flex-end;
+  font-size: var(--fs7);
+}
+
+.scroll-down {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #353535;
+  color: #fff;
 }
 
 .chat-footer {
@@ -348,6 +365,11 @@
   }
   ._user-item:hover {
     background: inherit;
+  }
+
+  .chat-left span,
+  .chat-right span {
+    left: -40px;
   }
 }
 

@@ -8,7 +8,7 @@ import { generateUniqueId } from "../../service/unique.service";
 import { notification } from "antd";
 
 import { ImUserPlus } from "react-icons/im";
-import { FaArrowUp } from "react-icons/fa6";
+import { FaArrowUp, FaChevronDown } from "react-icons/fa6";
 import { IoCheckmarkDoneOutline, IoCheckmark } from "react-icons/io5";
 import { LoadingBtn } from "../../components/loading/loading";
 
@@ -108,7 +108,7 @@ export const Chat = () => {
       sender_id: id,
       receiver_id: activeAcc?.id,
       read_status: 0,
-      received_at: new Date().toLocaleString(),
+      received_at: new Date().toISOString(),
     };
     const add_chat = {
       user1: id,
@@ -118,6 +118,9 @@ export const Chat = () => {
       user2_name: activeAcc?.name,
     };
     setActiveChat((prev) => [...prev, msg]);
+    setTimeout(() => {
+      scrollToBottom();
+    }, 0);
     if (addfetch) {
       socket.emit("/create/chat", add_chat);
       e.target.reset();
@@ -131,8 +134,25 @@ export const Chat = () => {
       });
       e.target.reset();
     }
-    scrollToBottom();
   };
+
+  console.log("day", new Date().toISOString());
+  // escape key to close chat
+  useEffect(() => {
+    const closeChat = (e) => {
+      console.log("key: ", e.key, "code: ", e.code, "which: ", e.which);
+      if (e.key === "Escape") {
+        navigate(`?closeChat`);
+        setActiveAcc(null);
+        setActiveChat([]);
+      }
+    };
+    window.addEventListener("keydown", closeChat);
+    return () => {
+      window.removeEventListener("keydown", closeChat);
+    };
+  }, [navigate]);
+
   return (
     <>
       {contextHolder}
@@ -231,7 +251,9 @@ export const Chat = () => {
                     <p id="paragraf">{message?.content}</p>
                     <span>
                       {" "}
-                      {message?.received_at?.split(" ")[1].slice(0, 5)}
+                      {message?.received_at?.split("T")[1]?.slice(0, 5)}
+                    </span>
+                    <i>
                       {message?.sender_id === id ? (
                         message?.read_status === 0 ? (
                           <IoCheckmark />
@@ -241,7 +263,7 @@ export const Chat = () => {
                       ) : (
                         ""
                       )}
-                    </span>
+                    </i>
                   </div>
                 );
               })}
@@ -266,6 +288,11 @@ export const Chat = () => {
               </button>
             </label>
           </form>
+          <span
+            className={`df aic jcc scroll-down`}
+            onClick={() => scrollToBottom()}>
+            <FaChevronDown />
+          </span>
         </div>
       </div>
       <Suspense>

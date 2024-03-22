@@ -96,8 +96,7 @@ export const ReportItems = () => {
                     : "flex-start",
                 }}
                 key={index}
-                aria-label="for sort data and see al info about this product"
-              >
+                aria-label="for sort data and see al info about this product">
                 <p>{item.name}</p>
                 {item?.items && (
                   <>
@@ -134,15 +133,13 @@ export const ReportItems = () => {
                 <div
                   className={"storage_body__box"}
                   key={item.id}
-                  style={{ color: item.profit < 0 ? "#f07167" : "" }}
-                >
+                  style={{ color: item.profit < 0 ? "#f07167" : "" }}>
                   <div
                     className={
                       acItem === item.name
                         ? "storage_body_item active"
                         : "storage_body_item"
-                    }
-                  >
+                    }>
                     <p style={{ "--data-line-size": "4%" }}>{index + 1}</p>
                     {displayKeys?.map(
                       ({ size, position, name, tick, child }, index) => (
@@ -155,8 +152,7 @@ export const ReportItems = () => {
                                 ? "center"
                                 : "flex-end"
                               : "flex-start",
-                          }}
-                        >
+                          }}>
                           {child ? (
                             <>
                               <span className="reports_span">
@@ -180,8 +176,7 @@ export const ReportItems = () => {
                         "--data-line-size": "7%",
                         justifyContent: "center",
                       }}
-                      onClick={() => navigate(`/view/food-report/${item.id}`)}
-                    >
+                      onClick={() => navigate(`/view/food-report/${item.id}`)}>
                       <u style={{ color: "#787aff" }}>ovqatlar</u>
                     </p>
                   </div>
@@ -202,8 +197,7 @@ export const ReportItems = () => {
                         ? "center"
                         : "flex-end"
                       : "flex-start",
-                  }}
-                >
+                  }}>
                   {tittle}
                   {child ? (
                     <>
@@ -223,8 +217,7 @@ export const ReportItems = () => {
               style={{
                 "--data-line-size": "7%",
                 justifyContent: "center",
-              }}
-            ></p>
+              }}></p>
           </div>
         </div>
       </div>

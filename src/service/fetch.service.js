@@ -82,7 +82,7 @@ const api = createApi({
     }),
   }),
 });
-
+  
 export const useFetchDataQuery = (props) =>
   api.endpoints.fetchData.useQuery(props);
 export const usePostDataMutation = (props) =>
