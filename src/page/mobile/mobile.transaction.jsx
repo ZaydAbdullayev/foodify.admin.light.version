@@ -175,7 +175,7 @@ export const MobileInvoice = () => {
               <IoIosArrowForward />
             </div>
           ))}
-          <div className="activity-type">
+          <div className="activity-type activity-inputs">
             <p>Tafsilot :</p>
             <label className="activity-types short">
               <textarea name="description" placeholder="Tafsilot"></textarea>

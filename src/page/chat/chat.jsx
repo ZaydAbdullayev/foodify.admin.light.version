@@ -19,11 +19,13 @@ export const Chat = () => {
   const [activeAcc, setActiveAcc] = useState(null);
   const [addNewChat, setAddNewChat] = useState(false);
   const [addfetch, setAddFetch] = useState(false);
+  const [chats, setChats] = useState(null);
   const path = useLocation().search;
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
   const [postData] = usePostDataMutation();
   const id = user?.user_id || user?.id;
+  const user_name = user?.name || user?.username;
   const { data: usersD, isLoading } = useFetchDataQuery({
     url: `get/chats/${id}`,
     tags: ["chat"],
@@ -41,17 +43,26 @@ export const Chat = () => {
     }
   }, [path]);
 
-  socket.on(`/get/newChat`, (data) => {
-    console.log(data);
+  socket.on(`/get/newChat/${id}`, (data) => {
+    console.log("new-chat", data);
+    if (Array.isArray(usersD?.data) && usersD?.data.length > 0) {
+      setChats([...usersD.data, data]);
+    } else {
+      setChats([data]);
+    }
+    socket.off(`/get/newChat/${id}`);
   });
+
+  // const markMessageAsRead = async (data) => {
+  //   if (data?.sender_id !== id) {
+  //     socket.emit("/mark/asRead", data);
+  //   }
+  // };
 
   useEffect(() => {
     if (activeAcc?.chat_id) {
       socket.on(`/get/newMessage/${activeAcc?.chat_id}`, (data) => {
         console.log("gelen son mesaj:", data);
-        if (data?.sender_id !== id) {
-          socket.emit("/mark/asRead", data);
-        }
         setActiveChat((prev) => {
           const prevChat = activeChat.find(
             (item) => item?.message_id === data?.message_id
@@ -136,11 +147,9 @@ export const Chat = () => {
     }
   };
 
-  console.log("day", new Date().toISOString());
   // escape key to close chat
   useEffect(() => {
     const closeChat = (e) => {
-      console.log("key: ", e.key, "code: ", e.code, "which: ", e.which);
       if (e.key === "Escape") {
         navigate(`?closeChat`);
         setActiveAcc(null);
@@ -153,6 +162,7 @@ export const Chat = () => {
     };
   }, [navigate]);
 
+  const chatData = chats ? chats : usersD?.data;
   return (
     <>
       {contextHolder}
@@ -178,11 +188,11 @@ export const Chat = () => {
               <span className="relative">
                 <LoadingBtn />
               </span>
-            ) : usersD?.data !== "there are no Chats" ? (
-              usersD?.data?.map((inUser, ind) => {
+            ) : chatData !== "there are no Chats" ? (
+              chatData?.map((inUser, ind) => {
                 const last_m = JSON.parse(inUser?.last_messages || "[]");
                 const name =
-                  inUser?.user2_name === (user?.name || user?.username)
+                  inUser?.user2_name === user_name
                     ? inUser?.user1_name
                     : inUser?.user2_name;
                 const uid =
@@ -233,10 +243,11 @@ export const Chat = () => {
         <div className="df flc chat-content">
           <p className="df aic jcc chat-body-header">
             <span>
-              {activeAcc?.name ||
-              activeAcc?.user2_name === (user?.name || user?.username)
-                ? activeAcc?.user1_name
-                : activeAcc?.user2_name || "Chat tanlang"}
+              {activeAcc?.name
+                ? activeAcc?.name
+                : activeAcc?.user1_name === user_name
+                ? activeAcc?.user2_name
+                : activeAcc?.user1_name || "Chat tanlang"}
             </span>
           </p>
           {activeChat?.length ? (

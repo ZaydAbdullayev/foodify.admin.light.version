@@ -171,7 +171,7 @@
 .activity-btn > button {
   position: relative;
   width: calc(100% / 2.15);
-  height: 50px;
+  height: calc(35px + (50 - 35) * (100vw - 320px) / (1440 - 320));
   background: tomato;
   border: none;
   border-radius: 7px;
@@ -217,7 +217,7 @@
 
 ._invoice-footer > button {
   width: 30%;
-  height: 50px;
+  height: calc(35px + (50 - 35) * (100vw - 320px) / (1440 - 320));
   background: #36cfc9;
   border: none;
   border-radius: 50px 5px 50px 5px;
@@ -242,4 +242,86 @@
   border-radius: 7px;
   font-size: var(--fs3);
   color: #ddd;
+}
+
+@media (max-width: 980px) {
+  .activity-inputs {
+    flex-direction: column;
+    gap: var(--gap6);
+  }
+  .activity-types.short {
+    width: 100%;
+  }
+
+  .amount-and-date {
+    width: 100%;
+    flex-direction: row;
+    padding-left: 0;
+  }
+
+  .amount-and-date > label {
+    width: calc(50% - calc(var(--gap1) / 2));
+  }
+
+  .amount-and-date::after {
+    display: none;
+  }
+
+  ._invoice-footer {
+    flex-direction: column;
+  }
+  .history-screen {
+    width: 100%;
+  }
+
+  ._invoice-footer > button {
+    width: 50%;
+  }
+
+  .activity-btn {
+    width: 100%;
+    gap: calc(var(--gap1) * 2);
+  }
+  .activity-btn > :first-child::after {
+    right: -4%;
+  }
+  .activity-btn > :last-child::after {
+    left: -4%;
+  }
+}
+
+@media (max-width: 500px) {
+  .activity-type {
+    flex-direction: column;
+    gap: var(--gap5);
+  }
+
+  .activity-type > p {
+    inline-size: 100%;
+  }
+
+  .activity-types {
+    width: 100%;
+  }
+
+  .activity-type > svg {
+    top: 68%;
+    /* transform: translateY(-50%); */
+  }
+
+  .amount-and-date {
+    flex-direction: column;
+  }
+  .amount-and-date > label {
+    width: 100%;
+  }
+  .activity-btn > :first-child::after {
+    right: -7%;
+  }
+  .activity-btn > :last-child::after {
+    left: -7%;
+  }
+  ._invoice-footer > button {
+    width: 100%;
+  }
 }

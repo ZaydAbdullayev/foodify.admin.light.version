@@ -46,6 +46,10 @@ textarea {
   outline: none;
 }
 
+input[type="number"]::-webkit-inner-spin-button {
+  display: none;
+}
+
 .skeleton {
   object-fit: cover;
   background: linear-gradient(-90deg, #eee, #aaa, #eee, #eee, #eee);

@@ -12,7 +12,6 @@ const ChatModal = ({ getChat, activeAcc, setAddNewChat }) => {
     tags: ["workers"],
   });
 
-
   return (
     <div className={`workers-modal_container`}>
       <div className="df flc aic workers-modal">
@@ -32,13 +31,14 @@ const ChatModal = ({ getChat, activeAcc, setAddNewChat }) => {
             </span>
           ) : (
             workers?.data?.map((user) => {
+              const add = true;
               return (
                 <div
                   className={`df aic _user-item 
                 ${activeAcc?.id === user?.id ? "active" : ""}
                 `}
                   key={user?.id}
-                  onClick={() => getChat(user)}>
+                  onClick={() => getChat(user, add)}>
                   <div
                     className="df aic jcc user-img"
                     style={{ background: user?.bg || "#666" }}>
