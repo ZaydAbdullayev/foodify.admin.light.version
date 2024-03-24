@@ -377,11 +377,6 @@
   ._user-item:hover {
     background: inherit;
   }
-
-  .chat-left span,
-  .chat-right span {
-    left: -40px;
-  }
 }
 
 @media (max-width: 600px) {

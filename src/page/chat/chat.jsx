@@ -19,7 +19,7 @@ export const Chat = () => {
   const [activeAcc, setActiveAcc] = useState(null);
   const [addNewChat, setAddNewChat] = useState(false);
   const [addfetch, setAddFetch] = useState(false);
-  const [chats, setChats] = useState(null);
+  const [chats, setChats] = useState([]);
   const path = useLocation().search;
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
@@ -45,42 +45,56 @@ export const Chat = () => {
 
   socket.on(`/get/newChat/${id}`, (data) => {
     console.log("new-chat", data);
-    if (Array.isArray(usersD?.data) && usersD?.data.length > 0) {
-      setChats([...usersD.data, data]);
-    } else {
-      setChats([data]);
-    }
+    setChats((prev) => {
+      const isPrevChatExist = prev.some(
+        (item) => item?.chat_id === data?.chat_id
+      );
+      if (isPrevChatExist) {
+        return prev.map((item) =>
+          item?.chat_id === data?.chat_id ? data : item
+        );
+      } else {
+        return Array.isArray(prev) && prev.length > 0
+          ? [data, ...prev]
+          : [data];
+      }
+    });
     socket.off(`/get/newChat/${id}`);
   });
 
-  // const markMessageAsRead = async (data) => {
-  //   if (data?.sender_id !== id) {
-  //     socket.emit("/mark/asRead", data);
-  //   }
-  // };
+  const markMessageAsRead = async (data) => {
+    if (data?.sender_id !== id) {
+      socket.emit("/mark/asRead", data);
+    }
+  };
 
   useEffect(() => {
     if (activeAcc?.chat_id) {
       socket.on(`/get/newMessage/${activeAcc?.chat_id}`, (data) => {
         console.log("gelen son mesaj:", data);
+        if (data.read_status === 0) {
+          markMessageAsRead(data);
+        }
+        // Check if the message is already present in activeChat
         setActiveChat((prev) => {
-          const prevChat = activeChat.find(
+          const prevChat = activeChat?.find(
             (item) => item?.message_id === data?.message_id
           );
           if (prevChat) {
-            return prev.map((item) =>
+            return prev?.map((item) =>
               item?.message_id === data?.message_id ? data : item
             );
           } else {
-            return [...prev, data];
+            return prev?.length ? [...prev, data] : [data];
           }
         });
       });
+
       return () => {
         socket.off(`/get/newMessage/${activeAcc?.chat_id}`);
       };
     }
-  }, [activeAcc?.chat_id, activeChat, id]);
+  }, [activeAcc?.chat_id, activeChat]);
 
   // when get chat add location's sercha user id
   const getChat = async (user) => {
@@ -88,10 +102,11 @@ export const Chat = () => {
     setActiveAcc(user);
     setAddNewChat(false);
     const { data = {} } = await postData({
-      url: `get/messages/${user?.chat_id}`,
+      url: `get/messages/${user?.chat_id}/${id}`,
       tags: ["chat"],
     });
-    setActiveChat(data?.data || []);
+    const chat = Array.isArray(data?.data) ? data?.data : [];
+    setActiveChat(chat);
   };
 
   const addChat = async () => {
@@ -113,11 +128,12 @@ export const Chat = () => {
         placement,
       });
     }
+    const r_id = activeAcc?.user2 === id ? activeAcc?.user1 : activeAcc?.user2;
     const msg = {
       message_id: generateUniqueId(16),
       content: value?.text,
       sender_id: id,
-      receiver_id: activeAcc?.id,
+      receiver_id: activeAcc?.id || r_id,
       read_status: 0,
       received_at: new Date().toISOString(),
     };
@@ -128,7 +144,7 @@ export const Chat = () => {
       user1_name: user?.name,
       user2_name: activeAcc?.name,
     };
-    setActiveChat((prev) => [...prev, msg]);
+    setActiveChat((prev) => (prev?.length ? [...prev, msg] : [msg]));
     setTimeout(() => {
       scrollToBottom();
     }, 0);
@@ -141,8 +157,9 @@ export const Chat = () => {
       socket.emit("/send/message", {
         ...msg,
         chat_id: activeAcc?.chat_id,
-        receiver_id: activeAcc?.id,
+        receiver_id: activeAcc?.id || r_id,
       });
+      console.log("msg", { ...msg, chat_id: activeAcc?.chat_id });
       e.target.reset();
     }
   };
@@ -162,7 +179,7 @@ export const Chat = () => {
     };
   }, [navigate]);
 
-  const chatData = chats ? chats : usersD?.data;
+  const chatData = chats?.length ? chats : usersD?.data;
   return (
     <>
       {contextHolder}
@@ -188,9 +205,9 @@ export const Chat = () => {
               <span className="relative">
                 <LoadingBtn />
               </span>
-            ) : chatData !== "there are no Chats" ? (
+            ) : Array.isArray(chatData) ? (
               chatData?.map((inUser, ind) => {
-                const last_m = JSON.parse(inUser?.last_messages || "[]");
+                const last_m = JSON?.parse(inUser?.last_messages || "[]");
                 const name =
                   inUser?.user2_name === user_name
                     ? inUser?.user1_name
@@ -224,7 +241,9 @@ export const Chat = () => {
                       <small>
                         {last_m?.[last_m?.length - 1]?.content || ""}
                       </small>
-                      {!inUser?.read_status && last_m?.length ? (
+                      {inUser?.read_status === 0 &&
+                      last_m?.length &&
+                      last_m?.[last_m?.length - 1]?.sender_id !== id ? (
                         <span className="df aic jcc badge">
                           {last_m?.length}
                         </span>
@@ -253,6 +272,8 @@ export const Chat = () => {
           {activeChat?.length ? (
             <div className="df flc chat-body" id="chat-body">
               {activeChat?.map((message, ind) => {
+                const hour = new Date(message?.received_at).getHours();
+                const minute = new Date(message?.received_at).getMinutes();
                 return (
                   <div
                     className={`df flc ${
@@ -261,8 +282,8 @@ export const Chat = () => {
                     key={`${message?.message_id}_${ind}`}>
                     <p id="paragraf">{message?.content}</p>
                     <span>
-                      {" "}
-                      {message?.received_at?.split("T")[1]?.slice(0, 5)}
+                      {hour < 10 ? `0${hour}` : hour}:
+                      {minute < 10 ? `0${minute}` : minute}
                     </span>
                     <i>
                       {message?.sender_id === id ? (
@@ -293,6 +314,7 @@ export const Chat = () => {
                 name="text"
                 placeholder="Habar yozing"
                 autoComplete="off"
+                autoFocus
               />
               <button>
                 <FaArrowUp />
