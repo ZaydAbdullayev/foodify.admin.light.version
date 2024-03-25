@@ -92,6 +92,9 @@ export const Chat = () => {
             return prev?.length ? [...prev, data] : [data];
           }
         });
+        setTimeout(() => {
+          scrollToBottom();
+        }, 0);
       });
       return () => {
         socket.off(`/get/newMessage/${activeAcc?.chat_id}`);

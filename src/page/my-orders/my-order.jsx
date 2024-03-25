@@ -95,14 +95,13 @@ export const MyOrderDisplay = ({ header, data, right, left }) => {
                 : "my-order-display-item"
             }
             onClick={() => setSort(sort === item.id ? null : item.id)}
-            key={item.id}
-          >
+            key={item.id}>
             <div className="_item-frame">
               <p style={{ "--my-order-w": "20%" }}>
                 {item?.address?.split("&")[1]}
               </p>
               <p style={{ "--my-order-w": "30%", letterSpacing: "1px" }}>
-                {calculateDifTime(item?.receivedAt)} oldin
+                <small>{calculateDifTime(item?.receivedAt)} oldin</small>
               </p>
               <NumericFormat
                 value={item?.total}
@@ -125,8 +124,7 @@ export const MyOrderDisplay = ({ header, data, right, left }) => {
             </div>
             <div
               className="_item-tool"
-              style={{ "--item-tool-c": sort === item.id ? p_i_c : 0 }}
-            >
+              style={{ "--item-tool-c": sort === item.id ? p_i_c : 0 }}>
               {products?.map((p) => {
                 return (
                   <div key={p?.id}>

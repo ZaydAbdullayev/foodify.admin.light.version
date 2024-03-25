@@ -384,4 +384,8 @@
   .chat-container {
     height: calc(100dvh - (var(--nwh) * 2));
   }
+
+  .chat-footer {
+    z-index: 9999999;
+  }
 }
