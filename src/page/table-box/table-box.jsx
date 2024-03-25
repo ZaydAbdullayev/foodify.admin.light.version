@@ -19,7 +19,7 @@ export const TableBox = () => {
   const [newType, setNewType] = useState("");
   const [type, setType] = useState("stoll");
   const dispatch = useDispatch();
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(acNavStatus([0, 101, 100]));
   }, [dispatch]);
   const [tablesData, setTablesData] = useState([]);

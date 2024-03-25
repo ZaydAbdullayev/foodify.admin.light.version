@@ -41,28 +41,31 @@ export const MakingFoods = () => {
     dispatch(acNavStatus([100]));
   }, [dispatch, user?.id]);
 
-  socket.on(`/get/makingOrderOne/${id}`, (newData) => {
-    console.log("new makingData socket", newData);
-    setOrders((prevOrders) => {
-      const existingOrder = prevOrders?.find(
-        (order) => order?.id === newData.id
-      );
-      if (existingOrder) {
-        if (newData?.deleted) {
-          return prevOrders?.filter((order) => order?.id !== newData.id);
+  useEffect(() => {
+    socket.on(`/get/makingOrderOne/${id}`, (newData) => {
+      console.log("new makingData socket", newData);
+      setOrders((prevOrders) => {
+        const existingOrder = prevOrders?.find(
+          (order) => order?.id === newData.id
+        );
+        if (existingOrder) {
+          if (newData?.deleted) {
+            return prevOrders?.filter((order) => order?.id !== newData.id);
+          } else {
+            const updatedOrders = prevOrders?.map((order) =>
+              order?.id === newData.id ? newData : order
+            );
+            return updatedOrders;
+          }
         } else {
-          const updatedOrders = prevOrders?.map((order) =>
-            order?.id === newData.id ? newData : order
-          );
-          return updatedOrders;
+          return [...prevOrders, newData];
         }
-      } else {
-        return [...prevOrders, newData];
-      }
+      });
     });
-    console.log("mkingData after socket", orders);
-    socket.off(`/get/makingOrderOne/${id}`);
-  });
+    return () => {
+      socket.off(`/get/makingOrderOne/${id}`);
+    };
+  }, [id]);
 
   const orderAccept = (order) => {
     console.log("upP", order);

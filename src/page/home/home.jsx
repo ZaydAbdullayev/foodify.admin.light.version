@@ -35,7 +35,7 @@ export const Home = () => {
   const id = user?.user?.id;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(acNavStatus([100]));
   }, [dispatch]);
 
@@ -59,35 +59,42 @@ export const Home = () => {
     }, 800);
   }, [newOrder, point]);
 
-  socket.on(sPoint, (data) => {
-    setOrders(data);
-    dispatch(acNothification(true));
-    console.log("socket", data);
-    socket.off(sPoint);
-  });
-
-  socket.on(`/get/newOrderOne/${id}`, (newData) => {
-    console.log("newData socket", newData);
-    setOrders((prevOrders) => {
-      const existingOrder = prevOrders?.find(
-        (order) => order?.id === newData.id
-      );
-      if (existingOrder) {
-        if (newData?.deleted) {
-          return prevOrders?.filter((order) => order?.id !== newData.id);
-        } else {
-          const updatedOrders = prevOrders?.map((order) =>
-            order?.id === newData.id ? newData : order
-          );
-          return updatedOrders;
-        }
-      } else {
-        return [...prevOrders, newData];
-      }
+  useEffect(() => {
+    socket.on(sPoint, (data) => {
+      setOrders(data);
+      dispatch(acNothification(true));
+      console.log("socket", data);
     });
-    console.log("newData after socket", orders);
-    socket.off(`/get/newOrderOne/${id}`);
-  });
+    return () => {
+      socket.off(sPoint);
+    };
+  }, [dispatch, sPoint]);
+
+  useEffect(() => {
+    socket.on(`/get/newOrderOne/${id}`, (newData) => {
+      console.log("newData socket", newData);
+      setOrders((prevOrders) => {
+        const existingOrder = prevOrders?.find(
+          (order) => order?.id === newData.id
+        );
+        if (existingOrder) {
+          if (newData?.deleted) {
+            return prevOrders?.filter((order) => order?.id !== newData.id);
+          } else {
+            const updatedOrders = prevOrders?.map((order) =>
+              order?.id === newData.id ? newData : order
+            );
+            return updatedOrders;
+          }
+        } else {
+          return [...prevOrders, newData];
+        }
+      });
+    });
+    return () => {
+      socket.off(`/get/newOrderOne/${id}`);
+    };
+  }, [id]);
 
   // to accept order's product by id
   const orderAccept = (order, time) => {

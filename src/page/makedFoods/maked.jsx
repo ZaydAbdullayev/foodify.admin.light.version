@@ -48,29 +48,32 @@ export const MakedFoods = () => {
     );
   };
 
-  socket.on(`/get/readyOrderOne/${user?.id}`, (newData) => {
-    console.log("readyOrder socket", newData);
-    setOrders((prevOrders) => {
-      const existingOrder = prevOrders?.find(
-        (order) => order?.id === newData.id
-      );
+  useEffect(() => {
+    socket.on(`/get/readyOrderOne/${user?.id}`, (newData) => {
+      console.log("readyOrder socket", newData);
+      setOrders((prevOrders) => {
+        const existingOrder = prevOrders?.find(
+          (order) => order?.id === newData.id
+        );
 
-      if (existingOrder) {
-        if (newData?.deleted) {
-          return prevOrders?.filter((order) => order?.id !== newData.id);
+        if (existingOrder) {
+          if (newData?.deleted) {
+            return prevOrders?.filter((order) => order?.id !== newData.id);
+          } else {
+            const updatedOrders = prevOrders?.map((order) =>
+              order?.id === newData.id ? newData : order
+            );
+            return updatedOrders;
+          }
         } else {
-          const updatedOrders = prevOrders?.map((order) =>
-            order?.id === newData.id ? newData : order
-          );
-          return updatedOrders;
+          return [...prevOrders, newData];
         }
-      } else {
-        return [...prevOrders, newData];
-      }
+      });
     });
-
-    socket.off(`/get/readyOrderOne/${user?.id}`);
-  });
+    return () => {
+      socket.off(`/get/readyOrderOne/${user?.id}`);
+    };
+  }, [user?.id]);
 
   return (
     <div

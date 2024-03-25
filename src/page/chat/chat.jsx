@@ -20,6 +20,7 @@ export const Chat = () => {
   const [addNewChat, setAddNewChat] = useState(false);
   const [addfetch, setAddFetch] = useState(false);
   const [chats, setChats] = useState([]);
+  const [chatLoading, setChatLoading] = useState(false);
   const path = useLocation().search;
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
@@ -33,7 +34,9 @@ export const Chat = () => {
 
   const scrollToBottom = async () => {
     const chatContainer = document.getElementById("chat-body");
-    chatContainer.scrollTop = chatContainer?.scrollHeight;
+    if (chatContainer) {
+      chatContainer.scrollTop = chatContainer?.scrollHeight;
+    }
   };
 
   useEffect(() => {
@@ -43,24 +46,26 @@ export const Chat = () => {
     }
   }, [path]);
 
-  socket.on(`/get/newChat/${id}`, (data) => {
-    console.log("new-chat", data);
-    setChats((prev) => {
-      const isPrevChatExist = prev.some(
-        (item) => item?.chat_id === data?.chat_id
-      );
-      if (isPrevChatExist) {
-        return prev.map((item) =>
-          item?.chat_id === data?.chat_id ? data : item
+  useEffect(() => {
+    socket.on(`/get/newChat/${id}`, (data) => {
+      console.log("new-chat", data);
+      setChats((prev) => {
+        const isPrevChatExist = prev.some(
+          (item) => item?.chat_id === data?.chat_id
         );
-      } else {
-        return Array.isArray(prev) && prev.length > 0
-          ? [data, ...prev]
-          : [data];
-      }
+        if (isPrevChatExist) {
+          return prev.map((item) =>
+            item?.chat_id === data?.chat_id ? data : item
+          );
+        } else {
+          return Array.isArray(prev) && prev.length > 0
+            ? [data, ...prev]
+            : [data];
+        }
+      });
+      socket.off(`/get/newChat/${id}`);
     });
-    socket.off(`/get/newChat/${id}`);
-  });
+  }, [id]);
 
   const markMessageAsRead = async (data) => {
     if (data?.sender_id !== id) {
@@ -75,7 +80,6 @@ export const Chat = () => {
         if (data.read_status === 0) {
           markMessageAsRead(data);
         }
-        // Check if the message is already present in activeChat
         setActiveChat((prev) => {
           const prevChat = activeChat?.find(
             (item) => item?.message_id === data?.message_id
@@ -89,7 +93,6 @@ export const Chat = () => {
           }
         });
       });
-
       return () => {
         socket.off(`/get/newMessage/${activeAcc?.chat_id}`);
       };
@@ -98,15 +101,25 @@ export const Chat = () => {
 
   // when get chat add location's sercha user id
   const getChat = async (user) => {
-    navigate(`?chat=${user?.chat_id || "no-chat-yet"}`);
-    setActiveAcc(user);
-    setAddNewChat(false);
-    const { data = {} } = await postData({
-      url: `get/messages/${user?.chat_id}/${id}`,
-      tags: ["chat"],
-    });
-    const chat = Array.isArray(data?.data) ? data?.data : [];
-    setActiveChat(chat);
+    try {
+      navigate(`?chat=${user?.chat_id || "no-chat-yet"}`);
+      setActiveAcc(user);
+      setAddNewChat(false);
+      setChatLoading(true);
+      const { data = {} } = await postData({
+        url: `get/messages/${user?.chat_id}/${id}`,
+        tags: ["chat"],
+      });
+      const chat = Array.isArray(data?.data) ? data?.data : [];
+      setActiveChat(chat);
+      setTimeout(() => {
+        scrollToBottom();
+      }, 0);
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      setChatLoading(false);
+    }
   };
 
   const addChat = async () => {
@@ -202,7 +215,7 @@ export const Chat = () => {
 
           <div className="df flc chat-user-list">
             {isLoading ? (
-              <span className="relative">
+              <span className="relative loader_box">
                 <LoadingBtn />
               </span>
             ) : Array.isArray(chatData) ? (
@@ -218,7 +231,7 @@ export const Chat = () => {
                   <div
                     className={`df aic _user-item 
                 ${
-                  uid === (activeAcc?.user1 || activeAcc?.user1) ? "active" : ""
+                  uid === (activeAcc?.user1 || activeAcc?.user2) ? "active" : ""
                 }
                 `}
                     key={`${inUser?.user2_id}_${ind}`}
@@ -269,7 +282,11 @@ export const Chat = () => {
                 : activeAcc?.user1_name || "Chat tanlang"}
             </span>
           </p>
-          {activeChat?.length ? (
+          {chatLoading ? (
+            <span className="relative loader_box">
+              <LoadingBtn />
+            </span>
+          ) : activeChat?.length ? (
             <div className="df flc chat-body" id="chat-body">
               {activeChat?.map((message, ind) => {
                 const hour = new Date(message?.received_at).getHours();

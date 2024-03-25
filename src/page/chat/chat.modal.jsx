@@ -26,7 +26,7 @@ const ChatModal = ({ getChat, activeAcc, setAddNewChat }) => {
 
         <div className="df flc chat-user-list">
           {isLoading ? (
-            <span className="relative">
+            <span className="relative loader_box">
               <LoadingBtn />
             </span>
           ) : (
