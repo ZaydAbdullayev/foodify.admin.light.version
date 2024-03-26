@@ -39,7 +39,7 @@ export const Login = () => {
       return;
     }
     console.log(data?.innerData);
-    const role = data?.innerData?.user?.user?.role || "check";
+    const role = data?.innerData?.user?.user?.role?.toLowerCase() || "check";
     localStorage.setItem("user", JSON.stringify(data.innerData.user));
     localStorage.setItem("department", JSON.stringify(role));
     localStorage.setItem("check", JSON.stringify(true));
@@ -164,7 +164,7 @@ export const CheackDepartment = () => {
         return;
       }
       console.log(data?.innerData);
-      const dep = data?.innerData?.user?.user?.department;
+      const dep = data?.innerData?.user?.user?.department?.toLowerCase();
       const mergedUser = {
         ...user,
         user: { ...user?.user, ...data?.innerData?.user?.user },

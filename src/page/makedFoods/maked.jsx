@@ -66,7 +66,7 @@ export const MakedFoods = () => {
             return updatedOrders;
           }
         } else {
-          return [...prevOrders, newData];
+          return prevOrders?.length ? [...prevOrders, newData] : [newData];
         }
       });
     });

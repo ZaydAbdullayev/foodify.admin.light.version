@@ -95,12 +95,16 @@ export const Router = () => {
           <Route path="restaurant-all-items" element={<Products />} />
           <Route path="workers" element={<Workers />} />
 
+          <Route path="orders/tables" element={<TableBox />} />
+          <Route
+            path="orders/tables/:type/:number/:id"
+            element={<OrderById />}
+          />
           <Route path="orders" element={<Blog />}>
             <Route path="" element={<Home />} />
             <Route path="cooking/food" element={<MakingFoods />} />
             <Route path="prepared/food" element={<MakedFoods />} />
-            <Route path="tables" element={<TableBox />} />
-            <Route path="tables/:type/:number/:id" element={<OrderById />} />
+
             <Route path="items-report" element={<ReportItems />} />
             <Route path="rejects" element={<ReportRejects />} />
           </Route>

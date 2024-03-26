@@ -68,7 +68,7 @@ export const Sidebar = () => {
               <Link
                 to={item.path}
                 className={
-                  location.startsWith(item.path)
+                  location === item.path
                     ? "menu_box_item active_menu"
                     : "menu_box_item"
                 }

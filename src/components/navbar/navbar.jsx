@@ -17,6 +17,7 @@ import { BiEdit, BiPlus } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import { MdTableBar } from "react-icons/md";
 import { BsSearch } from "react-icons/bs";
+import { TbClipboardList } from "react-icons/tb";
 import { FaBell } from "react-icons/fa";
 import { ImStatsBars } from "react-icons/im";
 import default_img from "../../assets/images/default-img.png";
@@ -26,7 +27,7 @@ import { SlArrowLeft } from "react-icons/sl";
 
 export const Navbar = () => {
   const user = JSON.parse(localStorage.getItem("user")) || [];
-  const department = JSON.parse(localStorage.getItem("department")) || [];
+  const dep = JSON.parse(localStorage.getItem("department")) || [];
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -106,7 +107,7 @@ export const Navbar = () => {
             navigate(-1);
           }
         }}>
-        <SlArrowLeft /> orqaga
+        <SlArrowLeft />
       </span>
       <div
         className="nav_menu"
@@ -177,10 +178,12 @@ export const Navbar = () => {
       )}
       {status?.length === 0 && <i></i>}
       <div className="profile">
-        <span onClick={() => navigate("/orders/tables")}>
-          <img src={addOrder} alt="icon" aria-label="icon" />
-        </span>
-        {department === "owner" && (
+        {["owner", "manager", "cashier"].includes(dep) && (
+          <span onClick={() => navigate("/orders/tables")}>
+            <img src={addOrder} alt="icon" aria-label="icon" />
+          </span>
+        )}
+        {dep === "owner" && (
           <span
             onClick={() => navigate("/statistics")}
             aria-label="target statistics page">
@@ -203,7 +206,7 @@ export const Navbar = () => {
         className={modal ? "modal_box" : "modal_box close_modal"}
         onMouseLeave={closeModal}>
         <div className="user">
-          <b>{department === "owner" ? name : w_name}</b>
+          <b>{dep === "owner" ? name : w_name}</b>
           <figure>
             <img src={user?.user?.img || default_img} alt="user_photo" />
             <button
