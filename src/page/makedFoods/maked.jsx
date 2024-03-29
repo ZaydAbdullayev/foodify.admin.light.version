@@ -13,12 +13,11 @@ import { RiBoxingFill } from "react-icons/ri";
 import { AiOutlineFullscreen, AiOutlineFullscreenExit } from "react-icons/ai";
 import { HiCheck } from "react-icons/hi";
 import { useFetchDataQuery } from "../../service/fetch.service";
-// import { BsCheck2All } from "react-icons/bs";
 
 export const MakedFoods = () => {
   const user = JSON?.parse(localStorage?.getItem("user"))?.user || [];
-  // const newOrder = useSelector((state) => state.upload);
-  const [full, setFull] = useState(false);
+  const dep = JSON.parse(localStorage.getItem("department")) || null;
+  const [full, setFull] = useState(dep === "oshpaz" ? true : false);
   const [activeIndex, setActiveIndex] = useState(2);
   const dispatch = useDispatch();
   const navigate = useNavigate();

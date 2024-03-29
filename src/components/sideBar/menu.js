@@ -14,7 +14,9 @@ export const Menu_customer = [
     name: "Bashqaruv paneli ",
     icon: <MdDashboard />,
     list: true,
-    permission: ["owner", "manager", "cashier", "bugalter"].includes(dep)
+    permission: ["owner", "ish boshqaruvchi", "kassir", "buxgalter"].includes(
+      dep
+    )
       ? true
       : false,
   },
@@ -32,23 +34,26 @@ export const Menu_customer = [
     name: "Kassa boshqaruvi",
     icon: <BsCashCoin />,
     list: true,
-    permission: ["owner", "manager", "cashier", "bugalter"].includes(dep)
+    permission: ["owner", "ish boshqaruvchi", "kassir", "buxgalter"].includes(
+      dep
+    )
       ? true
       : false,
   },
   {
     id: "2",
-    path: dep !== "offitsant" ? "/orders" : "/my-receive-orders",
+    path:
+      dep !== "offitsant" ? "/orders" : "oshpaz" ? "/" : "/my-receive-orders",
     name: "Buyurtmalar boshqaruvi",
     icon: <RiBoxingFill />,
     list: true,
     permission: [
       "owner",
-      "manager",
-      "cashier",
-      "offitsant",
-      "bugalter",
-      "bar",
+      "ish boshqaruvchi",
+      "kassir",
+      "oshpaz",
+      "buxgalter",
+      "barmen",
     ].includes(dep)
       ? true
       : false,
@@ -61,11 +66,11 @@ export const Menu_customer = [
     list: true,
     permission: [
       "owner",
-      "manager",
-      "cashier",
+      "ish boshqaruvchi",
+      "kassir",
       "offitsant",
-      "bugalter",
-      "bar",
+      "buxgalter",
+      "barmen",
     ].includes(dep)
       ? true
       : false,
@@ -78,11 +83,11 @@ export const Menu_customer = [
     list: true,
     permission: [
       "owner",
-      "manager",
-      "cashier",
-      "bugalter",
+      "ish boshqaruvchi",
+      "kassir",
+      "buxgalter",
       "offitsant",
-      "bar",
+      "barmen",
     ].includes(dep)
       ? true
       : false,

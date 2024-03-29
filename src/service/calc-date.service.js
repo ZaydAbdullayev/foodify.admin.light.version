@@ -57,3 +57,17 @@ export const calculateDifTime = (time) => {
     return diffTimeStr;
   }
 };
+
+export const getWeekDay = (offset) => {
+  const days = [
+    "Yakshanba",
+    "Dushanba",
+    "Seshanba",
+    "Chorshanba",
+    "Payshanba",
+    "Juma",
+    "Shanba",
+  ];
+
+  return days[offset];
+};

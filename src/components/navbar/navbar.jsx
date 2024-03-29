@@ -17,7 +17,6 @@ import { BiEdit, BiPlus } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import { MdTableBar } from "react-icons/md";
 import { BsSearch } from "react-icons/bs";
-import { TbClipboardList } from "react-icons/tb";
 import { FaBell } from "react-icons/fa";
 import { ImStatsBars } from "react-icons/im";
 import default_img from "../../assets/images/default-img.png";

@@ -5,17 +5,38 @@ import { enqueueSnackbar as es } from "notistack";
 import { LoadingBtn } from "../../../components/loading/loading";
 import { useFetchDataQuery } from "../../../service/fetch.service";
 import { usePostDataMutation } from "../../../service/fetch.service";
-
+import { Tag, ConfigProvider } from "antd";
 export const AddWorker = ({ open, setOpen, state }) => {
   const res = JSON.parse(localStorage.getItem("user"))?.user || [];
-  const [newDep, setNewDep] = useState(false);
   const [loading, setLoading] = useState(false);
   const [postData] = usePostDataMutation();
   const { data: depData = [] } = useFetchDataQuery({
-    url: `/get/depW/${res?.id}`,
-    tags: [""],
+    url: `get/${res?.id}/departments`,
+    tags: ["department"],
   });
+  const [selectedTags, setSelectedTags] = useState([]);
+  // const { data: depData = [] } = useFetchDataQuery({
+  //   url: `/get/depW/${res?.id}`,
+  //   tags: [""],
+  // });
   // const navigate = useNavigate();
+
+  const deps = [
+    "ish boshqaruvchi",
+    "kassir",
+    "buxgalter",
+    "mezbon",
+    "oshpaz",
+    "barmen",
+    "offitsant",
+    "tozalovchi",
+  ];
+  const handleChange = (tag, checked) => {
+    const nextSelectedTags = checked
+      ? [...selectedTags, tag]
+      : selectedTags.filter((t) => t !== tag);
+    setSelectedTags(nextSelectedTags);
+  };
 
   const addWorker = async (e) => {
     e.preventDefault();
@@ -72,28 +93,6 @@ export const AddWorker = ({ open, setOpen, state }) => {
               autoComplete="off"
               placeholder="Ishchining ismi*"
             />
-
-            <select
-              name="department"
-              onChange={(e) => setNewDep(e.target.value)}
-            >
-              <option value="">Bo'lim tanlang</option>
-              {depData?.innerData?.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-              <option value="new">Yangi bo'lim oshish</option>
-            </select>
-            {newDep === "new" && (
-              <input
-                type="text"
-                name="department"
-                required
-                autoComplete="off"
-                placeholder="Yangi bo'lim kiriting*"
-              />
-            )}
             <input
               type="text"
               name="pin"
@@ -101,11 +100,41 @@ export const AddWorker = ({ open, setOpen, state }) => {
               autoComplete="off"
               placeholder="Ishchi uchun kirish kodi*"
             />
+            <select name="department">
+              <option value="">Bo'lim tanlang</option>
+              {deps?.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+            <div className="deparments">
+              {depData?.data?.map((tag) => (
+                <ConfigProvider
+                  theme={{
+                    components: {
+                      Tag: {
+                        defaultColor: "red",
+                        defaultBg: "#454545",
+                      },
+                    },
+                  }}>
+                  <Tag.CheckableTag
+                    key={tag?.name}
+                    checked={selectedTags.includes(tag?.name)}
+                    onChange={(checked) => handleChange(tag?.name, checked)}>
+                    {tag?.name}
+                  </Tag.CheckableTag>
+                </ConfigProvider>
+              ))}
+            </div>
             <input type="hidden" name="res_id" value={res?.id} />
             <button className="relative">
               {loading ? <LoadingBtn /> : "Qo'shish"}
             </button>
-            <span className="close_btn">×</span>
+            <span className="close_btn" onClick={() => setOpen(false)}>
+              ×
+            </span>
           </form>
         ) : (
           <form className="add_worker relative" onSubmit={create_login}>
@@ -126,14 +155,15 @@ export const AddWorker = ({ open, setOpen, state }) => {
             <button className="relative">
               {loading ? <LoadingBtn /> : "Qo'shish"}
             </button>
-            <span className="close_btn"></span>
+            <span className="close_btn" onClick={() => setOpen(false)}>
+              ×
+            </span>
           </form>
         )}
 
         <i
           onClick={() => setOpen(false)}
-          aria-label="close add new worker modal"
-        ></i>
+          aria-label="close add new worker modal"></i>
       </div>
     </div>
   );

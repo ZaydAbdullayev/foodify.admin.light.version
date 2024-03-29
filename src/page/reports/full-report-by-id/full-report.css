@@ -22,6 +22,14 @@
   --primary-color6: #dde5b6;
   --primary-light-color6: #f8fbe9;
   --primary-bright-color6: #dde5b669;
+
+  --primary-color7: #43aa8b;
+  --primary-light-color7: #c0f8e7;
+  --primary-bright-color7: #43aa8b69;
+
+  --primary-color8: #f25c54;
+  --primary-light-color8: #fac9c6;
+  --primary-bright-color8: #f25c5469;
 }
 
 .full-report-container {

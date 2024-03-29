@@ -20,11 +20,11 @@ import { RxCross2 } from "react-icons/rx";
 
 export const MakingFoods = () => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || [];
-  const department = JSON.parse(localStorage.getItem("department")) || null;
+  const dep = JSON.parse(localStorage.getItem("department")) || null;
   const dispatch = useDispatch();
   const [activeIndex, setActiveIndex] = useState(1);
   const [situation, setSituation] = useState({});
-  const [full, setFull] = useState(false);
+  const [full, setFull] = useState(dep === "oshpaz" ? true : false);
   const [orders, setOrders] = useState([]);
   const id = user?.id;
 
@@ -216,7 +216,7 @@ export const MakingFoods = () => {
                                   product_id: product?.id,
                                   status: 5,
                                   orderNumber: orderNum,
-                                  department: department,
+                                  department: dep,
                                 })
                               }></i>
                             {product?.status === 3 && <i></i>}
@@ -240,7 +240,7 @@ export const MakingFoods = () => {
                                     order_id: order?.id,
                                     product_id: product?.id,
                                     status: 5,
-                                    department: department,
+                                    department: dep,
                                     orderNumber: orderNum,
                                   })
                                 }

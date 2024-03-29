@@ -30,9 +30,7 @@ import { NavigationPanel } from "./page/navigation/navigation";
 import { TableBox } from "./page/table-box/table-box";
 import { Orders } from "./page/orders/orders";
 import { OrderById } from "./page/order-by-id/order-by-id";
-// import { InvoiceInvantar } from "./page/invoices/invoice-envanter/envanter";
 import { Howl } from "howler";
-import audio from "./assets/images/nothification.mp3";
 import { acDeviceWidth } from "./redux/media";
 import { acNothification } from "./redux/nothification";
 import { NothificationPage } from "./page/nothification/nothification.jsx";
@@ -43,9 +41,11 @@ import { FullReportById } from "./page/reports/full-report-by-id/full-report.jsx
 import { Result, Button } from "antd";
 import { MobileInvoice } from "./page/mobile/mobile.transaction.jsx";
 import { Chat } from "./page/chat/chat.jsx";
+import { HomeMain } from "./page/home/home-chef.jsx";
+import audio from "./assets/images/nothification.mp3";
 
 export const Router = () => {
-  // const department = useSelector((state) => state.permission);
+  const dep = useSelector((state) => state.permission);
   const nothificate = useSelector((state) => state.nothificate);
   const location = useLocation();
   const dispatch = useDispatch();
@@ -78,6 +78,8 @@ export const Router = () => {
     dispatch(acDeviceWidth(false));
   }
 
+  // document.addEventListener("contextmenu", (event) => event.preventDefault());
+
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
@@ -86,6 +88,10 @@ export const Router = () => {
         <Route path="check" element={<CheackDepartment />} />
         <Route path="/" element={<Layout />}>
           {/* ============== pages of the navbar ================= */}
+          <Route
+            path={dep === "oshpaz" ? "" : "chef-monitoring"}
+            element={<HomeMain />}
+          />
           <Route path="" element={<Statistics />} />
           <Route path="statistics" element={<Statistics />} />
           <Route path="my-receive-orders" element={<MyOrder />} />

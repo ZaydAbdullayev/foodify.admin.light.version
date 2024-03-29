@@ -193,6 +193,8 @@ export const CheackDepartment = () => {
         setPass(`${pass}${key}`);
       } else if (key === "Backspace" && pass.length > 0) {
         setPass(pass.slice(0, -1));
+      }else if (key === "Enter" && pass.length > 0) {
+        loginD();
       }
     };
 
