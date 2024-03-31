@@ -10,6 +10,7 @@ import socket from "../../socket.config";
 import { Segmented, Result, Button, Tag, ConfigProvider } from "antd";
 import { getWeekDay } from "../../service/calc-date.service";
 import { useFetchDataQuery } from "../../service/fetch.service";
+import { usePostDataMutation } from "../../service/fetch.service";
 
 import { BsCheck2All } from "react-icons/bs";
 import { HiCheck } from "react-icons/hi2";
@@ -28,6 +29,7 @@ export const HomeMain = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState({});
   const [link, setLink] = useState(`/get/newOrderOne/${user?.id}`);
+  const [postData] = usePostDataMutation();
   const [currentTime, setCurrentTime] = useState(
     new Date().toLocaleTimeString()
   );
@@ -36,6 +38,7 @@ export const HomeMain = () => {
     url: `get/${id}/departments`,
     tags: ["department"],
   });
+  const deps = depData?.data?.map((dep) => dep?.name) ?? [];
   const [selectedTags, setSelectedTags] = useState(["Hammasi"]);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -49,16 +52,26 @@ export const HomeMain = () => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      ApiGetService.fetching(`get/depOrders/${id}/${dep}`)
-        .then((res) => {
-          setOrders(res?.data?.innerData);
-          console.log("normal", res?.data?.innerData);
-        })
-        .catch((err) => console.log(err));
-    }, 800);
-  }, [newOrder, id, dep]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     GetData(deps);
+  //   }, 800);
+  // }, [selectedTags, newOrder]);
+
+  const GetData = async (deps) => {
+    try {
+      const res = await postData({
+        url: `get/orders/${id}`,
+        data: { departments: ["Bar", "Oshxona"] },
+        tags: [""],
+      });
+      setOrders(res?.data?.innerData);
+      console.log("normal", res?.data?.innerData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  GetData();
 
   useEffect(() => {
     socket.on(`/get/order/${id}/${dep}`, (data) => {
@@ -161,9 +174,9 @@ export const HomeMain = () => {
   };
 
   return (
-    <div className={"container_box home_page active chef-screen"}>
+    <div className={"container_box home_page active"}>
       <div className="_orders">
-        <div className="orders-header">
+        <div className="orders-header chef">
           <span>{`${new Date().toLocaleDateString("us-US", {
             day: "numeric",
             month: "long",
@@ -385,12 +398,12 @@ export const HomeMain = () => {
             />
           </figure>
         )}
-        <div className="orders-footer">
+        <div className="orders-footer fullscren">
           <div className="department-box">
-            {depData?.data?.length &&
-              [{ name: "Hammasi" }, ...depData?.data]?.map((tag) => (
+            {deps?.length &&
+              ["Hammasi", ...deps]?.map((tag, i) => (
                 <ConfigProvider
-                  key={tag?.name}
+                  key={`${tag}_${i}`}
                   theme={{
                     components: {
                       Tag: {
@@ -400,9 +413,9 @@ export const HomeMain = () => {
                     },
                   }}>
                   <Tag.CheckableTag
-                    checked={selectedTags.includes(tag?.name)}
-                    onChange={(checked) => handleChange(tag?.name, checked)}>
-                    {tag?.name}
+                    checked={selectedTags.includes(tag)}
+                    onChange={(checked) => handleChange(tag, checked)}>
+                    {tag}
                   </Tag.CheckableTag>
                 </ConfigProvider>
               ))}

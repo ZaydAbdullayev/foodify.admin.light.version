@@ -18,8 +18,8 @@ export const ApiService = {
 };
 
 export const ApiGetService = {
-  async fetching(url) {
-    const response = await axios.get(`${base_url}/${url}`);
+  async fetching(url, data) {
+    const response = await axios.get(`${base_url}/${url}`, data);
     return response;
   },
 };

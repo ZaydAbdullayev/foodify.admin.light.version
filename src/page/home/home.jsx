@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
-import { ApiGetService } from "../../service/api.service";
+import { usePostDataMutation } from "../../service/fetch.service";
 import { useDispatch, useSelector } from "react-redux";
 import { LoadingBtn } from "../../components/loading/loading";
 import { enqueueSnackbar as es } from "notistack";
@@ -9,7 +9,7 @@ import { NumericFormat } from "react-number-format";
 import socket from "../../socket.config";
 import { useSwipeable } from "react-swipeable";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Segmented, Result, Button } from "antd";
+import { Segmented, Result, Button, Tag, ConfigProvider } from "antd";
 import { getWeekDay } from "../../service/calc-date.service";
 
 import { BsCheck2All } from "react-icons/bs";
@@ -26,16 +26,19 @@ import { acNothification } from "../../redux/nothification";
 export const Home = () => {
   const user = JSON.parse(localStorage.getItem("user")) || [];
   const dep = JSON.parse(localStorage.getItem("department")) || null;
+  const permissions = JSON.parse(localStorage.getItem("permissions")) || [
+    "Bar",
+    "Oshxona",
+  ];
   const newOrder = useSelector((state) => state.upload);
   const [situation, setSituation] = useState(false);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState({});
-  const [full, setFull] = useState(dep === "oshpaz" ? true : false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [full, setFull] = useState(false);
+  const [currentTime, setCurrentTime] = useState("");
+  const [selectedTags, setSelectedTags] = useState(["Hammasi"]);
+  const [postData] = usePostDataMutation();
   const search = useLocation().search?.split("=").pop();
-  const [currentTime, setCurrentTime] = useState(
-    new Date().toLocaleTimeString()
-  );
   const id = user?.user?.id;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,43 +46,42 @@ export const Home = () => {
     dispatch(acNavStatus([100]));
   }, [dispatch]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date().toLocaleTimeString());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     GetData(permissions);
+  //   }, 800);
+  // }, [newOrder, permissions]);
 
-  const point =
-    dep === "kassir" || dep === "owner"
-      ? `get/orders/${id}`
-      : `get/depOrders/${id}/${dep}`;
-  const sPoint =
-    dep === "kassir" || dep === "owner"
-      ? `/get/newOrders/${id}`
-      : `/get/order/${id}/${dep}`;
+  const GetData = async (deps) => {
+    try {
+      const res = await postData({
+        url: `get/orders/${id}`,
+        data: { departments: ["Bar", "Oshxona"] },
+        tags: [""],
+      });
+      setOrders(res?.data?.innerData);
+      console.log("normal", res?.data?.innerData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleChange = (tag, checked) => {
+    const nextSelectedTags = checked
+      ? [...selectedTags, tag]
+      : selectedTags.filter((t) => t !== tag);
+    setSelectedTags(nextSelectedTags);
+  };
 
   useEffect(() => {
-    setTimeout(() => {
-      ApiGetService.fetching(point)
-        .then((res) => {
-          setOrders(res?.data?.innerData);
-          console.log("normal", res?.data?.innerData);
-        })
-        .catch((err) => console.log(err));
-    }, 800);
-  }, [newOrder, point]);
-
-  useEffect(() => {
-    socket.on(sPoint, (data) => {
+    socket.on(`/get/newOrders/${id}`, (data) => {
       setOrders(data);
       dispatch(acNothification(true));
       console.log("socket", data);
     });
     return () => {
-      socket.off(sPoint);
+      socket.off(`/get/newOrders/${id}`);
     };
-  }, [dispatch, sPoint]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     socket.on(`/get/newOrderOne/${id}`, (newData) => {
@@ -158,21 +160,12 @@ export const Home = () => {
     }
   };
 
-  const handlers = useSwipeable({
-    onSwipedLeft: () => handleSwipe("LEFT"),
-    onSwipedRight: () => handleSwipe("RIGHT"),
-    trackMouse: true,
-  });
-
-  const handleSwipe = async (direction) => {
-    const newIndex = direction === "LEFT" ? activeIndex + 1 : activeIndex - 1;
-    setActiveIndex((newIndex + 3) % 3);
-    navigate(
-      `/orders/${
-        newIndex === 0 ? "" : newIndex === 1 ? "cooking/food" : "prepared/food"
-      }`
-    );
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const filteredData = orders?.filter((item) => {
     return (
@@ -188,36 +181,30 @@ export const Home = () => {
   return (
     <div className={"container_box home_page" + (full ? " active" : "")}>
       <div className="_orders">
-        <h1>
+        <div className="orders-header">
+          <span>{`${new Date().toLocaleDateString("us-US", {
+            day: "numeric",
+            month: "long",
+          })}, ${getWeekDay(new Date().getDay())} ,${currentTime}`}</span>
+          <Segmented
+            options={[
+              { label: <RiBoxingFill />, value: `/orders` },
+              { label: <GiCook />, value: `/orders/cooking/food` },
+              {
+                label: <MdFastfood />,
+                value: `/orders/prepared/food`,
+              },
+            ]}
+            onChange={(link) => navigate(link)}
+          />
           <i></i>
-          <i></i>
-          <span {...handlers} className="swipe-pages">
-            <span
-              className={activeIndex === 0 ? "active" : ""}
-              onClick={() => navigate("/orders")}
-              aria-label='"target thi link "/orders"'>
-              <RiBoxingFill />
-            </span>
-            <span
-              className={activeIndex === 1 ? "active after before" : ""}
-              onClick={() => navigate("/orders/cooking/food")}
-              aria-label='"target thi link "/orders/cooking/food"'>
-              <GiCook />
-            </span>
-            <span
-              className={activeIndex === 2 ? "active" : ""}
-              onClick={() => navigate("/orders/prepared/food")}
-              aria-label='target thi link "/orders/prepared/food"'>
-              <MdFastfood />
-            </span>
-          </span>
-          <i></i>
-          <span
+          <Button>Stop-list</Button>
+          <b
             onClick={() => setFull(!full)}
-            aria-label="enter fullscrenn or exit fullscreen">
+            aria-label={full ? "Exit full screen" : "Full screen"}>
             {full ? <AiOutlineFullscreenExit /> : <AiOutlineFullscreen />}
-          </span>
-        </h1>
+          </b>
+        </div>
 
         {filteredData?.length ? (
           <div className={full ? "orders_body fullScreen" : "orders_body"}>
@@ -407,7 +394,7 @@ export const Home = () => {
             })}
           </div>
         ) : (
-          <figure className="no_result vhf">
+          <figure className="no_result">
             <Result
               status="403"
               title={`Yangi buyurtma yo'q`}
@@ -420,6 +407,30 @@ export const Home = () => {
             />
           </figure>
         )}
+      </div>
+      <div className="orders-footer">
+        <div className="department-box">
+          {permissions?.length &&
+            ["Hammasi", ...permissions]?.map((tag, i) => (
+              <ConfigProvider
+                key={`${tag}_${i}`}
+                theme={{
+                  components: {
+                    Tag: {
+                      defaultColor: "red",
+                      defaultBg: "#454545",
+                    },
+                  },
+                }}>
+                <Tag.CheckableTag
+                  checked={selectedTags.includes(tag)}
+                  onChange={(checked) => handleChange(tag, checked)}>
+                  {tag}
+                </Tag.CheckableTag>
+              </ConfigProvider>
+            ))}
+        </div>
+        <Button onClick={() => navigate(-1)}>Orqaga</Button>
       </div>
     </div>
   );

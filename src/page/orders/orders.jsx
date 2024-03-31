@@ -118,9 +118,9 @@ export const Orders = () => {
       // socket.emit("/divide/orders/depart", paymentData);
       socket.emit("/update/table", uData);
     }
-    localStorage.removeItem("cart");
-    navigate("/orders/tables");
-    es("Buyurtma yuborildi!", { variant: "success" });
+    // localStorage.removeItem("cart");
+    // navigate("/orders/tables");
+    // es("Buyurtma yuborildi!", { variant: "success" });
   };
 
   const addExtr = (value) => {

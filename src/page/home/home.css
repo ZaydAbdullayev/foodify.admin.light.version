@@ -4,7 +4,7 @@
 }
 
 .home_page {
-  transition: all 0.3s ease-in-out;
+  padding: 0 1.5%;
 }
 
 .home_page.active {
@@ -13,15 +13,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  padding: 1.5%;
   z-index: 999999;
   background: #555;
-  transition: all 0.3s ease-in-out;
   overflow-y: auto;
-}
-
-.home_page.active.chef-screen {
-  padding: 0 1.5%;
 }
 
 .home_page.active::-webkit-scrollbar {
@@ -39,10 +33,12 @@
 }
 
 .orders_body {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto auto;
   grid-gap: var(--gap2);
+  padding-bottom: 80px;
   color: #fff;
   font-size: var(--fs9);
 }
@@ -56,29 +52,12 @@
   grid-row: span var(--grid-row);
 }
 
-._orders > h1 {
-  inline-size: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: var(--fs3);
-  font-weight: 400;
-  padding-left: 3%;
-}
-
-._orders > h1 > span {
-  cursor: pointer;
-  transition: all 0.1s ease-in-out;
-}
-
-._orders > h1 > span > svg:hover {
+.orders-header > b :last-child:hover {
   color: #65ff57;
 }
 
 .orders-header,
 .orders-footer {
-  position: relative;
-  width: 100%;
   background: #333;
   display: flex;
   align-items: center;
@@ -106,8 +85,7 @@
   background: #444;
 }
 
-.orders-header::after,
-.orders-footer::after {
+.orders-header::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -132,16 +110,34 @@
 
 .orders-header {
   position: sticky;
-  top: 0;
+  top: var(--nwh);
+  width: 100%;
   z-index: 999;
 }
 
+.home_page.active  .orders-header {
+  top: 0;
+}
+
+.orders-header > b {
+  inline-size: auto;
+  font-size: var(--fs5);
+  padding: 1.2% 0 1% 1.5%;
+  cursor: pointer;
+}
+
 .orders-footer {
-  position: sticky;
+  position: fixed;
   bottom: 0;
+  right: 0;
+  width: calc(100% - var(--nwh) + 1px);
   z-index: 999;
   padding: 0.5% 1%;
   justify-content: space-between;
+}
+
+.home_page.active .orders-footer {
+  width: 100%;
 }
 
 .orders-footer :where(.css-dev-only-do-not-override-1oj2w71).ant-tag-checkable {

@@ -17,8 +17,8 @@ import { RxCross2 } from "react-icons/rx";
 
 export const MakedFoods = () => {
   const user = JSON?.parse(localStorage?.getItem("user"))?.user || [];
-  const dep = JSON.parse(localStorage.getItem("department")) || null;
-  const [full, setFull] = useState(dep === "oshpaz" ? true : false);
+  // const dep = JSON.parse(localStorage.getItem("department")) || null;
+  const [full, setFull] = useState(false);
   const [activeIndex, setActiveIndex] = useState(2);
   const dispatch = useDispatch();
   const navigate = useNavigate();
