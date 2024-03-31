@@ -155,6 +155,11 @@ export const HomeMain = () => {
     }
   };
 
+  const log_out = () => {
+    localStorage.clear();
+    window.location.href = "/";
+  };
+
   return (
     <div className={"container_box home_page active chef-screen"}>
       <div className="_orders">
@@ -402,7 +407,7 @@ export const HomeMain = () => {
                 </ConfigProvider>
               ))}
           </div>
-          <Button>Chiqish</Button>
+          <Button onClick={() => log_out()}>Chiqish</Button>
         </div>
       </div>
     </div>

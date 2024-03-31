@@ -5,14 +5,15 @@ import { useSwipeable } from "react-swipeable";
 import { NumericFormat } from "react-number-format";
 import { useNavigate } from "react-router-dom";
 import socket from "../../socket.config";
+import { Result, Button } from "antd";
 
-import noResult from "../../assets/images/20231109_144621.png";
 import { MdFastfood } from "react-icons/md";
 import { GiCook } from "react-icons/gi";
 import { RiBoxingFill } from "react-icons/ri";
 import { AiOutlineFullscreen, AiOutlineFullscreenExit } from "react-icons/ai";
 import { HiCheck } from "react-icons/hi";
 import { useFetchDataQuery } from "../../service/fetch.service";
+import { RxCross2 } from "react-icons/rx";
 
 export const MakedFoods = () => {
   const user = JSON?.parse(localStorage?.getItem("user"))?.user || [];
@@ -73,6 +74,13 @@ export const MakedFoods = () => {
       socket.off(`/get/readyOrderOne/${user?.id}`);
     };
   }, [user?.id]);
+
+  const orderAccept = (order) => {
+    console.log("upP", order);
+    socket.emit("/update/order/status", order);
+    // setSituation({ status: order?.status, id: order?.id });
+    // dispatch(acUpload());
+  };
 
   return (
     <div
@@ -135,6 +143,17 @@ export const MakedFoods = () => {
                       </p>
                       <span>{time}</span>
                       <div className="btn_box">
+                        <button
+                          className="relative"
+                          onClick={() =>
+                            orderAccept({
+                              data: { ...order, status: 4 },
+                              action: "backToKitchen",
+                            })
+                          }
+                          aria-label="to cancel this order">
+                          <RxCross2 />
+                        </button>
                         <sub style={{ background: "none" }}>
                           Olib ketilishi kutilmoqda
                         </sub>
@@ -174,8 +193,17 @@ export const MakedFoods = () => {
             })}
           </div>
         ) : (
-          <figure className="no_result">
-            <img src={noResult} alt="foto" />
+          <figure className="no_result vhf">
+            <Result
+              status="403"
+              title={`Yangi buyurtma yo'q`}
+              subTitle={`Yangi buyurtma topilmadi yoki mavjud emas!`}
+              extra={
+                <Button onClick={() => window.location.reload()}>
+                  Sahifani yangilash
+                </Button>
+              }
+            />
           </figure>
         )}
       </div>

@@ -8,8 +8,8 @@ import { useSwipeable } from "react-swipeable";
 import { useLocation, useNavigate } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
 import { ApiGetService } from "../../service/api.service";
+import { Result, Button } from "antd";
 
-import noResult from "../../assets/images/20231109_144621.png";
 import { MdFastfood } from "react-icons/md";
 import { GiCook } from "react-icons/gi";
 import { RiBoxingFill } from "react-icons/ri";
@@ -189,7 +189,10 @@ export const MakingFoods = () => {
                         <button
                           className="relative"
                           onClick={() =>
-                            orderAccept({ data: { ...order, status: 4 } })
+                            orderAccept({
+                              data: { ...order, status: 4 },
+                              action: "back",
+                            })
                           }
                           aria-label="to cancel this order">
                           <RxCross2 />
@@ -198,6 +201,7 @@ export const MakingFoods = () => {
                           onClick={() =>
                             orderAccept({
                               data: { ...order, status: 3 },
+                              action: "do",
                             })
                           }
                           aria-label="to prepare thi r oreder">
@@ -258,8 +262,17 @@ export const MakingFoods = () => {
             })}
           </div>
         ) : (
-          <figure className="no_result">
-            <img src={noResult} alt="foto" />
+          <figure className="no_result vhf">
+            <Result
+              status="403"
+              title={`Yangi buyurtma yo'q`}
+              subTitle={`Yangi buyurtma topilmadi yoki mavjud emas!`}
+              extra={
+                <Button onClick={() => window.location.reload()}>
+                  Sahifani yangilash
+                </Button>
+              }
+            />
           </figure>
         )}
       </div>

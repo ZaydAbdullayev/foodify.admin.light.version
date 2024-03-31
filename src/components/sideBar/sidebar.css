@@ -7,7 +7,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #444;
+  background: #353535;
   transition: all 0.7 ease;
   border-right: 1px solid #cccccc3f;
 }
@@ -17,7 +17,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #444;
+  background: #353535;
   transition: all 0.7 ease;
 }
 

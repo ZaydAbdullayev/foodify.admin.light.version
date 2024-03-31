@@ -108,10 +108,10 @@ export const Home = () => {
   }, [id]);
 
   // to accept order's product by id
-  const orderAccept = (order, time) => {
+  const orderAccept = (order, ac) => {
     console.log("upO", {
       data: order,
-      receivedAt: time,
+      action: ac,
     });
     try {
       setLoading(order);
@@ -122,7 +122,7 @@ export const Home = () => {
       });
       socket.emit("/update/order/status", {
         data: order,
-        receivedAt: time,
+        action: ac,
       });
       if (dep === "kassir" || dep === "owner") {
         socket.emit("/divide/orders/depart", order);
@@ -186,72 +186,38 @@ export const Home = () => {
   });
 
   return (
-    <div
-      className={
-        "container_box home_page" +
-        (full ? " active" : "") +
-        (dep === "oshpaz" ? " chef-screen" : "")
-      }>
+    <div className={"container_box home_page" + (full ? " active" : "")}>
       <div className="_orders">
-        {dep === "oshpaz" ? (
-          <div className="orders-header">
-            <span>{`${new Date().toLocaleDateString("us-US", {
-              day: "numeric",
-              month: "long",
-            })}, ${getWeekDay(new Date().getDay())} ,${currentTime}`}</span>
-            <Segmented
-              options={[
-                { label: <RiBoxingFill />, value: "0" },
-                { label: <GiCook />, value: "1" },
-                { label: <MdFastfood />, value: "2" },
-              ]}
-              onChange={(key) =>
-                navigate(
-                  `/orders/${
-                    key === "0"
-                      ? ""
-                      : key === "1"
-                      ? "cooking/food"
-                      : "prepared/food"
-                  }`
-                )
-              }
-            />
-            <i></i>
-            <Button>Stop-list</Button>
-          </div>
-        ) : (
-          <h1>
-            <i></i>
-            <i></i>
-            <span {...handlers} className="swipe-pages">
-              <span
-                className={activeIndex === 0 ? "active" : ""}
-                onClick={() => navigate("/orders")}
-                aria-label='"target thi link "/orders"'>
-                <RiBoxingFill />
-              </span>
-              <span
-                className={activeIndex === 1 ? "active after before" : ""}
-                onClick={() => navigate("/orders/cooking/food")}
-                aria-label='"target thi link "/orders/cooking/food"'>
-                <GiCook />
-              </span>
-              <span
-                className={activeIndex === 2 ? "active" : ""}
-                onClick={() => navigate("/orders/prepared/food")}
-                aria-label='target thi link "/orders/prepared/food"'>
-                <MdFastfood />
-              </span>
-            </span>
-            <i></i>
+        <h1>
+          <i></i>
+          <i></i>
+          <span {...handlers} className="swipe-pages">
             <span
-              onClick={() => setFull(!full)}
-              aria-label="enter fullscrenn or exit fullscreen">
-              {full ? <AiOutlineFullscreenExit /> : <AiOutlineFullscreen />}
+              className={activeIndex === 0 ? "active" : ""}
+              onClick={() => navigate("/orders")}
+              aria-label='"target thi link "/orders"'>
+              <RiBoxingFill />
             </span>
-          </h1>
-        )}
+            <span
+              className={activeIndex === 1 ? "active after before" : ""}
+              onClick={() => navigate("/orders/cooking/food")}
+              aria-label='"target thi link "/orders/cooking/food"'>
+              <GiCook />
+            </span>
+            <span
+              className={activeIndex === 2 ? "active" : ""}
+              onClick={() => navigate("/orders/prepared/food")}
+              aria-label='target thi link "/orders/prepared/food"'>
+              <MdFastfood />
+            </span>
+          </span>
+          <i></i>
+          <span
+            onClick={() => setFull(!full)}
+            aria-label="enter fullscrenn or exit fullscreen">
+            {full ? <AiOutlineFullscreenExit /> : <AiOutlineFullscreen />}
+          </span>
+        </h1>
 
         {filteredData?.length ? (
           <div className={full ? "orders_body fullScreen" : "orders_body"}>
@@ -294,7 +260,7 @@ export const Home = () => {
                           <button
                             className="relative"
                             onClick={() =>
-                              orderAccept({ ...order, status: 4 }, received_at)
+                              orderAccept({ ...order, status: 4 }, "reject")
                             }
                             aria-label="cancel this order">
                             <RxCross2 />
@@ -313,10 +279,9 @@ export const Home = () => {
                               } else {
                                 newStatus = 3;
                               }
-
                               orderAccept(
                                 { ...order, status: newStatus },
-                                received_at
+                                "do"
                               );
                             }}
                             aria-label="to accept or to prepare">
