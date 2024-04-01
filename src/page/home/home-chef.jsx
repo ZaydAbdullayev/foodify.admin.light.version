@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./home.css";
-import { ApiGetService } from "../../service/api.service";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { LoadingBtn } from "../../components/loading/loading";
 import { enqueueSnackbar as es } from "notistack";
 import { acNavStatus } from "../../redux/navbar.status";
@@ -24,7 +23,6 @@ import { acNothification } from "../../redux/nothification";
 export const HomeMain = () => {
   const user = JSON.parse(localStorage.getItem("user")) || [];
   const dep = JSON.parse(localStorage.getItem("department")) || null;
-  const newOrder = useSelector((state) => state.upload);
   const [situation, setSituation] = useState(false);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState({});
@@ -52,26 +50,26 @@ export const HomeMain = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     GetData(deps);
-  //   }, 800);
-  // }, [selectedTags, newOrder]);
+  const getData = useCallback(
+    async (deps) => {
+      try {
+        const res = await postData({
+          url: `get/orders/${id}`,
+          data: { departments: deps },
+          tags: [""],
+        });
+        setOrders(res?.data?.innerData);
+        console.log("normal", res?.data?.innerData);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [id, postData]
+  );
 
-  const GetData = async (deps) => {
-    try {
-      const res = await postData({
-        url: `get/orders/${id}`,
-        data: { departments: ["Bar", "Oshxona"] },
-        tags: [""],
-      });
-      setOrders(res?.data?.innerData);
-      console.log("normal", res?.data?.innerData);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  GetData();
+  useEffect(() => {
+    getData(["Bar", "Oshxona"]);
+  }, [getData]);
 
   useEffect(() => {
     socket.on(`/get/order/${id}/${dep}`, (data) => {

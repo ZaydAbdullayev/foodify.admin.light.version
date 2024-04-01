@@ -9,8 +9,6 @@ import { CheackDepartment, Login } from "./auth/login";
 import { Auth } from "./auth/auth";
 import { Addproduct, ShowProduct } from "./components/Addproduct/addproduct";
 import { Products } from "./page/products/products";
-import { MakingFoods } from "./page/makingFoods/makingFoods";
-import { MakedFoods } from "./page/makedFoods/maked";
 import { Statistics } from "./components/statistics/layout.statis";
 import { Document } from "./page/document/document";
 import { Payment } from "./page/payment/payment";
@@ -108,9 +106,6 @@ export const Router = () => {
           />
           <Route path="orders" element={<Blog />}>
             <Route path="" element={<Home />} />
-            <Route path="cooking/food" element={<MakingFoods />} />
-            <Route path="prepared/food" element={<MakedFoods />} />
-
             <Route path="items-report" element={<ReportItems />} />
             <Route path="rejects" element={<ReportRejects />} />
           </Route>

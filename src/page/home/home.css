@@ -65,7 +65,21 @@
 }
 
 .orders-header > span {
+  display: flex;
+  align-items: center;
+  gap: var(--gap6);
   inline-size: 43%;
+  line-height: 15px;
+}
+
+.orders-header > span > span {
+  font-size: var(--fs4);
+}
+
+.orders-header > span > label {
+  display: flex;
+  flex-direction: column;
+  inline-size: auto;
 }
 
 .orders-header > i {
@@ -78,7 +92,7 @@
 }
 
 .vhf {
-  min-height: 90vh;
+  padding-bottom: 8%;
 }
 
 .home_page :where(.css-dev-only-do-not-override-1faqezx).ant-btn-default {
@@ -96,14 +110,14 @@
 }
 
 .orders-header :where(.css-dev-only-do-not-override-1faqezx).ant-segmented {
-  height: 45px;
+  height: 40px;
 }
 
 .orders-header
   :where(.css-dev-only-do-not-override-1faqezx).ant-segmented
   .ant-segmented-item-label {
-  min-height: 35px;
-  line-height: 35px;
+  min-height: 30px;
+  line-height: 30px;
   font-size: var(--fs4);
   padding-top: 5px;
 }
@@ -115,14 +129,14 @@
   z-index: 999;
 }
 
-.home_page.active  .orders-header {
+.home_page.active .orders-header {
   top: 0;
 }
 
 .orders-header > b {
   inline-size: auto;
   font-size: var(--fs5);
-  padding: 1.2% 0 1% 1.5%;
+  padding: 0.7% 0 0.6% 1.2%;
   cursor: pointer;
 }
 
