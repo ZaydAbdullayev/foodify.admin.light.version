@@ -157,7 +157,7 @@ export const DemoDualAxes = () => {
   return <DualAxes {...config} />;
 };
 
-export const DemoPie = () => {
+export const DemoPie = ({ data }) => {
   function renderStatistic(containerWidth, text, style) {
     const { width: textWidth, height: textHeight } = measureTextWidth(
       text,
@@ -185,32 +185,6 @@ export const DemoPie = () => {
     };">${text}</div>`;
   }
 
-  const data = [
-    {
-      type: "Dastafka",
-      value: 27000,
-    },
-    {
-      type: "Lavash",
-      value: 25000,
-    },
-    {
-      type: "Fast Food",
-      value: 58000,
-    },
-    {
-      type: "Steyk",
-      value: 15000,
-    },
-    {
-      type: "Coffee",
-      value: 10000,
-    },
-    {
-      type: "Ichimlik",
-      value: 5000,
-    },
-  ];
   const config = {
     appendPadding: 10,
     data,
@@ -230,7 +204,7 @@ export const DemoPie = () => {
         textAlign: "center",
       },
       autoRotate: true,
-      content: "{value}",
+      content: "",
     },
     statistic: {
       title: {

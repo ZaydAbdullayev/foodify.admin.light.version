@@ -1,12 +1,16 @@
 import React, { memo } from "react";
 import "./statistics.css";
 import { DemoDualAxes, DemoPie } from "./statistics";
+import { useFetchDataQuery } from "../../service/fetch.service";
 
 export const Statistics = memo(() => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || null;
+  const { data = [] } = useFetchDataQuery({
+    url: `/generate/ordersReport/${user?.id}/2024-01-01/2024-04-03`,
+    tags: ["report"],
+  });
   return (
     <div className="statistic_box">
-      <h1>{user?.user?.username}ning barcha hisobotlar</h1>
       <div className="wrapper_item">
         <div className="row">
           <div className="dashboard-stat red">
@@ -56,7 +60,7 @@ export const Statistics = memo(() => {
         </div>
       </div>
       <div className="statistic_product">
-        <DemoPie />
+        <DemoPie data={data?.data || []} />
       </div>
       <div className="full_analystic">
         <DemoDualAxes />
