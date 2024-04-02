@@ -37,7 +37,7 @@ export const Home = () => {
   });
   const [situation, setSituation] = useState(false);
   const [orders, setOrders] = useState([]);
-  const [full, setFull] = useState(false);
+  const [full, setFull] = useState(dep === "oshpaz" ? true : false);
   const [currentTime, setCurrentTime] = useState("");
   const [selectedTags, setSelectedTags] = useState(permissions);
   const [tags, setTags] = useState(["Hammasi"]);
@@ -82,7 +82,19 @@ export const Home = () => {
     }
     getData(nextSelectedTags);
   };
-  
+
+  const handleChangeH = (tag, checked) => {
+    const nextSelectedTags = checked
+      ? [...selectedTags, tag]
+      : selectedTags.filter((t) => t !== tag);
+    setTags(nextSelectedTags);
+    if (checked) {
+      setSelectedTags(permissions);
+    } else {
+      setSelectedTags([]);
+    }
+  };
+
   useEffect(() => {
     if (page === 1) {
       socket.on(`/get/newOrders/${id}`, (data) => {
@@ -211,6 +223,7 @@ export const Home = () => {
             ]}
             onChange={(p) => {
               setPage(p);
+              setOrders([]);
               if (p === 1) {
                 setParams({
                   s: `/get/newOrderOne/${id}`,
@@ -233,12 +246,16 @@ export const Home = () => {
             }}
           />
           <i></i>
-          <Button>Stop-list</Button>
-          <b
-            onClick={() => setFull(!full)}
-            aria-label={full ? "Exit full screen" : "Full screen"}>
-            {full ? <AiOutlineFullscreenExit /> : <AiOutlineFullscreen />}
-          </b>
+          <Button onClick={() => navigate("/restaurant-all-items")}>
+            Stop-list
+          </Button>
+          {dep !== "oshpaz" && (
+            <b
+              onClick={() => setFull(!full)}
+              aria-label={full ? "Exit full screen" : "Full screen"}>
+              {full ? <AiOutlineFullscreenExit /> : <AiOutlineFullscreen />}
+            </b>
+          )}
         </div>
 
         {filteredData?.length ? (
@@ -455,7 +472,7 @@ export const Home = () => {
               <Tag.CheckableTag
                 key={`${tag}_${i}`}
                 checked={tags.includes(tag)}
-                onChange={(checked) => handleChange(tag, checked)}>
+                onChange={(checked) => handleChangeH(tag, checked)}>
                 {tag}
               </Tag.CheckableTag>
             ))}

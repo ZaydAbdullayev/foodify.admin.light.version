@@ -39,7 +39,6 @@ import { FullReportById } from "./page/reports/full-report-by-id/full-report.jsx
 import { Result, Button } from "antd";
 import { MobileInvoice } from "./page/mobile/mobile.transaction.jsx";
 import { Chat } from "./page/chat/chat.jsx";
-import { HomeMain } from "./page/home/home-chef.jsx";
 import audio from "./assets/images/nothification.mp3";
 
 export const Router = () => {
@@ -86,10 +85,6 @@ export const Router = () => {
         <Route path="check" element={<CheackDepartment />} />
         <Route path="/" element={<Layout />}>
           {/* ============== pages of the navbar ================= */}
-          <Route
-            path={dep === "oshpaz" ? "" : "chef-monitoring"}
-            element={<HomeMain />}
-          />
           <Route path="" element={<Statistics />} />
           <Route path="statistics" element={<Statistics />} />
           <Route path="my-receive-orders" element={<MyOrder />} />
