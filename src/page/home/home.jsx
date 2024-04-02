@@ -12,9 +12,8 @@ import { getWeekDay } from "../../service/calc-date.service";
 import { GetRealTime } from "../../hooks/generate.tags";
 
 import { BsCheck2All } from "react-icons/bs";
-import { AiOutlineFullscreen } from "react-icons/ai";
-import { AiOutlineFullscreenExit } from "react-icons/ai";
-import { HiCheck } from "react-icons/hi2";
+import { HiCheck } from "react-icons/hi";
+import { AiOutlineFullscreen, AiOutlineFullscreenExit } from "react-icons/ai";
 import { RxCross2 } from "react-icons/rx";
 import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
 import { RiBoxingFill } from "react-icons/ri";
@@ -23,9 +22,9 @@ import { MdFastfood } from "react-icons/md";
 import { acNothification } from "../../redux/nothification";
 
 export const Home = () => {
-  const user = JSON.parse(localStorage.getItem("user")) || [];
+  const user = JSON.parse(localStorage.getItem("user")) || {};
   const dep = JSON.parse(localStorage.getItem("department")) || null;
-  const id = user?.user?.id;
+  const id = user.user?.id || null;
   const permissions = JSON.parse(localStorage.getItem("permissions")) || [
     "Bar",
     "Oshxona",
@@ -38,8 +37,7 @@ export const Home = () => {
   });
   const [situation, setSituation] = useState(false);
   const [orders, setOrders] = useState([]);
-  const [full, setFull] = useState(dep === "oshpaz" ? true : false);
-  const [currentTime, setCurrentTime] = useState("");
+  const [full, setFull] = useState(dep === "oshpaz");
   const [selectedTags, setSelectedTags] = useState(permissions);
   const [tags, setTags] = useState(["Hammasi"]);
   const [postData] = usePostDataMutation();
@@ -72,11 +70,7 @@ export const Home = () => {
       ? [...selectedTags, tag]
       : selectedTags.filter((t) => t !== tag);
     setSelectedTags(nextSelectedTags);
-    if (nextSelectedTags.length === permissions?.length) {
-      setTags(["Hammasi"]);
-    } else {
-      setTags([]);
-    }
+    setTags(nextSelectedTags.length === permissions?.length ? ["Hammasi"] : []);
     getData(nextSelectedTags);
   };
 
@@ -116,10 +110,9 @@ export const Home = () => {
           if (newData?.deleted) {
             return prevOrders?.filter((order) => order?.id !== newData.id);
           } else {
-            const updatedOrders = prevOrders?.map((order) =>
+            return prevOrders?.map((order) =>
               order?.id === newData.id ? newData : order
             );
-            return updatedOrders;
           }
         } else {
           return [...prevOrders, newData];
@@ -129,24 +122,17 @@ export const Home = () => {
     return () => {
       socket.off(params?.s);
     };
-  }, [params?.s, orders]); // Burada params.s ve orders bağımlılıklarına dikkat edin
+  }, [params?.s]);
 
-  // to accept order's product by id
   const orderAccept = (order, ac) => {
-    console.log("upO", {
-      data: order,
-      action: ac,
-    });
+    console.log("upO", { data: order, action: ac });
     try {
       socket.emit("/accept/order", {
         status: true,
         variant: order?.status,
         user_id: order?.user_id,
       });
-      socket.emit("/update/order/status", {
-        data: order,
-        action: ac,
-      });
+      socket.emit("/update/order/status", { data: order, action: ac });
       if ((dep === "kassir" || dep === "owner") && page === 1) {
         socket.emit("/divide/orders/depart", order);
       }
@@ -156,7 +142,6 @@ export const Home = () => {
     }
   };
 
-  // to find order situation
   const orderSituation = (order) => {
     console.log("upP", order);
     try {
