@@ -111,7 +111,7 @@
 }
 
 .statistic_product * {
-  color: #eee;
+  color: #eee !important;
   font-size: 18px;
 }
 

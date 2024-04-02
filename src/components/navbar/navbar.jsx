@@ -37,7 +37,6 @@ export const Navbar = () => {
   const delDocuments = useSelector((state) => state.delRouter);
   const page_code = useLocation().search.split("=")[1];
   const delData = delDocuments?.[page_code];
-
   const [api, contextHolder] = notification.useNotification();
 
   const deleteDocuments = async () => {

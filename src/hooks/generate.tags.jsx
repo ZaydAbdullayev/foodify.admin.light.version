@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DatePicker, Input, InputNumber, Select, Checkbox, Table } from "antd";
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
@@ -199,4 +198,16 @@ export const CheckBox = ({ name, label, description = "", value }) => {
       </span>
     </label>
   );
+};
+
+export const GetRealTime = () => {
+  const [time, setTime] = useState("");
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(dayjs().format("HH:mm:ss"));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return <span>{time}</span>;
 };

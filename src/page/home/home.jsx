@@ -6,9 +6,10 @@ import { enqueueSnackbar as es } from "notistack";
 import { acNavStatus } from "../../redux/navbar.status";
 import { NumericFormat } from "react-number-format";
 import socket from "../../socket.config";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Segmented, Result, Button, Tag, ConfigProvider } from "antd";
 import { getWeekDay } from "../../service/calc-date.service";
+import { GetRealTime } from "../../hooks/generate.tags";
 
 import { BsCheck2All } from "react-icons/bs";
 import { AiOutlineFullscreen } from "react-icons/ai";
@@ -42,13 +43,8 @@ export const Home = () => {
   const [selectedTags, setSelectedTags] = useState(permissions);
   const [tags, setTags] = useState(["Hammasi"]);
   const [postData] = usePostDataMutation();
-  const search = useLocation().search?.split("=").pop();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  useEffect(() => {
-    dispatch(acNavStatus([100]));
-  }, [dispatch]);
-
   const getData = useCallback(
     async (deps) => {
       try {
@@ -67,8 +63,9 @@ export const Home = () => {
   );
 
   useEffect(() => {
+    dispatch(acNavStatus([100]));
     getData(selectedTags);
-  }, [getData, selectedTags]);
+  }, [dispatch, selectedTags, getData, postData]);
 
   const handleChange = (tag, checked) => {
     const nextSelectedTags = checked
@@ -132,7 +129,7 @@ export const Home = () => {
     return () => {
       socket.off(params?.s);
     };
-  }, [params?.s]);
+  }, [params?.s, orders]); // Burada params.s ve orders bağımlılıklarına dikkat edin
 
   // to accept order's product by id
   const orderAccept = (order, ac) => {
@@ -179,24 +176,6 @@ export const Home = () => {
     }
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date().toLocaleTimeString());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const filteredData = orders?.filter((item) => {
-    return (
-      item?.id?.toLowerCase().includes(search?.toLowerCase()) ||
-      item?.address
-        ?.split("&")
-        ?.pop()
-        .toLowerCase()
-        .includes(search?.toLowerCase())
-    );
-  });
-
   return (
     <div className={"container_box home_page" + (full ? " active" : "")}>
       <div className="_orders">
@@ -213,7 +192,7 @@ export const Home = () => {
               <small>{`${getWeekDay(new Date().getDay())}`}</small>
             </label>
             {"  "}
-            <span>{`${currentTime}`}</span>
+            <GetRealTime />
           </span>
           <Segmented
             options={[
@@ -258,20 +237,18 @@ export const Home = () => {
           )}
         </div>
 
-        {filteredData?.length ? (
+        {orders?.length ? (
           <div className={full ? "orders_body fullScreen" : "orders_body"}>
-            {filteredData?.map((order) => {
+            {orders?.map((order) => {
               const pds = order?.product_data
                 ? JSON?.parse(order?.product_data)
                 : {};
               const pdArray = Object?.values(pds)?.[0];
               const orderNum = Object?.keys(pds)?.[0];
               const { pd = [], received_at = "" } = pdArray ?? {};
-              const time = new Date(received_at)?.toLocaleString("uz-UZ", {
-                hour: "numeric",
-                minute: "numeric",
-                hour12: false,
-              });
+              const del = pd?.filter((p) =>
+                selectedTags.includes(p?.department)
+              );
               return (
                 <div
                   key={order?.id}
@@ -283,7 +260,7 @@ export const Home = () => {
                   style={{
                     "--grid-col": full ? 1 : 1.5,
                     "--grid-row": pd?.length + 1,
-                    display: order?.deleted ? "none" : "flex",
+                    display: order?.deleted || !del.length ? "none" : "flex",
                   }}>
                   <figure className="order_item">
                     <div className="order_item_header">
@@ -293,7 +270,10 @@ export const Home = () => {
                         )}
                         <span>ID № : {order?.id?.split("_")[0]}</span>{" "}
                       </p>
-                      <span>{time}</span>
+                      <span>
+                        {new Date(received_at).getHours()}
+                        {new Date(received_at).getMinutes()}
+                      </span>
                       <div className="btn_box">
                         <button
                           className="relative"
@@ -336,104 +316,87 @@ export const Home = () => {
                     <div className="order_item-body">
                       {pd?.map((product, ind) => {
                         return (
-                          <figcaption key={product?.id + ind}>
-                            <i
-                              onClick={() => {
-                                let newStatus;
-                                if (order?.type === "online") {
-                                  newStatus = 2;
-                                } else {
-                                  newStatus = 4;
-                                }
-
-                                if (product?.status === 4) {
-                                  orderSituation({
-                                    order_id: order?.id,
-                                    product_id: product?.id,
-                                    orderNumber: orderNum,
-                                    status: 5,
-                                    department: dep,
-                                  });
-                                } else {
-                                  orderSituation({
-                                    order_id: order?.id,
-                                    product_id: product?.id,
-                                    status: newStatus,
-                                    department: dep,
-                                    orderNumber: orderNum,
-                                  });
-                                }
-                              }}></i>
-                            {product?.status === 3 && <i></i>}
-                            <p className="qty">{product?.quantity}</p>
-                            <pre>
-                              <p style={{ textTransform: "capitalize" }}>
-                                {product?.name}
-                              </p>
-                              <small>{product?.description}</small>
-                            </pre>
-                            <NumericFormat
-                              value={product?.quantity * product?.price}
-                              displayType={"text"}
-                              thousandSeparator={true}
-                            />
-                            <div className="order_stution">
-                              {product?.status === 1 && (
-                                <button
-                                  className="relative"
-                                  onClick={() =>
-                                    orderSituation({
-                                      order_id: order?.id,
-                                      product_id: product?.id,
-                                      status: 3,
-                                      department: dep,
-                                      orderNumber: orderNum,
-                                    })
-                                  }
-                                  aria-label="cancel this product">
-                                  <RxCross2 />
-                                </button>
-                              )}
-                              <button
-                                style={{ color: "#3CE75B" }}
-                                className="relative"
+                          selectedTags.includes(product?.department) && (
+                            <figcaption key={product?.id + ind}>
+                              <i
                                 onClick={() => {
-                                  let newStatus;
+                                  let newS;
                                   if (order?.type === "online") {
-                                    newStatus = 2;
+                                    newS = 2;
                                   } else {
-                                    newStatus = 4;
+                                    newS = 4;
                                   }
-
-                                  if (product?.status === 4) {
-                                    orderSituation({
-                                      order_id: order?.id,
-                                      product_id: product?.id,
-                                      status: 5,
-                                      department: dep,
-                                      orderNumber: orderNum,
-                                    });
-                                  } else {
-                                    orderSituation({
-                                      order_id: order?.id,
-                                      product_id: product?.id,
-                                      status: newStatus,
-                                      department: dep,
-                                      orderNumber: orderNum,
-                                    });
-                                  }
-                                }}
-                                aria-label="to accept or to prepare this product">
-                                {product?.status === 1 || !product?.status ? (
-                                  <HiCheck />
-                                ) : product?.status === 5 ? (
-                                  <HiCheck />
-                                ) : (
-                                  <IoCheckmarkDoneCircleSharp />
+                                  orderSituation({
+                                    order_id: order?.id,
+                                    product_id: product?.id,
+                                    status: product?.status === 4 ? 5 : newS,
+                                    department: dep,
+                                    orderNumber: orderNum,
+                                    data: order,
+                                  });
+                                }}></i>
+                              {product?.status === 3 && <i></i>}
+                              <p className="qty">{product?.quantity}</p>
+                              <pre>
+                                <p style={{ textTransform: "capitalize" }}>
+                                  {product?.name}
+                                </p>
+                                <small>{product?.description}</small>
+                              </pre>
+                              <NumericFormat
+                                value={product?.quantity * product?.price}
+                                displayType={"text"}
+                                thousandSeparator={true}
+                              />
+                              <div className="order_stution">
+                                {product?.status === 1 && (
+                                  <button
+                                    className="relative"
+                                    onClick={() =>
+                                      orderSituation({
+                                        order_id: order?.id,
+                                        product_id: product?.id,
+                                        status: 3,
+                                        department: dep,
+                                        orderNumber: orderNum,
+                                        data: order,
+                                      })
+                                    }
+                                    aria-label="cancel this product">
+                                    <RxCross2 />
+                                  </button>
                                 )}
-                              </button>
-                            </div>
-                          </figcaption>
+                                <button
+                                  style={{ color: "#3CE75B" }}
+                                  className="relative"
+                                  onClick={() => {
+                                    let newS;
+                                    if (order?.type === "online") {
+                                      newS = 2;
+                                    } else {
+                                      newS = 4;
+                                    }
+                                    orderSituation({
+                                      order_id: order?.id,
+                                      product_id: product?.id,
+                                      status: product?.status === 4 ? 5 : newS,
+                                      department: dep,
+                                      orderNumber: orderNum,
+                                      data: order,
+                                    });
+                                  }}
+                                  aria-label="to accept or to prepare this product">
+                                  {product?.status === 1 || !product?.status ? (
+                                    <HiCheck />
+                                  ) : product?.status === 5 ? (
+                                    <HiCheck />
+                                  ) : (
+                                    <IoCheckmarkDoneCircleSharp />
+                                  )}
+                                </button>
+                              </div>
+                            </figcaption>
+                          )
                         );
                       })}
                     </div>
