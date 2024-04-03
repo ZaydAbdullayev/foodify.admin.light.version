@@ -21,29 +21,40 @@ export const AddPayment = memo(({ active, actives }) => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || "";
   const dep = JSON.parse(localStorage.getItem("department")) || "";
   const [loading, setLoading] = useState(false);
-  const [type, setType] = useState({
-    id: 1,
-    value: "cash",
-  }); // ["ofline", "online"]
-  const id = useLocation().search.split("?dt=").pop();
+  const [orderData, setOrderData] = useState([]);
+  const [pD, setPD] = useState([]);
+  const [type, setType] = useState({ id: 1, value: "cash" });
+  const id = useLocation().search?.split("order-id=").pop();
   const { data: order = [], isLoading } = useFetchDataQuery({
     url: `/get/oneOrder/${id}`,
     tags: ["order"],
   });
   const [patchData] = usePatchDataMutation();
   const [postData] = usePostDataMutation();
-  const orderData = order?.innerData ? order?.innerData[0] : [];
-  const [price, setPrice] = useState({ df_v: orderData?.total }); // ["ofline", "online"]
+  const [price, setPrice] = useState({ df_v: 0, extra: 0 });
   const navigate = useNavigate();
+  console.log("price", price);
+
+  // const calculate = () => {};
 
   useEffect(() => {
-    const priceElement = document.querySelector("#price");
-    if (priceElement) {
-      priceElement.value = price?.df_v;
-    }
-  }, [price.df_v, type]);
+    const orderData = order?.innerData ? order?.innerData[0] : [];
+    setOrderData(orderData);
+    setPrice({
+      df_v: orderData?.total || 0,
+      extra: 0,
+      1: orderData?.total || 0,
+    });
+    const productdata =
+      orderData.product_data && JSON.parse(orderData.product_data);
+    const payment_data = productdata
+      ? Object.values(productdata)[0]?.pd || []
+      : [];
+    setPD(payment_data);
+  }, [order.innerData]);
 
   const addPayment = async () => {
+    setLoading(true);
     const trsn = {
       res_id: user.id,
       transaction_group: "income",
@@ -55,7 +66,6 @@ export const AddPayment = memo(({ active, actives }) => {
       transaction_type: "income",
       transaction_category: "food_income",
     };
-    setLoading(true);
     try {
       const res = await patchData({
         url: `/update/payment/status/${orderData.id}`,
@@ -84,9 +94,6 @@ export const AddPayment = memo(({ active, actives }) => {
         es(res.error.data.data, { variant: "warning" });
         console.log(1);
       }
-      // navigate(window.location.pathname + window.location.search, {
-      //   replace: true,
-      // });
       active(false);
     } catch (error) {
       console.log(error);
@@ -94,12 +101,6 @@ export const AddPayment = memo(({ active, actives }) => {
       setLoading(false);
     }
   };
-
-  const productdata =
-    orderData.product_data && JSON.parse(orderData.product_data);
-  const payment_data = productdata
-    ? Object.values(productdata)[0]?.pd || []
-    : [];
 
   return (
     <div
@@ -127,37 +128,35 @@ export const AddPayment = memo(({ active, actives }) => {
           {isLoading ? (
             <LoadingBtn />
           ) : (
-            payment_data?.map((item) => {
-              return (
-                <div className="add_payment__item" key={item?.id}>
-                  <p>
-                    <span>{item?.quantity} ta</span>
-                    <span className="p_name">{item?.name}</span>
-                    <NumericFormat
-                      value={item?.price}
-                      displayType={"text"}
-                      thousandSeparator=","
-                      suffix={" so'm"}
-                    />
-                  </p>
-                  <div className="change_payment">
-                    <button>
-                      <FiEdit />
-                    </button>
-                    <button>
-                      <MdDelete />
-                    </button>
-                  </div>
+            pD?.map((item) => (
+              <div className="add_payment__item" key={item?.id}>
+                <p>
+                  <span>{item?.quantity} ta</span>
+                  <span className="p_name">{item?.name}</span>
+                  <NumericFormat
+                    value={item?.price}
+                    displayType={"text"}
+                    thousandSeparator=","
+                    suffix={" so'm"}
+                  />
+                </p>
+                <div className="change_payment">
+                  <button>
+                    <FiEdit />
+                  </button>
+                  <button>
+                    <MdDelete />
+                  </button>
                 </div>
-              );
-            })
+              </div>
+            ))
           )}
         </div>
         <div className="add_payment__footer">
           <p>
             <span className="p_name">Service (10%)</span>
             <NumericFormat
-              value={orderData?.service}
+              value={orderData?.service || 0}
               displayType={"text"}
               thousandSeparator=","
               suffix={" so'm"}
@@ -166,92 +165,92 @@ export const AddPayment = memo(({ active, actives }) => {
           <p>
             <span className="p_name">Jami</span>
             <NumericFormat
-              value={orderData?.total}
+              value={orderData.total}
               displayType={"text"}
               thousandSeparator=","
               suffix={" so'm"}
             />
           </p>
-          {orderData?.payment_status === 0 ? (
+          {price.extra > 0 && (
+            <p className="change">
+              <span className="p_name">Qaytim</span>
+              <NumericFormat
+                value={price.extra}
+                displayType={"text"}
+                thousandSeparator=","
+                suffix={" so'm"}
+              />
+            </p>
+          )}
+          {orderData?.payment_status === 0 && !isLoading ? (
             <>
               <div className="payment_type-options">
-                <div
-                  className={
-                    type.id === 1 ? "payment_type active" : "payment_type"
-                  }
-                  onClick={() => setType({ id: 1, value: "cash" })}>
-                  <FaMoneyBillAlt />
-                  <span>
-                    {price?.[1] > 0 ? price?.[type?.id] : "Naqd to'lov"}
-                  </span>
-                </div>
-                <div
-                  className={
-                    type.id === 3 ? "payment_type active" : "payment_type"
-                  }
-                  onClick={() => setType({ id: 3, value: "credit" })}>
-                  <GiCardExchange />
-                  <span>
-                    {price?.[3] > 0 ? price?.[type?.id] : "Click/Payme"}
-                  </span>
-                </div>
-                <div
-                  className={
-                    type.id === 2 ? "payment_type active" : "payment_type"
-                  }
-                  onClick={() =>
-                    setType({
-                      id: 2,
-                      comment: "Pul o'tkazma",
-                      value: "bank_card",
-                    })
-                  }>
-                  <BsFillCreditCard2BackFill />
-                  <span>
-                    {price?.[2] > 0 ? price?.[type?.id] : "Karta orqali"}
-                  </span>
-                </div>
-                <div
-                  className={
-                    type.id === 4 ? "payment_type active" : "payment_type"
-                  }
-                  onClick={() => setType({ id: 4, value: "debit" })}>
-                  <FcDebt />
-                  <span>{price?.[4] > 0 ? price?.[type?.id] : "Qarz"}</span>
-                </div>
-                <div
-                  className={
-                    type.id === 5 ? "payment_type active" : "payment_type"
-                  }
-                  onClick={() =>
-                    setType({
-                      id: 5,
-                      value: "not_paid",
-                    })
-                  }>
-                  <MdMoneyOff />
-                  <span>
-                    {price?.[5] > 0 ? price?.[type?.id] : "To'lanmaydi"}
-                  </span>
-                </div>
+                {[
+                  {
+                    id: 1,
+                    value: "cash",
+                    label: "Naqd to'lov",
+                    icon: <FaMoneyBillAlt />,
+                  },
+                  {
+                    id: 3,
+                    value: "credit",
+                    label: "Click/Payme",
+                    icon: <BsFillCreditCard2BackFill />,
+                  },
+                  {
+                    id: 2,
+                    value: "bank_card",
+                    label: "Karta orqali",
+                    icon: <GiCardExchange />,
+                  },
+                  { id: 4, value: "debit", label: "Qarz", icon: <FcDebt /> },
+                  {
+                    id: 5,
+                    value: "no_payment",
+                    label: "To'lanmaydi",
+                    icon: <MdMoneyOff />,
+                  },
+                ].map((option) => (
+                  <div
+                    key={option.id}
+                    className={
+                      type.id === option.id
+                        ? "payment_type active"
+                        : "payment_type"
+                    }
+                    onClick={() => {
+                      const i = document.getElementById("price");
+                      i.value = price.df_v >= 0 ? price.df_v : 0;
+                      setType(option);
+                    }}>
+                    {option.icon}
+                    <span>
+                      {price[option.id] > 0 ? price[option.id] : option.label}
+                    </span>
+                  </div>
+                ))}
               </div>
               <div className="add_payment__button">
                 <small>Olindi:</small>
                 <input
                   type="number"
-                  value={price.df_v}
+                  defaultValue={price?.[type.id]}
+                  placeholder={price.df_v}
                   id="price"
-                  onChange={(e) =>
+                  onBlur={(e) =>
                     setPrice((prev) => {
                       const value = e.target.value;
                       return {
                         ...prev,
-                        [type?.id]: value > prev?.df_v ? prev?.df_v : value,
-                        df_v:
-                          value > prev?.df_v
-                            ? prev?.df_v
-                            : prev?.df_v !== 0
-                            ? prev?.df_v - value
+                        [type.id]:
+                          value > prev.df_v && type?.id !== 1
+                            ? prev.df_v
+                            : value,
+                        df_v: prev.df_v !== 0 ? prev.df_v - value : 0,
+                        extra:
+                          value > prev.df_v && type?.id === 1
+                            ? value - prev.df_v
                             : 0,
                       };
                     })
@@ -280,6 +279,8 @@ export const AddPayment = memo(({ active, actives }) => {
         onClick={() => {
           navigate("/financial");
           active(false);
+          setOrderData([]);
+          setPD([]);
         }}
         aria-label="close this modal"></i>
     </div>

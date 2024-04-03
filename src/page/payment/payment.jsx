@@ -14,6 +14,7 @@ export const Payment = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [type, setType] = useState("openOrders");
+  const [data, setData] = useState("openOrders");
   const res_id = useSelector((state) => state?.res_id);
   // const search = useLocation().search?.split("=").pop();
   const [date, setDate] = useState({
@@ -29,8 +30,8 @@ export const Payment = () => {
     dispatch(acNavStatus([100]));
   }, [dispatch]);
 
-  const getDetails = (id) => {
-    navigate(`/financial?dt=${id}`);
+  const getDetails = (order) => {
+    navigate(`/financial?total-price=${order?.total}&&order-id=${order?.id}`);
     setOpen(true);
   };
 
@@ -68,7 +69,6 @@ export const Payment = () => {
             item?.closed_at !== "0000-00-00"
               ? item?.closed_at?.split("T")[1]?.split(".")[0].slice(0, 5)
               : false;
-          console.log("payment_data", item);
           return (
             <div className="payment_item" key={item.id}>
               <i
@@ -122,12 +122,12 @@ export const Payment = () => {
               </p>
               <div className="p_btn__box">
                 <button
-                  onClick={() => getDetails(item.id)}
+                  onClick={() => getDetails(item)}
                   aria-label="Edit this product for payment">
                   Edit
                 </button>
                 <button
-                  onClick={() => getDetails(item.id)}
+                  onClick={() => getDetails(item)}
                   aria-label="Payment this product for payment">
                   Payment
                 </button>

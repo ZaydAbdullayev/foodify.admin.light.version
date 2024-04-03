@@ -256,7 +256,7 @@ export const Home = () => {
                         <span>ID № : {order?.id?.split("_")[0]}</span>{" "}
                       </p>
                       <span>
-                        {new Date(received_at).getHours()}
+                        {new Date(received_at).getHours()}:
                         {new Date(received_at).getMinutes()}
                       </span>
                       <div className="btn_box">
