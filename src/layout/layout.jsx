@@ -15,14 +15,12 @@ export const Layout = () => {
       <aside
         className={
           shrinkMod ? (active ? `short_aside active` : "short_aside") : "aside"
-        }
-      >
+        }>
         <Sidebar />
       </aside>
       <main
         className={shrinkMod ? "long_main" : "main"}
-        onClick={() => dispatch(acActive())}
-      >
+        onClick={() => dispatch(acActive())}>
         <Navbar />
         <Outlet />
       </main>

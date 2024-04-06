@@ -53,8 +53,8 @@
     font-size: 35px;
     line-height: 35px;
 
-    > i {
-      margin-left: -15px;
+    > svg {
+      /* margin-left: -15px; */
       font-size: 110px;
       line-height: 110px;
       color: #fff;
@@ -107,19 +107,16 @@
 .statistic_product {
   width: 40%;
   height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   user-select: none;
-}
-
-.statistic_product * {
-  color: #eee !important;
-  font-size: 18px;
-  font-weight: 300 !important;
 }
 
 .full_analystic {
   width: 100%;
-  padding: 2%;
-  background: #333333a1;
+  /* padding: 2%; */
+  background: #383838;
   border-radius: 30px;
 }
 

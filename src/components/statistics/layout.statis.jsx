@@ -1,7 +1,11 @@
 import React, { memo } from "react";
 import "./statistics.css";
-import { DemoDualAxes, DemoPie } from "./statistics";
+import { Example } from "./statistics";
 import { useFetchDataQuery } from "../../service/fetch.service";
+
+import { IoLogoUsd, IoStatsChart } from "react-icons/io5";
+import { BsFillCreditCard2FrontFill } from "react-icons/bs";
+import { FaComment } from "react-icons/fa6";
 
 export const Statistics = memo(() => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || null;
@@ -13,58 +17,56 @@ export const Statistics = memo(() => {
     <div className="statistic_box">
       <div className="wrapper_item">
         <div className="row">
-          <div className="dashboard-stat red">
-            <div className="visual">
-              <i className="fa fa-usd"></i>
-            </div>
-            <div className="details">
-              <div className="number">
-                <span>312</span>
+          {statsData.map((item) => (
+            <div key={item.id} className={`dashboard-stat ${item?.bg}`}>
+              <div className="visual">{item.icon}</div>
+              <div className="details">
+                <div className="number">
+                  <span>{item.number}</span>
+                </div>
+                <div className="desc">{item.desc}</div>
               </div>
-              <div className="desc">Total Profit</div>
             </div>
-          </div>
-          <div className="dashboard-stat blue" href="#">
-            <div className="visual">
-              <i className="fa fa-bar-chart-o"></i>
-            </div>
-            <div className="details">
-              <div className="number">
-                <span>12.5</span>
-              </div>
-              <div className="desc">New Order</div>
-            </div>
-          </div>
-          <div className="dashboard-stat hoki" href="#">
-            <div className="visual">
-              <i className="fa fa-credit-card"></i>
-            </div>
-            <div className="details">
-              <div className="number">
-                <span>+ 53%</span>
-              </div>
-              <div className="desc">Popularity</div>
-            </div>
-          </div>
-          <div className="dashboard-stat purple" href="#">
-            <div className="visual">
-              <i className="fa fa-comments"></i>
-            </div>
-            <div className="details">
-              <div className="number">
-                <span>689</span>
-              </div>
-              <div className="desc">New Feedback</div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
       <div className="statistic_product">
-        <DemoPie data={data?.data || []} />
+        <Example />
       </div>
       <div className="full_analystic">
-        <DemoDualAxes />
+        {/* <DemoDualAxes /> */}
       </div>
     </div>
   );
 });
+
+const statsData = [
+  {
+    id: 1,
+    icon: <IoLogoUsd />,
+    number: 312,
+    desc: "Total Profit",
+    bg: "red",
+  },
+  {
+    id: 2,
+    icon: <BsFillCreditCard2FrontFill />,
+    number: 12.5,
+    desc: "New Order",
+    bg: "blue",
+  },
+  {
+    id: 3,
+    icon: <IoStatsChart />,
+    number: "+ 53%",
+    desc: "Popularity",
+    bg: "hoki",
+  },
+  {
+    id: 4,
+    icon: <FaComment />,
+    number: 689,
+    desc: "New Feedback",
+    bg: "purple",
+  },
+];

@@ -181,13 +181,14 @@ export const Navbar = () => {
             <img src={addOrder} alt="icon" aria-label="icon" />
           </span>
         )}
-        {dep === "owner" && (
+
+        {/*dep === "owner" && (
           <span
             onClick={() => navigate("/statistics")}
             aria-label="target statistics page">
             <ImStatsBars />
           </span>
-        )}
+        )*/}
         <span
           onClick={() => navigate("/nothifications")}
           aria-label="target nothification page">

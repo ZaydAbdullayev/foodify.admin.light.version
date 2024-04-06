@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ant-design/plots": "^1.2.5",
-    "@antv/util": "^3.3.4",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -26,6 +24,7 @@
     "react-router-dom": "^6.13.0",
     "react-scripts": "5.0.1",
     "react-swipeable": "^7.0.1",
+    "recharts": "^2.12.4",
     "socket.io-client": "^4.7.4",
     "stream-browserify": "^3.0.0",
     "url": "^0.11.3",

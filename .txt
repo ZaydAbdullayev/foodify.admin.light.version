@@ -82,6 +82,21 @@ const DemoArea = () => {
 
 ReactDOM.render(<DemoArea />, document.getElementById('container'));
 
+<--- Last few GCs --->
+
+[12156:000001AFB26BB600]  4875690 ms: Mark-sweep 2071.7 (2130.7) -> 2009.8 (2075.9) MB, 798.0 / 0.0 ms  (average mu = 0.338, current mu = 0.326) allocation failure; GC in old space requested
+[12156:000001AFB26BB600]  4876595 ms: Mark-sweep 2012.3 (2075.9) -> 2010.1 (2080.2) MB, 868.8 / 0.0 ms  (average mu = 0.206, current mu = 0.040) allocation failure; scavenge might not succeed
+
+
+<--- JS stacktrace --->
+
+FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+ 1: 00007FF655401C7F node_api_throw_syntax_error+175855
+ 2: 00007FF655386476 EVP_MD_meth_get_input_blocksize+59654
+ 3: 00007FF655388160 EVP_MD_meth_get_input_blocksize+67056
+ 4: 00007FF655E30434 v8::Isolate::ReportExternalAllocationLimitReached+116
+ 5: 00007FF655E1B7C2 v8::Isolate::Exit+674
+
 
 zayyad_a@icloud.com
 Zxcvbnm-789

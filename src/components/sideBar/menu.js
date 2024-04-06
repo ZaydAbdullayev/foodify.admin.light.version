@@ -4,19 +4,26 @@ import { RiBoxingFill } from "react-icons/ri";
 import { HiRectangleGroup } from "react-icons/hi2";
 import { HiMiniChatBubbleLeftRight } from "react-icons/hi2";
 import { MdTableBar } from "react-icons/md";
+import { ImStatsBars } from "react-icons/im";
 
 const dep = JSON.parse(localStorage.getItem("department"));
 
 export const Menu_customer = [
+  {
+    id: "43",
+    path: "/statistics",
+    name: "statistikalar",
+    icon: <ImStatsBars />,
+    list: true,
+    permission: ["owner"].includes(dep) ? true : false,
+  },
   {
     id: "1",
     path: "/mobile-invoices",
     name: "Bashqaruv paneli ",
     icon: <MdDashboard />,
     list: true,
-    permission: ["owner", "ish boshqaruvchi", "kassir", "buxgalter"].includes(
-      dep
-    )
+    permission: ["ish boshqaruvchi", "kassir", "buxgalter"].includes(dep)
       ? true
       : false,
   },
@@ -48,7 +55,6 @@ export const Menu_customer = [
     icon: <RiBoxingFill />,
     list: true,
     permission: [
-      "owner",
       "ish boshqaruvchi",
       "kassir",
       "oshpaz",
