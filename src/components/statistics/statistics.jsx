@@ -1,32 +1,32 @@
 import React from "react";
-// import { DualAxes } from "@ant-design/plots";
 import "./statistics.css";
 
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
-
-const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+const initialState = [
+  {
+    type: "Group A",
+    value: 400,
+    cl: "#353535",
+  },
 ];
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#e7505a"];
-export const Example = () => {
+export const Example = ({ data = initialState }) => {
+  const check = data?.every((item) => item?.value === 0);
+  console.log(check, "check");
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <PieChart width={200} height={200}>
+      <PieChart>
         <Pie
-          data={data}
-          cx={200}
+          data={check ? initialState : data}
+          cx={280}
           cy={150}
-          innerRadius={80}
-          outerRadius={130}
-          fill="#8884d8"
+          innerRadius={170}
+          outerRadius={250}
+          fill="#353535"
           paddingAngle={0}
           dataKey="value"
-          label="name">
+          label={check ? "" : "type"}>
           {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            <Cell key={`cell-${index}`} fill={check ? "#353535" : entry?.cl} />
           ))}
         </Pie>
       </PieChart>

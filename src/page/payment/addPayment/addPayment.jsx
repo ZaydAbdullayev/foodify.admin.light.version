@@ -200,7 +200,7 @@ export const AddPayment = memo(({ active, actives }) => {
                   },
                   {
                     id: 3,
-                    value: "credit",
+                    value: "viaApp",
                     label: "Click/Payme",
                     icon: <BsFillCreditCard2BackFill />,
                   },
