@@ -118,7 +118,14 @@
   outline: none;
 }
 
+.recharts-wrapper {
+  position: relative;
+  max-width: var(--pie-w) !important;
+  max-height: calc(var(--pie-w) + 100px) !important;
+}
+
 svg.recharts-surface {
+  position: relative !important;
   width: var(--pie-w) !important;
   height: var(--pie-w) !important;
 }
@@ -150,7 +157,7 @@ svg.recharts-surface {
 
 @media (max-width: 600px) {
   :root {
-    --pie-w: 200px;
+    --pie-w: calc(300px + (500 - 300) * (100vw - 320px) / (1440 - 320));
   }
 
   .wrapper_item {

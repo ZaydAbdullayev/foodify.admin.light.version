@@ -17,8 +17,6 @@ export const Example = ({ data = initialState }) => {
       <PieChart>
         <Pie
           data={check ? initialState : data}
-          cx={280}
-          cy={150}
           innerRadius={170}
           outerRadius={250}
           fill="#353535"
