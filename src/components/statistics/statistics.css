@@ -104,7 +104,6 @@
 
 .statistic_product {
   position: relative;
-  padding: 10%;
   width: 50%;
   height: 300px;
   display: flex;
@@ -118,28 +117,10 @@
   outline: none;
 }
 
-.recharts-wrapper {
-  position: relative;
-  /* max-width: var(--pie-w) !important;
-  max-height: calc(var(--pie-w) + 100px) !important; */
-  cursor: pointer !important;
-}
-
-svg.recharts-surface {
-  position: relative !important;
-  /* width: var(--pie-w) !important;
-  height: var(--pie-w) !important; */
-}
-
-.pie {
-  width: 100%;
-  height: 100%;
-}
-
 .item-info {
-  position: absolute;
-  top: 10%;
-  left: var(--pie-w);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap5);
 }
 
 .item-info > p {
@@ -148,6 +129,7 @@ svg.recharts-surface {
   gap: 3px;
   color: #fff;
   font-size: var(--fs8);
+  cursor: pointer;
 }
 
 .item-info > p > svg {
@@ -175,14 +157,14 @@ svg.recharts-surface {
 }
 
 .donut-chart-container path {
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .donut-chart g {
   stroke: #494949;
   stroke-width: 4;
   cursor: pointer;
-  transition: all 0.1s ease;
+  transition: all 0.1s ease-in-out;
 }
 
 .donut-chart .passive {
@@ -192,8 +174,6 @@ svg.recharts-surface {
 }
 
 .donut-chart .active {
-  stroke: #e3e3e3;
-  stroke-width: 1;
   opacity: 1;
 }
 
@@ -201,18 +181,78 @@ svg.recharts-surface {
   opacity: 1;
 }
 
-.donut-chart-container > span {
+.donut-chart-container > text {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 150px;
-  height: 150px;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   transform: translate(-50%, -50%);
   font-size: var(--fs7);
+  font-size: var(--fs5);
   color: #fff;
-  background: #353535;
+  background: #494949;
   border-radius: 50%;
   z-index: 999;
+  cursor: pointer;
+}
+
+.bills-report {
+  width: 100%;
+  padding: 0 3% 3%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bills-report-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap1);
+}
+
+.bills-report-box {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap2);
+}
+
+.bills-item {
+  position: relative;
+  width: calc(100% / 3 - (var(--gap2) * 2 / 3));
+  height: 60px;
+  padding: 0 3% 0 1%;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  background: #353535;
+  color: #fff;
+  font-size: var(--fs7);
+  cursor: pointer;
+}
+.bills-item > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bills-item > i {
+  position: absolute;
+  top: 50%;
+  right: 1%;
+  transform: translateY(-50%);
+  font-size: var(--fs5);
+  color: #fff;
 }
 
 @media (max-width: 600px) {

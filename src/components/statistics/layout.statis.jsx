@@ -12,37 +12,13 @@ import { GoDotFill } from "react-icons/go";
 
 export const Statistics = memo(() => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || null;
-  const { data = [] } = useFetchDataQuery({
-    url: `/generate/ordersReport/${user?.id}/2024-01-01/2024-04-07`,
-    tags: ["report"],
-  });
-  // const { data: df = [] } = useFetchDataQuery({
-  //   url: `/get/resOrders/${user?.id}/2024-01-01/2024-04-07`,
+  const { data, defaultPie } = DataBill();
+  // const { data = [] } = useFetchDataQuery({
+  //   url: `/generate/ordersReport/${user?.id}/2024-01-01/2024-04-07`,
   //   tags: ["report"],
   // });
 
   // /get/resOrders/:resId/:start/:end
-
-  const totalValue = statsData.reduce((total, item) => total + item.number, 0);
-  let initialrotate = 0;
-  const items = statsData.map((item, index) => {
-    const space = item.number > 0 ? (item.number / totalValue) * 100 : 0;
-    const rotate1 = item.number > 0 ? (item.number / totalValue) * 360 : 0;
-    initialrotate += rotate1;
-    console.log(item?.label, "space", space, "rotate", initialrotate);
-
-    return (
-      <div
-        key={index}
-        className={`chart-item ${item.bg}`}
-        style={{
-          display: item.number <= 0 ? "none" : "flex",
-          "--pie-space": space + "%",
-          "--pie-rotate": initialrotate + "deg",
-          background: item?.cl,
-        }}></div>
-    );
-  });
 
   return (
     <div className="statistic_box">
@@ -53,7 +29,7 @@ export const Statistics = memo(() => {
               <div className="visual">{item.icon}</div>
               <div className="details">
                 <div className="number">
-                  <span>{item.number}</span>
+                  <span>{item.value}</span>
                 </div>
                 <div className="desc">{item.label}</div>
               </div>
@@ -62,15 +38,15 @@ export const Statistics = memo(() => {
         </div>
       </div>
       <div className="statistic_product">
-        <DonutChart />
-        {/* <div className="item-info">
-          {data?.data?.every((item) => item?.value === 0) ? (
+        <DonutChart data={defaultPie} />
+        <div className="item-info">
+          {data?.every((item) => item?.value === 0) ? (
             <p>
               <GoDotFill style={{ color: "#353535" }} />
               <span>Ma'lumot yo'q</span>
             </p>
           ) : (
-            data?.data?.map((item) => {
+            data?.map((item) => {
               return (
                 <p
                   key={`${item?.type}_${item?.id}`}
@@ -81,7 +57,7 @@ export const Statistics = memo(() => {
               );
             })
           )}
-        </div> */}
+        </div>
       </div>
 
       <div className="full_analystic"></div>
@@ -92,42 +68,61 @@ export const Statistics = memo(() => {
 const statsData = [
   {
     id: 1,
-    value: "cash",
+    type: "cash",
     label: "Naqd to'lov",
     icon: <FaMoneyBillAlt />,
-    number: 2200,
+    value: 2200,
     bg: "red",
+    direction: "top",
   },
   {
     id: 3,
-    value: "credit",
+    type: "credit",
     label: "Click/Payme",
     icon: <BsFillCreditCard2BackFill />,
-    number: 30222,
+    value: 30222,
     bg: "blue",
+    direction: "left",
   },
   {
     id: 2,
-    value: "bank_card",
+    type: "bank_card",
     label: "Karta orqali",
     icon: <GiCardExchange />,
-    number: 100000,
+    value: 100000,
     bg: "hoki",
+    direction: "left",
   },
   {
     id: 4,
-    value: "debit",
+    type: "debit",
     label: "Qarz",
     icon: <FcDebt />,
-    number: 230000,
+    value: 230000,
     bg: "purple",
+    direction: "rightBottom",
   },
   {
     id: 5,
-    value: "no_payment",
+    type: "no_payment",
     label: "To'lanmaydi",
     icon: <MdMoneyOff />,
-    number: 180000,
+    value: 180000,
     bg: "green ",
+    direction: "bottom",
   },
 ];
+
+export const DataBill = () => {
+  const user = JSON.parse(localStorage.getItem("user"))?.user || null;
+  const { data = [] } = useFetchDataQuery({
+    url: `/generate/ordersReport/${user?.id}/2024-01-01/2024-04-07`,
+    tags: ["report"],
+  });
+
+  const defaultPie = data?.data?.length
+    ? data?.data
+    : [{ value: 360, cl: "red", type: "" }];
+
+  return { data: data?.data, defaultPie };
+};

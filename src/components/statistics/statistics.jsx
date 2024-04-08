@@ -1,59 +1,69 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React from "react";
 import "./statistics.css";
 import { Tooltip } from "antd";
+const data = [
+  {
+    type: "To`langan",
+    direction: "top",
+    cl: "#0088FE",
+    value: 20000,
+  },
+  {
+    type: "To`lanmaydigan",
+    direction: "right",
+    cl: "#00C49F",
+    value: 0,
+  },
+  {
+    type: "Yopiq",
+    direction: "right",
+    cl: "#FFBB28",
+    value: 0,
+  },
+  {
+    type: "Ochiq",
+    direction: "rightBottom",
+    cl: "#FF8042",
+    value: 0,
+  },
+  {
+    type: "Qarz",
+    direction: "bottom",
+    cl: "#e7505a",
+    value: 30200,
+  },
+];
 
-export const DonutChart = () => {
-  const data = [
-    { label: "Red", value: 300, color: "#e7505a", direction: "top" },
-    { label: "Blue", value: 150, color: "#337ab7", direction: "right" },
-    { label: "Green", value: 200, color: "#00c49f", direction: "right" },
-    { label: "Purple", value: 20, color: "#8e44ad", direction: "rightBottom" },
-    { label: "Hoki", value: 280, color: "#67809f", direction: "bottom" },
-  ];
+export const DonutChart = ({ data }) => {
+  const [activeI, setActiveI] = React.useState(null);
 
-  const [activeI, setActiveI] = useState(null);
-  const [animationProgress, setAnimationProgress] = useState(0);
-
-  useEffect(() => {
-    const animationDuration = 500; // 2 saniye
-    let startTimestamp;
-
-    function startAnimation(timestamp) {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const elapsed = timestamp - startTimestamp;
-      const progress = Math.min(elapsed / animationDuration, 1);
-      setAnimationProgress(progress);
-
-      if (elapsed < animationDuration) {
-        requestAnimationFrame(startAnimation);
-      }
-    }
-
-    requestAnimationFrame(startAnimation);
-  }, []);
-
-  const total = data.reduce((acc, curr) => acc + curr.value, 0);
+  const total = data?.reduce((acc, curr) => acc + curr.value, 0);
 
   return (
     <div className="donut-chart-container">
-      <svg className={`donut-chart`} width="400" height="400">
-        {data.map((slice, index) => {
+      <svg className="donut-chart" width="400" height="400">
+        {data?.map((slice, index) => {
           const startAngle =
             index === 0
               ? 0
               : data
-                  .slice(0, index)
-                  .reduce((acc, curr) => acc + (curr.value / total) * 360, 0);
-          // const endAngle = startAngle + (slice.value / total) * 360;
+                  ?.slice(0, index)
+                  ?.reduce((acc, curr) => acc + (curr.value / total) * 360, 0);
 
-          const animatedEndAngle =
-            startAngle + (slice.value / total) * 360 * animationProgress;
+          const endAngle = startAngle + (slice?.value / total) * 360;
+
+          const formatValue = (value) => {
+            if (typeof value === "number") {
+              return value?.toString()?.replace(/\d(?=(\d{3})+$)/g, "$& ");
+            }
+            return value;
+          };
 
           return (
             <Tooltip
-              title={`${slice.label} - ${slice.value}`}
-              color={slice?.color}
-              key={slice?.color}
+              title={`${slice?.type} - ${formatValue(slice?.value)}`}
+              color={slice?.cl}
+              key={slice?.cl}
               placement={slice?.direction}>
               <g
                 className={`${
@@ -61,20 +71,18 @@ export const DonutChart = () => {
                 }`}>
                 <path
                   d={`
-                M 200,200
-                L ${
-                  200 + Math.cos(((startAngle - 90) * Math.PI) / 180) * 150
-                },${200 + Math.sin(((startAngle - 90) * Math.PI) / 180) * 150}
-            A 150,150 0 ${slice.value / total > 0.5 ? 1 : 0},1 ${
-                    200 +
-                    Math.cos(((animatedEndAngle - 90) * Math.PI) / 180) * 150
-                  },${
-                    200 +
-                    Math.sin(((animatedEndAngle - 90) * Math.PI) / 180) * 150
+                    M 200,200
+                    L ${
+                      200 + Math.cos(((startAngle - 90) * Math.PI) / 180) * 150
+                    },${
+                    200 + Math.sin(((startAngle - 90) * Math.PI) / 180) * 150
                   }
-            Z
-            `}
-                  fill={slice.color}
+                    A 150,150 0 ${slice.value / total > 0.5 ? 1 : 0},1 ${
+                    200 + Math.cos(((endAngle - 90) * Math.PI) / 180) * 150
+                  },${200 + Math.sin(((endAngle - 90) * Math.PI) / 180) * 150}
+                    Z
+                  `}
+                  fill={slice?.cl}
                   onClick={() => setActiveI(activeI === index ? null : index)}
                 />
               </g>
@@ -82,8 +90,10 @@ export const DonutChart = () => {
           );
         })}
       </svg>
-
-      <span onClick={() => setActiveI(null)}></span>
+      <text onClick={() => setActiveI(null)}>
+        <span>🧾 34ta</span>
+        <small>💵 2,323,434</small>
+      </text>
     </div>
   );
 };
