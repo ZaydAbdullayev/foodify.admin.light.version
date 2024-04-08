@@ -221,7 +221,7 @@ export const AddPayment = memo(({ active, actives }) => {
                   <div
                     key={option.id}
                     className={
-                      type.id === option.id
+                      price.includes(option.id)
                         ? "payment_type active"
                         : "payment_type"
                     }

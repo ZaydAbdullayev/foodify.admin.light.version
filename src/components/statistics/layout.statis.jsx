@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import "./statistics.css";
-import { Example } from "./statistics";
+import { DonutChart } from "./statistics";
 import { useFetchDataQuery } from "../../service/fetch.service";
 
 import { FaMoneyBillAlt } from "react-icons/fa";
@@ -13,11 +13,37 @@ import { GoDotFill } from "react-icons/go";
 export const Statistics = memo(() => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || null;
   const { data = [] } = useFetchDataQuery({
-    url: `/generate/ordersReport/${user?.id}/2024-01-01/2024-04-03`,
+    url: `/generate/ordersReport/${user?.id}/2024-01-01/2024-04-07`,
     tags: ["report"],
   });
+  // const { data: df = [] } = useFetchDataQuery({
+  //   url: `/get/resOrders/${user?.id}/2024-01-01/2024-04-07`,
+  //   tags: ["report"],
+  // });
 
   // /get/resOrders/:resId/:start/:end
+
+  const totalValue = statsData.reduce((total, item) => total + item.number, 0);
+  let initialrotate = 0;
+  const items = statsData.map((item, index) => {
+    const space = item.number > 0 ? (item.number / totalValue) * 100 : 0;
+    const rotate1 = item.number > 0 ? (item.number / totalValue) * 360 : 0;
+    initialrotate += rotate1;
+    console.log(item?.label, "space", space, "rotate", initialrotate);
+
+    return (
+      <div
+        key={index}
+        className={`chart-item ${item.bg}`}
+        style={{
+          display: item.number <= 0 ? "none" : "flex",
+          "--pie-space": space + "%",
+          "--pie-rotate": initialrotate + "deg",
+          background: item?.cl,
+        }}></div>
+    );
+  });
+
   return (
     <div className="statistic_box">
       <div className="wrapper_item">
@@ -36,8 +62,8 @@ export const Statistics = memo(() => {
         </div>
       </div>
       <div className="statistic_product">
-        <Example data={data?.data} />
-        <div className="item-info">
+        <DonutChart />
+        {/* <div className="item-info">
           {data?.data?.every((item) => item?.value === 0) ? (
             <p>
               <GoDotFill style={{ color: "#353535" }} />
@@ -46,16 +72,19 @@ export const Statistics = memo(() => {
           ) : (
             data?.data?.map((item) => {
               return (
-                <p key={`${item?.type}_${item?.id}`}>
+                <p
+                  key={`${item?.type}_${item?.id}`}
+                  style={{ opacity: item?.value <= 0 ? 0.2 : 1 }}>
                   <GoDotFill style={{ color: item?.cl }} />
-                  <span>{item?.type}</span>
+                  <b>{item?.type}</b>
                 </p>
               );
             })
           )}
-        </div>
+        </div> */}
       </div>
-      <div className="full_analystic">{/* <DemoDualAxes /> */}</div>
+
+      <div className="full_analystic"></div>
     </div>
   );
 });
@@ -66,7 +95,7 @@ const statsData = [
     value: "cash",
     label: "Naqd to'lov",
     icon: <FaMoneyBillAlt />,
-    number: 222000,
+    number: 2200,
     bg: "red",
   },
   {
@@ -74,7 +103,7 @@ const statsData = [
     value: "credit",
     label: "Click/Payme",
     icon: <BsFillCreditCard2BackFill />,
-    number: 222000,
+    number: 30222,
     bg: "blue",
   },
   {
@@ -82,7 +111,7 @@ const statsData = [
     value: "bank_card",
     label: "Karta orqali",
     icon: <GiCardExchange />,
-    number: 222000,
+    number: 100000,
     bg: "hoki",
   },
   {
@@ -90,7 +119,7 @@ const statsData = [
     value: "debit",
     label: "Qarz",
     icon: <FcDebt />,
-    number: 222000,
+    number: 230000,
     bg: "purple",
   },
   {
@@ -98,7 +127,7 @@ const statsData = [
     value: "no_payment",
     label: "To'lanmaydi",
     icon: <MdMoneyOff />,
-    number: 222000,
+    number: 180000,
     bg: "green ",
   },
 ];

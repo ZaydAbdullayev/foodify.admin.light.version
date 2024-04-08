@@ -59,52 +59,52 @@
       opacity: 0.2;
     }
   }
+}
 
-  .details {
-    position: absolute;
-    right: 15px;
-    padding-right: 15px;
-    color: #fff;
-
-    .number {
-      padding-top: 15px;
-      text-align: right;
-      font-size: var(--fs5);
-      margin-bottom: 0;
-      font-weight: 300;
-      .desc {
-        text-transform: capitalize;
-        text-align: right;
-        font-size: var(--fs7);
-        font-weight: 300;
-      }
-    }
+.details {
+  position: absolute;
+  right: 15px;
+  padding-right: 15px;
+  color: #fff;
+}
+.number {
+  padding-top: 15px;
+  text-align: right;
+  font-size: var(--fs5);
+  margin-bottom: 0;
+  font-weight: 300;
+  .desc {
+    text-transform: capitalize;
+    text-align: right;
+    font-size: var(--fs7);
+    font-weight: 300;
   }
+}
 
-  &.blue {
-    background-color: var(--bg-blue);
-  }
+.blue {
+  background-color: var(--bg-blue);
+}
 
-  &.red {
-    width: calc(100% / 2);
-    background-color: var(--bg-red);
-  }
+.red {
+  width: calc(100% / 2);
+  background-color: var(--bg-red);
+}
 
-  &.purple {
-    background-color: var(--bg-purple);
-  }
+.purple {
+  background-color: var(--bg-purple);
+}
 
-  &.hoki {
-    background-color: var(--bg-hoki);
-  }
+.hoki {
+  background-color: var(--bg-hoki);
+}
 
-  &.green {
-    background-color: var(--bg-green);
-  }
+.green {
+  background-color: var(--bg-green);
 }
 
 .statistic_product {
   position: relative;
+  padding: 10%;
   width: 50%;
   height: 300px;
   display: flex;
@@ -120,14 +120,20 @@
 
 .recharts-wrapper {
   position: relative;
-  max-width: var(--pie-w) !important;
-  max-height: calc(var(--pie-w) + 100px) !important;
+  /* max-width: var(--pie-w) !important;
+  max-height: calc(var(--pie-w) + 100px) !important; */
+  cursor: pointer !important;
 }
 
 svg.recharts-surface {
   position: relative !important;
-  width: var(--pie-w) !important;
-  height: var(--pie-w) !important;
+  /* width: var(--pie-w) !important;
+  height: var(--pie-w) !important; */
+}
+
+.pie {
+  width: 100%;
+  height: 100%;
 }
 
 .item-info {
@@ -150,9 +156,63 @@ svg.recharts-surface {
 
 .full_analystic {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   /* padding: 2%; */
-  background: #383838;
+  /* background: #383838; */
   border-radius: 30px;
+}
+
+.donut-chart-container {
+  position: relative;
+  text-align: center;
+}
+
+.donut-chart {
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+
+.donut-chart-container path {
+  transition: all 0.3s ease;
+}
+
+.donut-chart g {
+  stroke: #494949;
+  stroke-width: 4;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.donut-chart .passive {
+  stroke: #494949;
+  stroke-width: 4;
+  opacity: 0.2;
+}
+
+.donut-chart .active {
+  stroke: #e3e3e3;
+  stroke-width: 1;
+  opacity: 1;
+}
+
+.donut-chart g:hover {
+  opacity: 1;
+}
+
+.donut-chart-container > span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  transform: translate(-50%, -50%);
+  font-size: var(--fs7);
+  color: #fff;
+  background: #353535;
+  border-radius: 50%;
+  z-index: 999;
 }
 
 @media (max-width: 600px) {

@@ -1,34 +1,90 @@
-import React from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import "./statistics.css";
+import { Tooltip } from "antd";
 
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-const initialState = [
-  {
-    type: "Group A",
-    value: 400,
-    cl: "#353535",
-  },
-];
-export const Example = ({ data = initialState }) => {
-  const check = data?.every((item) => item?.value === 0);
-  console.log(check, "check");
+export const DonutChart = () => {
+  const data = [
+    { label: "Red", value: 300, color: "#e7505a", direction: "top" },
+    { label: "Blue", value: 150, color: "#337ab7", direction: "right" },
+    { label: "Green", value: 200, color: "#00c49f", direction: "right" },
+    { label: "Purple", value: 20, color: "#8e44ad", direction: "rightBottom" },
+    { label: "Hoki", value: 280, color: "#67809f", direction: "bottom" },
+  ];
+
+  const [activeI, setActiveI] = useState(null);
+  const [animationProgress, setAnimationProgress] = useState(0);
+
+  useEffect(() => {
+    const animationDuration = 500; // 2 saniye
+    let startTimestamp;
+
+    function startAnimation(timestamp) {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const elapsed = timestamp - startTimestamp;
+      const progress = Math.min(elapsed / animationDuration, 1);
+      setAnimationProgress(progress);
+
+      if (elapsed < animationDuration) {
+        requestAnimationFrame(startAnimation);
+      }
+    }
+
+    requestAnimationFrame(startAnimation);
+  }, []);
+
+  const total = data.reduce((acc, curr) => acc + curr.value, 0);
+
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart>
-        <Pie
-          data={check ? initialState : data}
-          innerRadius={170}
-          outerRadius={250}
-          fill="#353535"
-          paddingAngle={0}
-          dataKey="value"
-          label={check ? "" : "type"}>
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={check ? "#353535" : entry?.cl} />
-          ))}
-        </Pie>
-      </PieChart>
-    </ResponsiveContainer>
+    <div className="donut-chart-container">
+      <svg className={`donut-chart`} width="400" height="400">
+        {data.map((slice, index) => {
+          const startAngle =
+            index === 0
+              ? 0
+              : data
+                  .slice(0, index)
+                  .reduce((acc, curr) => acc + (curr.value / total) * 360, 0);
+          // const endAngle = startAngle + (slice.value / total) * 360;
+
+          const animatedEndAngle =
+            startAngle + (slice.value / total) * 360 * animationProgress;
+
+          return (
+            <Tooltip
+              title={`${slice.label} - ${slice.value}`}
+              color={slice?.color}
+              key={slice?.color}
+              placement={slice?.direction}>
+              <g
+                className={`${
+                  activeI !== index && activeI !== null ? "passive" : "active"
+                }`}>
+                <path
+                  d={`
+                M 200,200
+                L ${
+                  200 + Math.cos(((startAngle - 90) * Math.PI) / 180) * 150
+                },${200 + Math.sin(((startAngle - 90) * Math.PI) / 180) * 150}
+            A 150,150 0 ${slice.value / total > 0.5 ? 1 : 0},1 ${
+                    200 +
+                    Math.cos(((animatedEndAngle - 90) * Math.PI) / 180) * 150
+                  },${
+                    200 +
+                    Math.sin(((animatedEndAngle - 90) * Math.PI) / 180) * 150
+                  }
+            Z
+            `}
+                  fill={slice.color}
+                  onClick={() => setActiveI(activeI === index ? null : index)}
+                />
+              </g>
+            </Tooltip>
+          );
+        })}
+      </svg>
+
+      <span onClick={() => setActiveI(null)}></span>
+    </div>
   );
 };
 

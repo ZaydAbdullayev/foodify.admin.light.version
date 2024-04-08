@@ -18,6 +18,7 @@
     "howler": "^2.2.4",
     "https-browserify": "^1.0.0",
     "notistack": "^3.0.1",
+    "react-apexcharts": "^1.4.1",
     "react-icons": "^4.11.0",
     "react-number-format": "^5.2.2",
     "react-redux": "^8.1.1",
