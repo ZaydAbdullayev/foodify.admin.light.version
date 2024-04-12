@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 import { LoadingBtn } from "../../../components/loading/loading";
 import { acNavStatus } from "../../../redux/navbar.status";
 import { UniversalFilterBox } from "../../../components/filter/filter";
-import { useFetchDataQuery } from "../../../service/fetch.service";
 const UniversalModal = lazy(() => import("../../../components/modal/modal"));
 
 export const ReportSuppliers = () => {
@@ -18,13 +17,7 @@ export const ReportSuppliers = () => {
   const [sort, setSort] = useState({ id: null, state: false });
   const [showMore, setShowMore] = useState([]);
   const acItem = useSelector((state) => state.activeThing);
-  const res_id = useSelector((state) => state.res_id);
-  const { data: storeData = [] } = useFetchDataQuery({
-    url: `get/${res_id}/categories`,
-    tags: ["category"],
-  });
   const today = new Date().toISOString().slice(0, 10);
-  console.log(storeData);
   const isLoading = false;
   const depData = [];
   const dispatch = useDispatch();

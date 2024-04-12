@@ -111,10 +111,8 @@ export const Orders = () => {
     }
     if (position[1] === "update-order") {
       socket.emit("/addProduct/toOrder", updatePaymentData);
-      console.log("update", updatePaymentData);
     } else {
       socket.emit("/order", paymentData);
-      console.log("new", paymentData);
       // socket.emit("/divide/orders/depart", paymentData);
       socket.emit("/update/table", uData);
     }

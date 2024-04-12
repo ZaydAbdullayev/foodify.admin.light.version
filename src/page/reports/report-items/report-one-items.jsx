@@ -15,15 +15,12 @@ import { UniversalFilterBox } from "../../../components/filter/filter";
 export const ReportOneItems = () => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || {};
   const [sort, setSort] = useState({ id: null, state: false });
-  const [showMore, setShowMore] = useState([]);
-  const acItem = useSelector((state) => state.activeThing);
   const { date } = useSelector((state) => state.uSearch);
   const id = useLocation().pathname.split("/").pop();
   const { data = [], isLoading } = useFetchDataQuery({
     url: `get/foodReport/${user?.id}/${date?.start}/${date?.end}/${id}`,
     tags: ["s-products", "product"],
   });
-  console.log(data);
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(acNavStatus([0, 6, 7, 10, 11, 12, 15]));

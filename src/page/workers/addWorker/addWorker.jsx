@@ -42,7 +42,6 @@ export const AddWorker = ({ open, setOpen, state }) => {
     e.preventDefault();
     const wdata = new FormData(e.target);
     const value = Object.fromEntries(wdata.entries());
-    console.log(value);
     try {
       const { data } = await postData({
         url: "/add/worker",

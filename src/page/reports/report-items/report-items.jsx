@@ -15,9 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 export const ReportItems = () => {
   const [sort, setSort] = useState({ id: null, state: false });
-  const [showMore, setShowMore] = useState([]);
   const navigate = useNavigate();
-  console.log(showMore);
   const acItem = useSelector((state) => state.activeThing);
   const { date } = useSelector((state) => state.uSearch);
   const res_id = useSelector((state) => state.res_id);
@@ -25,7 +23,6 @@ export const ReportItems = () => {
   const { data = [], isLoading } = useFetchDataQuery({
     url: `get/generateFoodsReport/${res_id}/${date?.start}/${date?.end}`,
   });
-  console.log(data);
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(acNavStatus([0, 3, 6, 7, 15]));

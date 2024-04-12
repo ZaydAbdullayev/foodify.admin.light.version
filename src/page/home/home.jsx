@@ -52,7 +52,6 @@ export const Home = () => {
           tags: [""],
         });
         setOrders(res?.data?.innerData);
-        console.log("normal", res?.data?.innerData);
       } catch (err) {
         console.log(err);
       }
@@ -91,7 +90,6 @@ export const Home = () => {
       socket.on(`/get/newOrders/${id}`, (data) => {
         setOrders(data);
         dispatch(acNothification(true));
-        console.log("socket", data);
       });
       return () => {
         socket.off(`/get/newOrders/${id}`);
@@ -101,7 +99,6 @@ export const Home = () => {
 
   useEffect(() => {
     socket.on(params?.s, (newData) => {
-      console.log("newData socket", newData);
       setOrders((prevOrders) => {
         const existingOrder = prevOrders?.find(
           (order) => order?.id === newData.id
@@ -125,7 +122,6 @@ export const Home = () => {
   }, [params?.s]);
 
   const orderAccept = (order, ac) => {
-    console.log("upO", { data: order, action: ac });
     try {
       socket.emit("/accept/order", {
         status: true,
@@ -143,7 +139,6 @@ export const Home = () => {
   };
 
   const orderSituation = (order) => {
-    console.log("upP", order);
     try {
       socket.emit("/accept/order", {
         status: true,

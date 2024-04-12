@@ -33,7 +33,6 @@ export const AddPayment = memo(({ active, actives }) => {
   const [postData] = usePostDataMutation();
   const [price, setPrice] = useState({ df_v: 0, extra: 0 });
   const navigate = useNavigate();
-  console.log("price", price);
 
   // const calculate = () => {};
 
@@ -98,7 +97,6 @@ export const AddPayment = memo(({ active, actives }) => {
       }
       if (res.error) {
         es(res.error.data.data, { variant: "warning" });
-        console.log(1);
       }
       active(false);
     } catch (error) {

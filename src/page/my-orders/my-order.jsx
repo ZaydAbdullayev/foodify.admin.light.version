@@ -17,7 +17,6 @@ export const MyOrder = () => {
   });
   const [dr, setDr] = useState("left");
   const media = window.matchMedia("(max-width: 768px)");
-  console.log(order);
 
   const handlers = useSwipeable({
     onSwipedLeft: () => setDr(dr === "left" ? "center" : "right"),

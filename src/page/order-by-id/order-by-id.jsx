@@ -133,7 +133,6 @@ export const TransactionWaiter = ({ open, setOpen, t_id, res_id, lc }) => {
       worker_id: value?.worker,
     };
     socket.emit("/update/table", uData);
-    console.log(uData);
   };
   return (
     <div className={open ? "u_modal_container open" : "u_modal_container"}>

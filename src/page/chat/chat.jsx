@@ -48,7 +48,6 @@ export const Chat = () => {
 
   useEffect(() => {
     socket.on(`/get/newChat/${id}`, (data) => {
-      console.log("new-chat", data);
       setChats((prev) => {
         const isPrevChatExist = prev.some(
           (item) => item?.chat_id === data?.chat_id
@@ -76,7 +75,6 @@ export const Chat = () => {
   useEffect(() => {
     if (activeAcc?.chat_id) {
       socket.on(`/get/newMessage/${activeAcc?.chat_id}`, (data) => {
-        console.log("gelen son mesaj:", data);
         if (data.read_status === 0) {
           markMessageAsRead(data);
         }
@@ -175,7 +173,6 @@ export const Chat = () => {
         chat_id: activeAcc?.chat_id,
         receiver_id: activeAcc?.id || r_id,
       });
-      console.log("msg", { ...msg, chat_id: activeAcc?.chat_id });
       e.target.reset();
     }
   };

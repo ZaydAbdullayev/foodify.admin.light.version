@@ -7,7 +7,6 @@ import socket from "../../socket.config";
 export const NothificationPage = () => {
   const [data, setData] = useState(fd);
   const dispatch = useDispatch();
-  console.log(data);
   useEffect(() => {
     dispatch(acNavStatus([100]));
   }, [dispatch]);

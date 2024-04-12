@@ -25,7 +25,6 @@ export const Addproduct = memo(() => {
     ApiService.fetching("get/imgUrl", { img: img })
       .then((res) => {
         const image = res?.data?.data;
-        console.log(image);
         dispatch(acGetUrl({ st: false, img: image }));
         es("Rasm muaffaqiyatli qo'shildi", { variant: "success" });
         ClearForm(".add_product");

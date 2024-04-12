@@ -26,7 +26,6 @@ export const ReportIngredients = () => {
   React.useEffect(() => {
     dispatch(acNavStatus([0, 3, 6, 7, 15]));
   }, [dispatch]);
-  console.log(storeData);
   const isLoading = false;
 
   const sortData = storageD.sort((a, b) => {
