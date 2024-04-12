@@ -25,3 +25,23 @@
   --cl2: #000;
   --cl3: #f5f5f5;
 }
+
+.w100{
+  width: 100%;
+}
+
+.df {
+  display: flex;
+}
+
+.aic {
+  align-items: center;
+}
+
+.jcc {
+  justify-content: center;
+}
+
+.flc {
+  flex-direction: column;
+}

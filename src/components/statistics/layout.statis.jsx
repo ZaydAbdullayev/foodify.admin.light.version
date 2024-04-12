@@ -1,35 +1,123 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import "./statistics.css";
 import { DonutChart } from "./statistics";
 import { useFetchDataQuery } from "../../service/fetch.service";
-
+import { useDispatch, useSelector } from "react-redux";
+import { acNavStatus } from "../../redux/navbar.status";
+import { useNavigate } from "react-router-dom";
+import AnimatedNumber from "animated-number-react";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
+import { acGetNewData } from "../../redux/search";
 import { FaMoneyBillAlt } from "react-icons/fa";
-import { BsFillCreditCard2BackFill } from "react-icons/bs";
 import { GiCardExchange } from "react-icons/gi";
 import { FcDebt } from "react-icons/fc";
-import { MdMoneyOff } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
+import { LuTrendingUp, LuTrendingDown } from "react-icons/lu";
+import { IoWallet } from "react-icons/io5";
+import { CgArrowsExchange } from "react-icons/cg";
+const { RangePicker } = DatePicker;
 
 export const Statistics = memo(() => {
-  const user = JSON.parse(localStorage.getItem("user"))?.user || null;
-  const { data, defaultPie } = DataBill();
-  // const { data = [] } = useFetchDataQuery({
-  //   url: `/generate/ordersReport/${user?.id}/2024-01-01/2024-04-07`,
-  //   tags: ["report"],
-  // });
+  const { data, defaultPie, billsData } = DataBill();
+  const { date } = useSelector((state) => state.uSearch);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(acNavStatus([0]));
+  }, [dispatch]);
 
-  // /get/resOrders/:resId/:start/:end
+  const formatValue = (value) =>
+    value
+      .toFixed(0)
+      ?.toString()
+      ?.replace(/\d(?=(\d{3})+$)/g, "$&,");
+
+  const uploadData = (e, fieldName) => {
+    const newValue = e;
+    if (fieldName === "date") {
+      const rewordValue = JSON.parse(newValue);
+      navigate(`?start=${rewordValue.start}&&end=${rewordValue.end}`);
+    } else {
+      navigate(`?${fieldName}=${newValue}`);
+    }
+    if (fieldName === "date")
+      return dispatch(acGetNewData(fieldName, JSON.parse(newValue)));
+    const time = {
+      start: date?.start,
+      end: date?.end,
+    };
+    if (fieldName === "start" || fieldName === "end") {
+      time[fieldName] = newValue;
+      dispatch(acGetNewData("date", time));
+    } else {
+      dispatch(acGetNewData(fieldName, newValue));
+    }
+  };
 
   return (
-    <div className="statistic_box">
+    <div className="w100 df aic jcc statistic_box">
+      <div className="w100 df aic statistic_header">
+        <span className="df aic">
+          <IoWallet />{" "}
+          <small>
+            <small>
+              <AnimatedNumber value={23344443} formatValue={formatValue} />
+            </small>
+          </small>
+        </span>
+        <label className="df aic" style={{ gap: "5px" }}>
+          {window.innerWidth > 768 ? (
+            <RangePicker
+              defaultValue={[dayjs(date.start), dayjs(date.end)]}
+              aria-label="select data from to end"
+              onChange={(date, dateString) =>
+                uploadData(
+                  JSON.stringify({
+                    start: dateString?.[0],
+                    end: dateString?.[1],
+                  }),
+                  "date"
+                )
+              }
+            />
+          ) : (
+            <>
+              <DatePicker
+                defaultValue={dayjs(date.start)}
+                aria-label="select data from"
+                onChange={(date, dateString) => uploadData(dateString, "start")}
+              />{" "}
+              <CgArrowsExchange style={{ color: "#eee" }} />{" "}
+              <DatePicker
+                defaultValue={dayjs(date.end)}
+                aria-label="select data to"
+                onChange={(date, dateString) => uploadData(dateString, "end")}
+              />
+            </>
+          )}
+        </label>
+      </div>
       <div className="wrapper_item">
         <div className="row">
           {statsData.map((item) => (
             <div key={item.id} className={`dashboard-stat ${item?.bg}`}>
-              <div className="visual">{item.icon}</div>
+              <div className="df flc aic visual">
+                {item?.extra ? (
+                  <small>{item?.extra}</small>
+                ) : (
+                  <small style={{ opacity: 0 }}>
+                    <LuTrendingUp />
+                  </small>
+                )}
+                {item.icon}
+              </div>
               <div className="details">
                 <div className="number">
-                  <span>{item.value}</span>
+                  <AnimatedNumber
+                    value={item.value || 23344443}
+                    formatValue={formatValue}
+                  />
                 </div>
                 <div className="desc">{item.label}</div>
               </div>
@@ -37,9 +125,9 @@ export const Statistics = memo(() => {
           ))}
         </div>
       </div>
-      <div className="statistic_product">
-        <DonutChart data={defaultPie} />
-        <div className="item-info">
+      <div className="df aic jcc statistic_product">
+        <DonutChart data={defaultPie} billsData={billsData} />
+        <div className="df flc item-info">
           {data?.every((item) => item?.value === 0) ? (
             <p>
               <GoDotFill style={{ color: "#353535" }} />
@@ -67,62 +155,61 @@ export const Statistics = memo(() => {
 
 const statsData = [
   {
-    id: 1,
-    type: "cash",
-    label: "Naqd to'lov",
-    icon: <FaMoneyBillAlt />,
-    value: 2200,
-    bg: "red",
-    direction: "top",
-  },
-  {
     id: 3,
-    type: "credit",
-    label: "Click/Payme",
-    icon: <BsFillCreditCard2BackFill />,
-    value: 30222,
-    bg: "blue",
-    direction: "left",
+    type: "incomes",
+    label: "Kirimlar",
+    icon: <FaMoneyBillAlt />,
+    extra: <LuTrendingDown />,
+    bg: "green",
   },
   {
     id: 2,
-    type: "bank_card",
-    label: "Karta orqali",
-    icon: <GiCardExchange />,
-    value: 100000,
-    bg: "hoki",
-    direction: "left",
+    type: "expenses",
+    label: "Chiqimlar",
+    icon: <FaMoneyBillAlt />,
+    extra: <LuTrendingUp />,
+    bg: "red",
   },
   {
     id: 4,
     type: "debit",
-    label: "Qarz",
+    label: "Qarzlar",
     icon: <FcDebt />,
-    value: 230000,
     bg: "purple",
-    direction: "rightBottom",
   },
   {
     id: 5,
     type: "no_payment",
-    label: "To'lanmaydi",
-    icon: <MdMoneyOff />,
-    value: 180000,
-    bg: "green ",
-    direction: "bottom",
+    label: "Bank kartalari",
+    icon: <GiCardExchange />,
+    bg: "blue",
   },
 ];
 
 export const DataBill = () => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || null;
+  const { date } = useSelector((state) => state.uSearch);
   const { data = [] } = useFetchDataQuery({
-    url: `/generate/ordersReport/${user?.id}/2024-01-01/2024-04-07`,
+    url: `/generate/ordersReport/${user?.id}/${date?.start}/${date?.end}`,
+    tags: ["report"],
+  });
+  const { data: bd = [] } = useFetchDataQuery({
+    url: `/get/resOrders/${user?.id}/${date?.start}/${date?.end}`,
     tags: ["report"],
   });
 
-  const defaultPie = data?.data?.length
-    ? data?.data
-    : [{ value: 360, cl: "red", type: "" }];
+  const { data: iedc = [] } = useFetchDataQuery({
+    url: `/get/moneyInfo/${user?.id}/${date?.start}/${date?.end}`,
+    tags: ["report"],
+  });
 
-  return { data: data?.data, defaultPie };
+  const defaultPie =
+    bd?.innerData?.length > 0
+      ? data?.data
+      : [
+          { type: "Malumot yo'q", direction: "top", cl: "#333", value: 360 },
+          { type: "Malumot yo'q", direction: "top", cl: "#333", value: 360 },
+        ];
+
+  return { data: data?.data, defaultPie: defaultPie, billsData: bd?.innerData };
 };

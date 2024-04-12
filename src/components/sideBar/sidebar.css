@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   background: #353535;
-  transition: all 0.7 ease;
+  transition: all 0.5 ease;
   border-right: 1px solid #cccccc3f;
 }
 
@@ -18,7 +18,7 @@
   display: flex;
   flex-direction: column;
   background: #353535;
-  transition: all 0.7 ease;
+  transition: all 0.5 ease;
 }
 
 .shrink * {
@@ -231,16 +231,13 @@
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  transition: all 1s ease-in-out;
+  transition: all 0.7s ease-in-out;
   transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
   box-shadow: 0px 9px 30px rgba(19, 18, 18, 0.658);
-
-  /* animation: ripple 2s infinite; */
-  /* animation: ripple 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; */
 }
 
 .inner_menu-item:nth-child(1).active {
-  animation: swipe1 1s ease forwards;
+  animation: swipe1 0.7s ease forwards;
 }
 
 @keyframes swipe1 {

@@ -14,7 +14,7 @@ export const Payment = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [type, setType] = useState("openOrders");
-  const [data, setData] = useState("openOrders");
+  // const [data, setData] = useState("openOrders");
   const res_id = useSelector((state) => state?.res_id);
   // const search = useLocation().search?.split("=").pop();
   const [date, setDate] = useState({

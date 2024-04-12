@@ -6,7 +6,7 @@ import { reUpload } from "./upload";
 import { reGetNewData, reSearch } from "./search";
 import { rePermission, resId } from "./permission";
 import { reGetUrl, reUModal } from "./u-modal";
-import { reActive, reActiveSt_id, reStorageId } from "./active";
+import { reActive, reActiveB, reActiveSt_id, reStorageId } from "./active";
 import { reCalc, reCuttingAmount } from "./calc";
 import { reModalType } from "./u-modal";
 import { reActiveThing } from "./active";
@@ -43,6 +43,7 @@ export const store = configureStore({
     delRouter: rootDocuments,
     cuttingA: reCuttingAmount,
     pay: rePayModal,
+    activeB: reActiveB,
     [api.reducerPath]: api.reducer,
   }),
   middleware: (getDefaultMiddleware) =>

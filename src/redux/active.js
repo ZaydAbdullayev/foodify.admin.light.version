@@ -76,8 +76,21 @@ export const reActiveSt_id = (state = null, action) => {
   }
 };
 
+export const reActiveB = (state = {}, action) => {
+  switch (action?.type) {
+    case "ADD_BILL":
+      return action?.payload;
+    case "REMOVE_BILL":
+      return {};
+    default:
+      return state;
+  }
+};
+
 export const acActive = (payload) => ({ type: "SIDE_ACTIVE", payload });
 export const acActiveThing = (payload) => ({ type: "ACTIVE_THING", payload });
 export const acPassiveThing = (payload) => ({ type: "PASSIVE_THING", payload });
 export const acStorageId = (payload) => ({ type: "STORAGE_ID", payload });
 export const acActiveSt_id = (payload) => ({ type: "ACTIVE_ST_ID", payload });
+export const acAddBill = (payload) => ({ type: "ADD_BILL", payload });
+export const acRemoveBill = (payload) => ({ type: "REMOVE_BILL", payload });

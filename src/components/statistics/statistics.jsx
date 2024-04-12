@@ -1,43 +1,22 @@
 import React from "react";
 import "./statistics.css";
 import { Tooltip } from "antd";
-const data = [
-  {
-    type: "To`langan",
-    direction: "top",
-    cl: "#0088FE",
-    value: 20000,
-  },
-  {
-    type: "To`lanmaydigan",
-    direction: "right",
-    cl: "#00C49F",
-    value: 0,
-  },
-  {
-    type: "Yopiq",
-    direction: "right",
-    cl: "#FFBB28",
-    value: 0,
-  },
-  {
-    type: "Ochiq",
-    direction: "rightBottom",
-    cl: "#FF8042",
-    value: 0,
-  },
-  {
-    type: "Qarz",
-    direction: "bottom",
-    cl: "#e7505a",
-    value: 30200,
-  },
-];
+import { useNavigate } from "react-router-dom";
+import AnimatedNumber from "animated-number-react";
+import { CalculateTotalQuantity } from "../../service/calc.service";
 
-export const DonutChart = ({ data }) => {
+export const DonutChart = ({ data, billsData }) => {
   const [activeI, setActiveI] = React.useState(null);
+  const navigate = useNavigate();
 
-  const total = data?.reduce((acc, curr) => acc + curr.value, 0);
+  const total = CalculateTotalQuantity(data, "value");
+  const totalp = CalculateTotalQuantity(billsData, "total");
+  const formatValue = (value) => {
+    return value
+      .toFixed(0)
+      ?.toString()
+      ?.replace(/\d(?=(\d{3})+$)/g, "$&,");
+  };
 
   return (
     <div className="donut-chart-container">
@@ -47,10 +26,9 @@ export const DonutChart = ({ data }) => {
             index === 0
               ? 0
               : data
-                  ?.slice(0, index)
-                  ?.reduce((acc, curr) => acc + (curr.value / total) * 360, 0);
-
-          const endAngle = startAngle + (slice?.value / total) * 360;
+                  .slice(0, index)
+                  .reduce((acc, curr) => acc + (curr.value / total) * 360, 0);
+          const endAngle = startAngle + (slice.value / total) * 360;
 
           const formatValue = (value) => {
             if (typeof value === "number") {
@@ -63,7 +41,7 @@ export const DonutChart = ({ data }) => {
             <Tooltip
               title={`${slice?.type} - ${formatValue(slice?.value)}`}
               color={slice?.cl}
-              key={slice?.cl}
+              key={`${slice?.cl}_${index}`}
               placement={slice?.direction}>
               <g
                 className={`${
@@ -90,10 +68,17 @@ export const DonutChart = ({ data }) => {
           );
         })}
       </svg>
-      <text onClick={() => setActiveI(null)}>
-        <span>🧾 34ta</span>
-        <small>💵 2,323,434</small>
-      </text>
+      <label
+        className="df aic jcc flc"
+        onClick={() => {
+          navigate("/bills-report");
+          setActiveI(null);
+        }}>
+        <span>🧾 {billsData?.length}ta</span>
+        <small>
+          💵 <AnimatedNumber value={totalp} formatValue={formatValue} />
+        </small>
+      </label>
     </div>
   );
 };

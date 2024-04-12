@@ -40,7 +40,7 @@ import { Result, Button } from "antd";
 import { MobileInvoice } from "./page/mobile/mobile.transaction.jsx";
 import { Chat } from "./page/chat/chat.jsx";
 import audio from "./assets/images/nothification.mp3";
-import { BillsReport } from "./components/statistics/bill.jsx";
+import { BillReportById, BillsReport } from "./components/statistics/bill.jsx";
 
 export const Router = () => {
   const dep = useSelector((state) => state.permission);
@@ -144,6 +144,7 @@ export const Router = () => {
           {/* ============== pages of the other ================= */}
           <Route path="sidebar" element={<Sidebar />} />
           <Route path="bills-report" element={<BillsReport />} />
+          <Route path="one-bill-report/:id" element={<BillReportById />} />
           <Route path="mobile-invoices" element={<MobileInvoice />} />
           <Route path="chat-restaurant-staff" element={<Chat />} />
           <Route path="*" element={<NotFound />} />

@@ -5,6 +5,7 @@ import { HiRectangleGroup } from "react-icons/hi2";
 import { HiMiniChatBubbleLeftRight } from "react-icons/hi2";
 import { MdTableBar } from "react-icons/md";
 import { ImStatsBars } from "react-icons/im";
+import { TbReportAnalytics, TbChecklist } from "react-icons/tb";
 
 const dep = JSON.parse(localStorage.getItem("department"));
 
@@ -41,9 +42,7 @@ export const Menu_customer = [
     name: "Kassa boshqaruvi",
     icon: <BsCashCoin />,
     list: true,
-    permission: ["owner", "ish boshqaruvchi", "kassir", "buxgalter"].includes(
-      dep
-    )
+    permission: ["ish boshqaruvchi", "kassir", "buxgalter"].includes(dep)
       ? true
       : false,
   },
@@ -71,7 +70,6 @@ export const Menu_customer = [
     icon: <HiRectangleGroup />,
     list: true,
     permission: [
-      "owner",
       "ish boshqaruvchi",
       "kassir",
       "offitsant",
@@ -80,6 +78,22 @@ export const Menu_customer = [
     ].includes(dep)
       ? true
       : false,
+  },
+  {
+    id: "8",
+    path: "/restaurant-reports",
+    name: "Hisobotlar",
+    icon: <TbReportAnalytics />,
+    list: true,
+    permission: ["owner"].includes(dep) ? true : false,
+  },
+  {
+    id: "9",
+    path: "/restaurant-inventory",
+    name: "Invantarizatsiya",
+    icon: <TbChecklist />,
+    list: true,
+    permission: ["owner"].includes(dep) ? true : false,
   },
   {
     id: "5",
