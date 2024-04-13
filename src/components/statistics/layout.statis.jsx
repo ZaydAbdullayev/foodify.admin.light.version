@@ -54,7 +54,7 @@ export const Statistics = memo(() => {
               key={`${item.id}_${item?.bg}`}
               className={`dashboard-stat ${item?.bg}`}
               onClick={() =>
-                navigate(`statistic-${item?.path}?title=${item?.label}`)
+                navigate(`statistic/${item?.path}?title=${item?.label}`)
               }>
               <div className="df flc aic visual">
                 {item?.extra ? (

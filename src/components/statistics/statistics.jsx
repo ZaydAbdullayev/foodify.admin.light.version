@@ -83,7 +83,11 @@ export const DonutChart = ({ data, billsData }) => {
           navigate("/bills-report");
           setActiveI(null);
         }}>
-        <span>🧾 {billsData?.length}ta</span>
+        <span>
+          🧾{" "}
+          <AnimatedNumber value={billsData?.length} formatValue={formatValue} />
+          ta
+        </span>
         <small>
           💵 <AnimatedNumber value={totalp} formatValue={formatValue} />
         </small>

@@ -128,8 +128,8 @@ export const Router = () => {
           <Route path="bills-report" element={<BillsReport />} />
           <Route path="one-bill-report/:id" element={<BillReportById />} />
           <Route path="mobile-invoices" element={<MobileInvoice />} />
-          <Route path="statistic-incomes" element={<StatisticsIncome />} />
-          <Route path="statistic-expenses" element={<StatisticsExpenses />} />
+          <Route path="statistic/:name" element={<StatisticsExpenses />} />
+          <Route path="statistic/incomes" element={<StatisticsIncome />} />
           <Route path="statistic-details" element={<StatisticDetails />} />
           <Route path="chat-restaurant-staff" element={<Chat />} />
           <Route path="*" element={<NotFound />} />

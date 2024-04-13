@@ -106,7 +106,7 @@ export const Navbar = () => {
           <UniversalFilterBox />
           {location?.search?.split("title=").length && (
             <span className="page-title">
-              {location?.search?.split("title=")[1]}
+              {location?.search?.split("title=")[1]?.split("%20").join(" ")}
             </span>
           )}
         </form>
