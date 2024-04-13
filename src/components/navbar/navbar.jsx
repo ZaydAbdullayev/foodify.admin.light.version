@@ -8,17 +8,14 @@ import { acSearch } from "../../redux/search";
 import { acMedia } from "../../redux/media";
 import { UniversalFilterBox } from "../filter/filter";
 import { acOpenUModal } from "../../redux/u-modal";
-import DeleteSelectedElementss from "../../service/delete-elements.service";
-import { enqueueSnackbar as es } from "notistack";
-import { setRelease } from "../../redux/deleteFoods";
-import { notification } from "antd";
+// import { setRelease } from "../../redux/deleteFoods";
+// import { notification } from "antd";
 
-import { BiEdit, BiPlus } from "react-icons/bi";
-import { MdDelete } from "react-icons/md";
+// import { BiEdit, BiPlus } from "react-icons/bi";
+// import { MdDelete } from "react-icons/md";
 import { MdTableBar } from "react-icons/md";
 import { BsSearch } from "react-icons/bs";
 import { FaBell } from "react-icons/fa";
-import { ImStatsBars } from "react-icons/im";
 import default_img from "../../assets/images/default-img.png";
 import logo from "../../assets/images/logo.png";
 import addOrder from "../../assets/images/add_order.png";
@@ -34,29 +31,9 @@ export const Navbar = () => {
   const w_name = user?.user?.name?.split("_")?.join(" ");
   const status = useSelector((state) => state.status);
   const media = useSelector((state) => state.media);
-  const delDocuments = useSelector((state) => state.delRouter);
-  const page_code = useLocation().search.split("=")[1];
-  const delData = delDocuments?.[page_code];
-  const [api, contextHolder] = notification.useNotification();
-
-  const deleteDocuments = async () => {
-    if (delDocuments?.[page_code]?.length > 0) {
-      const result = await DeleteSelectedElementss(page_code, delData);
-      if (result.status === "success") {
-        es({ message: "Muvaffaqiyatli o'chirildi", variant: "success" });
-        dispatch(setRelease(page_code));
-      } else {
-        es({ message: "Xatolik yuz berdi", variant: "error" });
-      }
-    } else {
-      const placement = "topRight";
-      api.warning({
-        message: "Xatolik",
-        description: "O'chirish uchun mavjud malumot yo'q!",
-        placement,
-      });
-    }
-  };
+  const location = useLocation();
+  // const delDocuments = useSelector((state) => state.delRouter);
+  // const [api, contextHolder] = notification.useNotification();
 
   const openModal = () => {
     dispatch(acOpenMadal());
@@ -70,18 +47,14 @@ export const Navbar = () => {
     dispatch(acOpenUModal());
   };
 
-  const openUModalU = () => {
-    if (delDocuments?.[page_code]?.length === 1) {
-      dispatch(acOpenUModal());
-    } else {
-      const placement = "topRight";
-      api.warning({
-        message: "Xatolik",
-        description: "O'zgartirish uchun mavjud malumot yo'q!",
-        placement,
-      });
-    }
-  };
+  // const openUModalU = () => {
+  //   const placement = "topRight";
+  //   api.warning({
+  //     message: "Xatolik",
+  //     description: "O'zgartirish uchun mavjud malumot yo'q!",
+  //     placement,
+  //   });
+  // };
 
   const handleSort = (value) => {
     dispatch(acSearch(value));
@@ -95,7 +68,6 @@ export const Navbar = () => {
 
   return (
     <div className="navbar">
-      {contextHolder}
       <span
         className="backword"
         onClick={() => {
@@ -114,14 +86,14 @@ export const Navbar = () => {
       </div>
       {status?.includes(0) && (
         <form className="short_hands" onSubmit={(e) => e.preventDefault()}>
-          {status?.includes(1) && (
+          {/* {status?.includes(1) && (
             <button
               type="button"
               onClick={openUModal}
               aria-label="open modal belong's to active page">
               <BiPlus />
             </button>
-          )}
+          )} */}
           {status.includes(101) && (
             <button
               type="button"
@@ -131,33 +103,12 @@ export const Navbar = () => {
               <MdTableBar />{" "}
             </button>
           )}
-          {status?.includes(2) && (
-            <button
-              type="button"
-              style={
-                delDocuments?.[page_code]?.length === 1
-                  ? {}
-                  : { opacity: "0.4", border: "1px solid #ccc6" }
-              }
-              onClick={openUModalU}
-              aria-label="open modal for edit belong's active page">
-              <BiEdit />
-            </button>
-          )}
-          {status?.includes(3) && (
-            <button
-              type="button"
-              style={
-                delDocuments?.[page_code]?.length > 0
-                  ? {}
-                  : { opacity: "0.4", border: "1px solid #ccc6" }
-              }
-              onClick={() => deleteDocuments()}
-              aria-label="open modal for delete belong's active page">
-              <MdDelete />
-            </button>
-          )}
           <UniversalFilterBox />
+          {location?.search?.split("title=").length && (
+            <span className="page-title">
+              {location?.search?.split("title=")[1]}
+            </span>
+          )}
         </form>
       )}
 
@@ -174,6 +125,7 @@ export const Navbar = () => {
           />
         </form>
       )}
+
       {status?.length === 0 && <i></i>}
       <div className="profile">
         {["owner", "manager", "cashier"].includes(dep) && (

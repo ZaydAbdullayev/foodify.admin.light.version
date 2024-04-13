@@ -24,9 +24,41 @@
   --cl1: #fff;
   --cl2: #000;
   --cl3: #f5f5f5;
+
+  --primary-color1: #89b0ae;
+  --primary-light-color1: #f5fbfb;
+  --primary-bright-color1: #89b0ae65;
+
+  --primary-color2: #d8e2dc;
+  --primary-light-color2: #fcfefc;
+  --primary-bright-color2: #d8e2dc69;
+
+  --primary-color3: #ffd6ba;
+  --primary-light-color3: #fff8ec;
+  --primary-bright-color3: #ffd6ba6e;
+
+  --primary-color4: #81b29a;
+  --primary-light-color4: #c4eadf;
+  --primary-bright-color4: #81b29a69;
+
+  --primary-color5: #e29578;
+  --primary-light-color5: #fdebd6;
+  --primary-bright-color5: #e294786b;
+
+  --primary-color6: #dde5b6;
+  --primary-light-color6: #f8fbe9;
+  --primary-bright-color6: #dde5b669;
+
+  --primary-color7: #43aa8b;
+  --primary-light-color7: #c0f8e7;
+  --primary-bright-color7: #43aa8b69;
+
+  --primary-color8: #f25c54;
+  --primary-light-color8: #fac9c6;
+  --primary-bright-color8: #f25c5469;
 }
 
-.w100{
+.w100 {
   width: 100%;
 }
 
@@ -44,4 +76,8 @@
 
 .flc {
   flex-direction: column;
+}
+
+.jcsb {
+  justify-content: space-between;
 }

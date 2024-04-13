@@ -253,6 +253,11 @@
   object-fit: cover;
 }
 
+.page-title{
+  font-size: var(--fs4);
+  color: #fff;
+}
+
 @media (max-width: 2000px) {
   .navbar .short-hands_sort__box {
     display: flex;

@@ -12,7 +12,7 @@ const dep = JSON.parse(localStorage.getItem("department"));
 export const Menu_customer = [
   {
     id: "43",
-    path: "/statistics",
+    path: dep === "owner" ? "/" : "/statistics",
     name: "statistikalar",
     icon: <ImStatsBars />,
     list: true,

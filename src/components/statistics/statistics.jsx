@@ -1,9 +1,18 @@
 import React from "react";
 import "./statistics.css";
-import { Tooltip } from "antd";
+import { Tooltip as Tt } from "antd";
 import { useNavigate } from "react-router-dom";
 import AnimatedNumber from "animated-number-react";
 import { CalculateTotalQuantity } from "../../service/calc.service";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export const DonutChart = ({ data, billsData }) => {
   const [activeI, setActiveI] = React.useState(null);
@@ -38,7 +47,7 @@ export const DonutChart = ({ data, billsData }) => {
           };
 
           return (
-            <Tooltip
+            <Tt
               title={`${slice?.type} - ${formatValue(slice?.value)}`}
               color={slice?.cl}
               key={`${slice?.cl}_${index}`}
@@ -64,7 +73,7 @@ export const DonutChart = ({ data, billsData }) => {
                   onClick={() => setActiveI(activeI === index ? null : index)}
                 />
               </g>
-            </Tooltip>
+            </Tt>
           );
         })}
       </svg>
@@ -83,156 +92,91 @@ export const DonutChart = ({ data, billsData }) => {
   );
 };
 
-// export const DemoDualAxes = () => {
-//   const uvBillData = [
-//     {
-//       time: "2023-03",
-//       value: 350,
-//       type: "oylik",
-//     },
-//     {
-//       time: "2023-04",
-//       value: 900,
-//       type: "oylik",
-//     },
-//     {
-//       time: "2023-05",
-//       value: 300,
-//       type: "oylik",
-//     },
-//     {
-//       time: "2023-06",
-//       value: 450,
-//       type: "oylik",
-//     },
-//     {
-//       time: "2023-07",
-//       value: 470,
-//       type: "oylik",
-//     },
-//     {
-//       time: "2023-03",
-//       value: 220,
-//       type: "haftalik",
-//     },
-//     {
-//       time: "2023-04",
-//       value: 300,
-//       type: "haftalik",
-//     },
-//     {
-//       time: "2023-05",
-//       value: 250,
-//       type: "haftalik",
-//     },
-//     {
-//       time: "2023-06",
-//       value: 220,
-//       type: "haftalik",
-//     },
-//     {
-//       time: "2023-07",
-//       value: 100,
-//       type: "haftalik",
-//     },
-//   ];
-//   const transformData = [
-//     {
-//       time: "2023-03",
-//       count: 800,
-//       name: "chiqim",
-//     },
-//     {
-//       time: "2023-04",
-//       count: 600,
-//       name: "chiqim",
-//     },
-//     {
-//       time: "2023-05",
-//       count: 400,
-//       name: "chiqim",
-//     },
-//     {
-//       time: "2023-06",
-//       count: 380,
-//       name: "chiqim",
-//     },
-//     {
-//       time: "2023-07",
-//       count: 20,
-//       name: "chiqim",
-//     },
-//     {
-//       time: "2023-03",
-//       count: 750,
-//       name: "kirim",
-//     },
-//     {
-//       time: "2023-04",
-//       count: 650,
-//       name: "kirim",
-//     },
-//     {
-//       time: "2023-05",
-//       count: 450,
-//       name: "kirim",
-//     },
-//     {
-//       time: "2023-06",
-//       count: 400,
-//       name: "kirim",
-//     },
-//     {
-//       time: "2023-07",
-//       count: 620,
-//       name: "kirim",
-//     },
-//     {
-//       time: "2023-03",
-//       count: 900,
-//       name: "foyda",
-//     },
-//     {
-//       time: "2023-04",
-//       count: 600,
-//       name: "foyda",
-//     },
-//     {
-//       time: "2023-05",
-//       count: 450,
-//       name: "foyda",
-//     },
-//     {
-//       time: "2023-06",
-//       count: 300,
-//       name: "foyda",
-//     },
-//     {
-//       time: "2023-07",
-//       count: 200,
-//       name: "foyda",
-//     },
-//   ];
-//   const config = {
-//     data: [uvBillData, transformData],
-//     xField: "time",
-//     yField: ["value", "count"],
-//     geometryOptions: [
-//       {
-//         geometry: "line",
-//         seriesField: "type",
-//         lineStyle: {
-//           lineWidth: 2,
-//           lineDash: [5, 5],
-//         },
-//         smooth: true,
-//       },
-//       {
-//         geometry: "line",
-//         seriesField: "name",
-//         point: {},
-//       },
-//     ],
-//   };
-//   return <DualAxes {...config} />;
-// };
+const data = [
+  {
+    name: "00:00",
+    incomes: 2400,
+    other_incomes: 2400,
+  },
+  {
+    name: "03:30",
+    incomes: 1398,
+    other_incomes: 2210,
+  },
+  {
+    name: "07:00",
+    incomes: 9800,
+    other_incomes: 2290,
+  },
+  {
+    name: "10:30",
+    incomes: 3908,
+    other_incomes: 2000,
+  },
+  {
+    name: "14:00",
+    incomes: 4800,
+    other_incomes: 2181,
+  },
+  {
+    name: "17:30",
+    incomes: 3800,
+    other_incomes: 2500,
+  },
+  {
+    name: "21:00",
+    incomes: 4300,
+    other_incomes: 2100,
+  },
+  {
+    name: "23:59",
+    incomes: 4800,
+    other_incomes: 2900,
+  },
+];
+
+export const LineChartC = () => {
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart
+        width={500}
+        height={500}
+        data={data}
+        margin={{
+          top: 10,
+          right: 30,
+          left: 0,
+          bottom: 0,
+        }}>
+        <CartesianGrid strokeDasharray="3 3" stroke="#aaa5" />
+        <XAxis dataKey="name" fontSize={14} />
+        <YAxis />
+        <Tooltip
+          labelFormatter={(value) => {
+            return `🕒 ${value}`;
+          }}
+          labelStyle={{
+            fontSize: "12px",
+          }}
+          contentStyle={{
+            fontSize: "12px",
+          }}
+        />
+        <Line
+          type="monotone"
+          dataKey="incomes"
+          stroke="#80ed99"
+          strokeWidth={2}
+          activeDot={{ r: 5 }}
+        />
+        <Line
+          type="monotone"
+          dataKey="other_incomes"
+          stroke="#c1121f"
+          strokeWidth={2}
+          activeDot={{ r: 5 }}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+};

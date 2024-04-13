@@ -24,6 +24,7 @@
     "react-router-dom": "^6.13.0",
     "react-scripts": "5.0.1",
     "react-swipeable": "^7.0.1",
+    "recharts": "^2.12.5",
     "socket.io-client": "^4.7.4",
     "stream-browserify": "^3.0.0",
     "url": "^0.11.3",

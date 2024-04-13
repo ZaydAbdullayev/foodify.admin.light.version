@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./statistics.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { NumericFormat } from "react-number-format";
+import { LineChartC } from "./statistics";
+import { Collapse, theme } from "antd";
 
 import { IoIosArrowForward } from "react-icons/io";
 import { DonutChart } from "./statistics";
 import { GoDotFill } from "react-icons/go";
 import { MdTableBar } from "react-icons/md";
-import { DataBill } from "./layout.statis";
+import { DataBill, DateRange } from "./layout.statis";
 import { acAddBill } from "../../redux/active";
+import { acNavStatus } from "../../redux/navbar.status";
+import { IoMdArrowDropright } from "react-icons/io";
 
 export const BillsReport = () => {
   const { data = [], billsData = [], defaultPie } = DataBill();
@@ -105,24 +110,6 @@ export const BillReportById = () => {
   const ingD = Object.values(parsedD)?.[0]?.pd;
 
   console.log("pd", parsedD, ingD);
-  // const ingD = Object.values();
-  // category: "Ichimliklar";
-  // category_id: "965cf2";
-  // date: "2024-03-08T19:00:00.000Z";
-  // department: "Bar";
-  // description: "jkh";
-  // id: "f8ac02";
-  // img: "https://localhost:8081/add/product/img_1138d878.jpg";
-  // name: "uyi";
-  // price: "786";
-  // prime_cost: "3700";
-  // profit: "-2914";
-  // quantity: 4;
-  // res_id: "2899b5";
-  // status: 1;
-  // stop_list: 100;
-  // storage: "Bar ombori";
-  // type: "taom";
   return (
     <div className="w100 df aic flc single-bill-report">
       <span>#{bills?.id}</span>
@@ -200,6 +187,245 @@ export const BillReportById = () => {
           );
         })}
       </div>
+    </div>
+  );
+};
+
+export const StatisticsExpenses = () => {
+  const { data = [], billsData = [], defaultPie } = DataBill();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(acNavStatus([0]));
+  }, [dispatch]);
+
+  const sd = [
+    {
+      name: "Chiqimlar",
+      value: 23344443,
+    },
+    {
+      name: "Kirimlar",
+      value: 4234334,
+    },
+  ];
+
+  return (
+    <div className="w100 df flc bills-report">
+      <div className="w100 df aic jcc bills-report-header">
+        <DonutChart data={defaultPie} billsData={billsData} />
+        <div className="df flc item-info">
+          {data?.every((item) => item?.value === 0) ? (
+            <p>
+              <GoDotFill style={{ color: "#353535" }} />
+              <span>Ma'lumot yo'q</span>
+            </p>
+          ) : (
+            data?.map((item) => {
+              return (
+                <p
+                  key={`${item?.type}_${item?.id}`}
+                  style={{ opacity: item?.value <= 0 ? 0.2 : 1 }}>
+                  <GoDotFill style={{ color: item?.cl }} />
+                  <b>{item?.type}</b>
+                </p>
+              );
+            })
+          )}
+        </div>
+      </div>
+      <div className="w100 df aic bills-report-box">
+        {sd?.map((expense) => {
+          return (
+            <div
+              className="df aic jcsb bills-item"
+              key={expense?.name}
+              onClick={() =>
+                navigate(`/statistic-details?title=${expense?.name}`)
+              }>
+              <big>{expense?.name}</big>
+              <big>
+                <NumericFormat
+                  value={expense?.value}
+                  displayType="text"
+                  thousandSeparator={","}
+                />
+              </big>
+              <i>
+                <IoIosArrowForward />
+              </i>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export const StatisticsIncome = () => {
+  return (
+    <div className="w100 df flc full_analystic">
+      <div className="w100 df flc full_analystic-header">
+        <p className="w100 df aic jcsb">
+          <span className="df flc">
+            <small style={{ color: "#a1a1a1" }}>Umumiy summa</small>
+            <NumericFormat
+              value={23344443}
+              displayType="text"
+              thousandSeparator={","}
+            />
+          </span>
+          {DateRange()}
+        </p>
+        <label className="w100 df aic" style={{ gap: "var(--gap3)" }}>
+          <p className="df aic" style={{ gap: "5px" }}>
+            <GoDotFill style={{ color: "#80ed99" }} />
+            <span>Chiqimlar</span>
+          </p>
+          <p className="df aic" style={{ gap: "5px" }}>
+            <GoDotFill style={{ color: "#c1121f" }} />
+            <span>Kirimlar</span>
+          </p>
+        </label>
+      </div>
+      <div className="w100 full_analystic-chart">
+        <LineChartC />
+      </div>
+    </div>
+  );
+};
+
+export const StatisticDetails = () => {
+  const getItems = (panelStyle) => [
+    {
+      key: "1",
+      label: (
+        <label className=" df aic jcsb dropdown-label">
+          <span className="df flc">
+            Ecommerce{" "}
+            <small style={{ color: "#aaa8" }}>04.04.2024, 15:05</small>
+          </span>
+          <NumericFormat
+            value={23455554}
+            displayType="text"
+            thousandSeparator={","}
+          />
+        </label>
+      ),
+      children: (
+        <p class="w100 df flc dropdown-list">
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+        </p>
+      ),
+      style: panelStyle,
+    },
+    {
+      key: "2 ",
+      label: (
+        <label className=" df aic jcsb dropdown-label">
+          <span className="df flc">
+            Ecommerce{" "}
+            <small style={{ color: "#aaa8" }}>04.04.2024, 15:05</small>
+          </span>
+          <NumericFormat
+            value={23455554}
+            displayType="text"
+            thousandSeparator={","}
+          />
+        </label>
+      ),
+      children: (
+        <p class="w100 df flc dropdown-list">
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+        </p>
+      ),
+      style: panelStyle,
+    },
+    {
+      key: "3",
+      label: (
+        <label className=" df aic jcsb dropdown-label">
+          <span className="df flc">
+            Ecommerce{" "}
+            <small style={{ color: "#aaa8" }}>04.04.2024, 15:05</small>
+          </span>
+          <NumericFormat
+            value={23455554}
+            displayType="text"
+            thousandSeparator={","}
+          />
+        </label>
+      ),
+      children: (
+        <p class="w100 df flc dropdown-list">
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+          <p>
+            <span>title</span> <span>value</span>
+          </p>
+        </p>
+      ),
+      style: panelStyle,
+    },
+  ];
+  const { token } = theme.useToken();
+  const panelStyle = {
+    marginBottom: 8,
+    background: "#252525",
+    borderRadius: token.borderRadiusLG,
+    border: "none",
+  };
+  return (
+    <div className="w100 df flc statistic-details">
+      <Collapse
+        bordered={true}
+        expandIcon={({ isActive }) => (
+          <IoMdArrowDropright rotate={isActive ? 90 : 0} />
+        )}
+        style={{
+          background: "#494949",
+          padding: "3%",
+        }}
+        items={getItems(panelStyle)}
+      />
     </div>
   );
 };

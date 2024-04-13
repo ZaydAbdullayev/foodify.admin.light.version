@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from "react";
 import "./statistics.css";
-import { DonutChart } from "./statistics";
+import { DonutChart, LineChartC } from "./statistics";
 import { useFetchDataQuery } from "../../service/fetch.service";
 import { useDispatch, useSelector } from "react-redux";
 import { acNavStatus } from "../../redux/navbar.status";
@@ -9,6 +9,7 @@ import AnimatedNumber from "animated-number-react";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import { acGetNewData } from "../../redux/search";
+
 import { FaMoneyBillAlt } from "react-icons/fa";
 import { GiCardExchange } from "react-icons/gi";
 import { FcDebt } from "react-icons/fc";
@@ -33,28 +34,6 @@ export const Statistics = memo(() => {
       ?.toString()
       ?.replace(/\d(?=(\d{3})+$)/g, "$&,");
 
-  const uploadData = (e, fieldName) => {
-    const newValue = e;
-    if (fieldName === "date") {
-      const rewordValue = JSON.parse(newValue);
-      navigate(`?start=${rewordValue.start}&&end=${rewordValue.end}`);
-    } else {
-      navigate(`?${fieldName}=${newValue}`);
-    }
-    if (fieldName === "date")
-      return dispatch(acGetNewData(fieldName, JSON.parse(newValue)));
-    const time = {
-      start: date?.start,
-      end: date?.end,
-    };
-    if (fieldName === "start" || fieldName === "end") {
-      time[fieldName] = newValue;
-      dispatch(acGetNewData("date", time));
-    } else {
-      dispatch(acGetNewData(fieldName, newValue));
-    }
-  };
-
   return (
     <div className="w100 df aic jcc statistic_box">
       <div className="w100 df aic statistic_header">
@@ -66,42 +45,17 @@ export const Statistics = memo(() => {
             </small>
           </small>
         </span>
-        <label className="df aic" style={{ gap: "5px" }}>
-          {window.innerWidth > 768 ? (
-            <RangePicker
-              defaultValue={[dayjs(date.start), dayjs(date.end)]}
-              aria-label="select data from to end"
-              onChange={(date, dateString) =>
-                uploadData(
-                  JSON.stringify({
-                    start: dateString?.[0],
-                    end: dateString?.[1],
-                  }),
-                  "date"
-                )
-              }
-            />
-          ) : (
-            <>
-              <DatePicker
-                defaultValue={dayjs(date.start)}
-                aria-label="select data from"
-                onChange={(date, dateString) => uploadData(dateString, "start")}
-              />{" "}
-              <CgArrowsExchange style={{ color: "#eee" }} />{" "}
-              <DatePicker
-                defaultValue={dayjs(date.end)}
-                aria-label="select data to"
-                onChange={(date, dateString) => uploadData(dateString, "end")}
-              />
-            </>
-          )}
-        </label>
+        {DateRange()}
       </div>
       <div className="wrapper_item">
         <div className="row">
           {statsData.map((item) => (
-            <div key={item.id} className={`dashboard-stat ${item?.bg}`}>
+            <div
+              key={`${item.id}_${item?.bg}`}
+              className={`dashboard-stat ${item?.bg}`}
+              onClick={() =>
+                navigate(`statistic-${item?.path}?title=${item?.label}`)
+              }>
               <div className="df flc aic visual">
                 {item?.extra ? (
                   <small>{item?.extra}</small>
@@ -147,8 +101,6 @@ export const Statistics = memo(() => {
           )}
         </div>
       </div>
-
-      <div className="full_analystic"></div>
     </div>
   );
 });
@@ -161,6 +113,7 @@ const statsData = [
     icon: <FaMoneyBillAlt />,
     extra: <LuTrendingDown />,
     bg: "green",
+    path: "incomes",
   },
   {
     id: 2,
@@ -169,20 +122,23 @@ const statsData = [
     icon: <FaMoneyBillAlt />,
     extra: <LuTrendingUp />,
     bg: "red",
+    path: "expenses",
   },
   {
     id: 4,
-    type: "debit",
+    type: "debt",
     label: "Qarzlar",
     icon: <FcDebt />,
     bg: "purple",
+    path: "debt",
   },
   {
     id: 5,
-    type: "no_payment",
+    type: "credit",
     label: "Bank kartalari",
     icon: <GiCardExchange />,
     bg: "blue",
+    path: "no_payment",
   },
 ];
 
@@ -212,4 +168,64 @@ export const DataBill = () => {
         ];
 
   return { data: data?.data, defaultPie: defaultPie, billsData: bd?.innerData };
+};
+
+export const DateRange = () => {
+  const { date } = useSelector((state) => state.uSearch);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const uploadData = (e, fieldName) => {
+    const newValue = e;
+    if (fieldName === "date") {
+      const rewordValue = JSON.parse(newValue);
+      navigate(`?start=${rewordValue.start}&&end=${rewordValue.end}`);
+    } else {
+      navigate(`?${fieldName}=${newValue}`);
+    }
+    if (fieldName === "date")
+      return dispatch(acGetNewData(fieldName, JSON.parse(newValue)));
+    const time = {
+      start: date?.start,
+      end: date?.end,
+    };
+    if (fieldName === "start" || fieldName === "end") {
+      time[fieldName] = newValue;
+      dispatch(acGetNewData("date", time));
+    } else {
+      dispatch(acGetNewData(fieldName, newValue));
+    }
+  };
+  return (
+    <label className="df aic" style={{ gap: "5px" }}>
+      {window.innerWidth > 768 ? (
+        <RangePicker
+          defaultValue={[dayjs(date.start), dayjs(date.end)]}
+          aria-label="select data from to end"
+          onChange={(date, dateString) =>
+            uploadData(
+              JSON.stringify({
+                start: dateString?.[0],
+                end: dateString?.[1],
+              }),
+              "date"
+            )
+          }
+        />
+      ) : (
+        <>
+          <DatePicker
+            defaultValue={dayjs(date.start)}
+            aria-label="select data from"
+            onChange={(date, dateString) => uploadData(dateString, "start")}
+          />{" "}
+          <CgArrowsExchange style={{ color: "#eee" }} />{" "}
+          <DatePicker
+            defaultValue={dayjs(date.end)}
+            aria-label="select data to"
+            onChange={(date, dateString) => uploadData(dateString, "end")}
+          />
+        </>
+      )}
+    </label>
+  );
 };

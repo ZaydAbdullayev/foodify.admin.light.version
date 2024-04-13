@@ -1,8 +1,0 @@
-.order-report > :last-child,
-.or-rp > :last-child {
-  font-size: var(--fs5);
-}
-
-.or-rp > :nth-child(3) {
-  text-transform: uppercase;
-}
