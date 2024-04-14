@@ -4,22 +4,18 @@ import { Tooltip as Tt } from "antd";
 import { useNavigate } from "react-router-dom";
 import AnimatedNumber from "animated-number-react";
 import { CalculateTotalQuantity } from "../../service/calc.service";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
+import { ResponsiveContainer, CartesianGrid } from "recharts";
 
-export const DonutChart = ({ data, billsData }) => {
+export const DonutChart = ({ data, billsData, short, hint, tl = null, ty }) => {
   const [activeI, setActiveI] = React.useState(null);
   const navigate = useNavigate();
 
-  const total = CalculateTotalQuantity(data, "value");
-  const totalp = CalculateTotalQuantity(billsData, "total");
+  console.log("donut-data", data);
+
+  const total = CalculateTotalQuantity(data, "amount") || 1;
+  const totalp = CalculateTotalQuantity(billsData, hint) || data?.[0]?.amount;
+  console.log("totalp", hint, totalp);
   const formatValue = (value) => {
     return value
       .toFixed(0)
@@ -29,15 +25,20 @@ export const DonutChart = ({ data, billsData }) => {
 
   return (
     <div className="donut-chart-container">
-      <svg className="donut-chart" width="400" height="400">
+      <svg
+        className={`donut-chart` + (data?.length === 1 && " once")}
+        width="400"
+        height="400"
+        style={{ background: data?.length === 1 ? data[0]?.cl : "" }}>
         {data?.map((slice, index) => {
           const startAngle =
             index === 0
               ? 0
               : data
                   .slice(0, index)
-                  .reduce((acc, curr) => acc + (curr.value / total) * 360, 0);
-          const endAngle = startAngle + (slice.value / total) * 360;
+                  .reduce((acc, curr) => acc + (curr.amount / total) * 360, 0);
+          const endAngle =
+            startAngle + ((slice.amount || 0) / (total || 1)) * 360;
 
           const formatValue = (value) => {
             if (typeof value === "number") {
@@ -48,7 +49,7 @@ export const DonutChart = ({ data, billsData }) => {
 
           return (
             <Tt
-              title={`${slice?.type} - ${formatValue(slice?.value)}`}
+              title={`${slice?.[ty]} - ${formatValue(slice?.amount)}`}
               color={slice?.cl}
               key={`${slice?.cl}_${index}`}
               placement={slice?.direction}>
@@ -64,7 +65,7 @@ export const DonutChart = ({ data, billsData }) => {
                     },${
                     200 + Math.sin(((startAngle - 90) * Math.PI) / 180) * 150
                   }
-                    A 150,150 0 ${slice.value / total > 0.5 ? 1 : 0},1 ${
+                    A 150,150 0 ${slice.amount / total > 0.5 ? 1 : 0},1 ${
                     200 + Math.cos(((endAngle - 90) * Math.PI) / 180) * 150
                   },${200 + Math.sin(((endAngle - 90) * Math.PI) / 180) * 150}
                     Z
@@ -83,13 +84,19 @@ export const DonutChart = ({ data, billsData }) => {
           navigate("/bills-report");
           setActiveI(null);
         }}>
-        <span>
-          🧾{" "}
-          <AnimatedNumber value={billsData?.length} formatValue={formatValue} />
-          ta
-        </span>
+        {!short && (
+          <span>
+            🧾{" "}
+            <AnimatedNumber
+              value={billsData?.length}
+              formatValue={formatValue}
+            />
+            ta
+          </span>
+        )}
         <small>
-          💵 <AnimatedNumber value={totalp} formatValue={formatValue} />
+          💵{" "}
+          <AnimatedNumber value={tl ? tl : totalp} formatValue={formatValue} />
         </small>
       </label>
     </div>

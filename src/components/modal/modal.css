@@ -27,11 +27,7 @@
 
 .u_modal_box {
   position: relative;
-  width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .u_modal_box > i {
@@ -48,9 +44,6 @@
   width: 100%;
   max-height: 500px;
   padding: 2% 2% 3%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: var(--gap6);
   background: #fff;
   border-radius: 20px;
@@ -60,10 +53,14 @@
   overflow-x: auto;
 }
 
-.u_modal.dark-mode {
+.u_modal.dark-mode,
+.u_modal.dark-color-mode {
   background: #454545;
   color: #fff;
-  box-shadow: rgba(54, 207, 202, 0.37) 0px 1px 4px;
+}
+
+.u_modal.dark-color-mode {
+  box-shadow: rgba(183, 187, 187, 0.37) 0px 1px 4px;
 }
 
 .u_modal > p {
@@ -75,7 +72,7 @@
   height: var(--unmh);
   padding: 0 3%;
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 5px;
   background: #eee;
   font-size: var(--fs6);
   letter-spacing: 1px;
@@ -100,11 +97,18 @@
   letter-spacing: 1px;
 }
 
-.u_modal.dark-mode > :where(select, input, label),
-.u_modal > label > :where(input, select) {
+.u_modal.dark-mode > :where(select, input),
+.u_modal.dark-mode > label > :where(input, select),
+.u_modal.u_modal.dark-color-mode > :where(input, select),
+.u_modal.u_modal.dark-color-mode > label > :where(input, select) {
   background: #454545;
   color: #fff;
   border: 1px solid #36cfc9;
+}
+
+.u_modal.u_modal.dark-color-mode > :where(input, select),
+.u_modal.u_modal.dark-color-mode > label > :where(input, select) {
+  border: 1px solid #9e9e9e;
 }
 
 .u_modal > select > option {
@@ -121,7 +125,7 @@
   height: var(--unmh);
   padding: 0 3%;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   background: #787aff;
   color: #fff;
   font-size: var(--fs6);
@@ -129,6 +133,10 @@
 
 .u_modal.dark-mode > button {
   background: #36cfc9;
+}
+
+.u_modal.u_modal.dark-color-mode > button {
+  background: #9e9e9e;
 }
 
 .u_modal > button:active {
@@ -141,9 +149,6 @@
   right: 5px;
   width: 20px;
   height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border-radius: 50%;
   background: #d12c2c;
   color: #fff;

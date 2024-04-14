@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./navbar.css";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
@@ -8,18 +8,20 @@ import { acSearch } from "../../redux/search";
 import { acMedia } from "../../redux/media";
 import { UniversalFilterBox } from "../filter/filter";
 import { acOpenUModal } from "../../redux/u-modal";
+import { Dropdown } from "antd";
 // import { setRelease } from "../../redux/deleteFoods";
 // import { notification } from "antd";
 
 // import { BiEdit, BiPlus } from "react-icons/bi";
 // import { MdDelete } from "react-icons/md";
-import { MdTableBar } from "react-icons/md";
 import { BsSearch } from "react-icons/bs";
 import { FaBell } from "react-icons/fa";
 import default_img from "../../assets/images/default-img.png";
 import logo from "../../assets/images/logo.png";
 import addOrder from "../../assets/images/add_order.png";
 import { SlArrowLeft } from "react-icons/sl";
+import { MdTableBar, MdOutlineTransferWithinAStation } from "react-icons/md";
+import { FcSafe } from "react-icons/fc";
 
 export const Navbar = () => {
   const user = JSON.parse(localStorage.getItem("user")) || [];
@@ -34,6 +36,42 @@ export const Navbar = () => {
   const location = useLocation();
   // const delDocuments = useSelector((state) => state.delRouter);
   // const [api, contextHolder] = notification.useNotification();
+
+  const items = [
+    {
+      label: "1st menu item",
+      key: "1st menu item",
+      icon: <FcSafe />,
+    },
+    {
+      label: "2nd menu item",
+      key: "2nd menu item",
+      icon: <FcSafe />,
+    },
+    {
+      label: "3rd menu item",
+      key: "3rd menu item",
+      icon: <FcSafe />,
+      danger: true,
+    },
+    {
+      label: "4rd menu item",
+      key: "4rd menu item",
+      icon: <FcSafe />,
+      danger: true,
+      disabled: true,
+    },
+  ];
+  const [activeCash, setActiveCash] = useState(items[0]?.key);
+  const handleMenuClick = (e) => {
+    console.log("click", e);
+    setActiveCash(e.key);
+  };
+
+  const menuProps = {
+    items,
+    onClick: handleMenuClick,
+  };
 
   const openModal = () => {
     dispatch(acOpenMadal());
@@ -167,6 +205,13 @@ export const Navbar = () => {
             </button>
           </figure>
         </div>
+        <Dropdown.Button
+          menu={menuProps}
+          style={{ width: "100%" }}
+          placement="bottom"
+          icon={<MdOutlineTransferWithinAStation />}>
+          {activeCash}
+        </Dropdown.Button>
         <ul>
           <Link to="/" aria-label="Ma'lumotlarim">
             Ma'lumotlarim

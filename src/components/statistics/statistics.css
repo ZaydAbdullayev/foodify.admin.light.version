@@ -167,6 +167,10 @@
 .donut-chart {
   transform: rotate(-90deg);
   transform-origin: center;
+  border-radius: 50%;
+}
+.donut-chart.once {
+  transform: rotate(-90deg) scale(0.85);
 }
 
 .donut-chart-container path {

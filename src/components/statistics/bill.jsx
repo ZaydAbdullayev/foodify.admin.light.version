@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
 import { LineChartC } from "./statistics";
 import { Collapse, theme } from "antd";
+import { useFetchDataQuery } from "../../service/fetch.service";
 
 import { IoIosArrowForward } from "react-icons/io";
 import { DonutChart } from "./statistics";
@@ -22,7 +23,7 @@ export const BillsReport = () => {
   return (
     <div className="w100 df flc bills-report">
       <div className="w100 df aic jcc bills-report-header">
-        <DonutChart data={defaultPie} billsData={billsData} />
+        <DonutChart data={defaultPie} billsData={billsData} hint={"total"} />
         <div className="df flc item-info">
           {data?.every((item) => item?.value === 0) ? (
             <p>
@@ -192,6 +193,13 @@ export const BillReportById = () => {
 };
 
 export const StatisticsExpenses = () => {
+  const user = JSON?.parse(localStorage?.getItem("user"))?.user || {};
+  const { date } = useSelector((state) => state.uSearch);
+  const { data: e = [] } = useFetchDataQuery({
+    url: `/get/expenseTransactions/${user?.id}/${date?.start}/${date?.end}`,
+    tags: ["report"],
+  });
+  console.log("e", e?.data);
   const { data = [], billsData = [], defaultPie } = DataBill();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -213,21 +221,27 @@ export const StatisticsExpenses = () => {
   return (
     <div className="w100 df flc bills-report">
       <div className="w100 df aic jcc bills-report-header">
-        <DonutChart data={defaultPie} billsData={billsData} />
+        <DonutChart
+          data={e?.data}
+          billsData={billsData}
+          hint={"amount"}
+          short={true}
+          type="name"
+        />
         <div className="df flc item-info">
-          {data?.every((item) => item?.value === 0) ? (
+          {e?.data?.every((item) => item?.amount === 0) ? (
             <p>
               <GoDotFill style={{ color: "#353535" }} />
               <span>Ma'lumot yo'q</span>
             </p>
           ) : (
-            data?.map((item) => {
+            e?.data?.map((item, ind) => {
               return (
                 <p
-                  key={`${item?.type}_${item?.id}`}
-                  style={{ opacity: item?.value <= 0 ? 0.2 : 1 }}>
+                  key={`${item?.name}_${ind}`}
+                  style={{ opacity: item?.amount <= 0 ? 0.2 : 1 }}>
                   <GoDotFill style={{ color: item?.cl }} />
-                  <b>{item?.type}</b>
+                  <b>{item?.name}</b>
                 </p>
               );
             })
@@ -235,7 +249,7 @@ export const StatisticsExpenses = () => {
         </div>
       </div>
       <div className="w100 df aic bills-report-box">
-        {sd?.map((expense) => {
+        {e?.data?.map((expense) => {
           return (
             <div
               className="df aic jcsb bills-item"
@@ -246,7 +260,7 @@ export const StatisticsExpenses = () => {
               <big>{expense?.name}</big>
               <big>
                 <NumericFormat
-                  value={expense?.value}
+                  value={expense?.amount}
                   displayType="text"
                   thousandSeparator={","}
                 />
@@ -262,11 +276,208 @@ export const StatisticsExpenses = () => {
   );
 };
 
+const ds = [
+  {
+    amount: 2294713,
+    cl: "#0088FE",
+    direction: "top",
+    type: "To`langan",
+  },
+];
+
 export const StatisticsIncome = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(acNavStatus([0]));
+  }, [dispatch]);
+
+  const ds = [
+    {
+      type: "Satuvdan kelgan pul",
+      transactions: [
+        {
+          name: "Plastik kartadan",
+          details: [
+            {
+              id: "1",
+              name: "Kassir",
+              date: "2021-09-10, 12:00",
+              type: "order-payment",
+              group: "",
+              user: "Kassir",
+              payment_type: "credit card",
+              orderNumber: "A1",
+              price: 245534,
+              description: "lorem ipsum dolor sit amet",
+            },
+            {
+              id: "1",
+              name: "Owner",
+              date: "2021-09-10, 12:00",
+              type: "order-payment",
+              group: "",
+              user: "owner",
+              payment_type: "credit card",
+              orderNumber: "B1",
+              price: 1445534,
+              description: "lorem ipsum dolor sit amet",
+            },
+          ],
+        },
+        {
+          name: "Naqd puldan",
+          details: [
+            {
+              id: "1",
+              name: "Kassir",
+              date: "2021-09-10, 12:00",
+              type: "order-payment",
+              group: "",
+              user: "Kassir",
+              payment_type: "cash",
+              orderNumber: "C5",
+              price: 245534,
+              description: "lorem ipsum dolor sit amet",
+            },
+            {
+              id: "1",
+              name: "Owner",
+              date: "2021-09-10, 12:00",
+              type: "order-payment",
+              group: "",
+              user: "owner",
+              payment_type: "cash",
+              orderNumber: "A6",
+              price: 1445534,
+              description: "lorem ipsum dolor sit amet",
+            },
+          ],
+        },
+        {
+          name: "Pul o'tkazmasi",
+          details: [
+            {
+              id: "1",
+              name: "Kassir",
+              date: "2021-09-10, 12:00",
+              type: "order-payment",
+              group: "",
+              user: "Kassir",
+              payment_type: "viaApp",
+              orderNumber: "A10",
+              price: 245534,
+              description: "lorem ipsum dolor sit amet",
+            },
+            {
+              id: "1",
+              name: "Owner",
+              date: "2021-09-10, 12:00",
+              type: "order-payment",
+              group: "",
+              user: "owner",
+              payment_type: "viaApp",
+              orderNumber: "B8",
+              price: 1445534,
+              description: "lorem ipsum dolor sit amet",
+            },
+          ],
+        },
+      ],
+      other_income: [
+        {
+          name: "Plastik kartadan",
+          details: [
+            {
+              id: "1",
+              name: "Kassir",
+              date: "2021-09-10, 12:00",
+              type: "order-payment",
+              group: "",
+              user: "Kassir",
+              payment_type: "credit card",
+              orderNumber: "A1",
+              price: 245534,
+              description: "lorem ipsum dolor sit amet",
+            },
+            {
+              id: "1",
+              name: "Owner",
+              date: "2021-09-10, 12:00",
+              type: "order-payment",
+              group: "",
+              user: "owner",
+              payment_type: "credit card",
+              orderNumber: "B1",
+              price: 1445534,
+              description: "lorem ipsum dolor sit amet",
+            },
+          ],
+        },
+        {
+          name: "Naqd puldan",
+          details: [
+            {
+              id: "1",
+              name: "Kassir",
+              date: "2021-09-10, 12:00",
+              type: "order-payment",
+              group: "",
+              user: "Kassir",
+              payment_type: "cash",
+              orderNumber: "C5",
+              price: 245534,
+              description: "lorem ipsum dolor sit amet",
+            },
+            {
+              id: "1",
+              name: "Owner",
+              date: "2021-09-10, 12:00",
+              type: "order-payment",
+              group: "",
+              user: "owner",
+              payment_type: "cash",
+              orderNumber: "A6",
+              price: 1445534,
+              description: "lorem ipsum dolor sit amet",
+            },
+          ],
+        },
+        {
+          name: "Pul o'tkazmasi",
+          details: [
+            {
+              id: "1",
+              name: "Kassir",
+              date: "2021-09-10, 12:00",
+              type: "order-payment",
+              group: "",
+              user: "Kassir",
+              payment_type: "viaApp",
+              orderNumber: "A10",
+              price: 245534,
+              description: "lorem ipsum dolor sit amet",
+            },
+            {
+              id: "1",
+              name: "Owner",
+              date: "2021-09-10, 12:00",
+              type: "order-payment",
+              group: "",
+              user: "owner",
+              payment_type: "viaApp",
+              orderNumber: "B8",
+              price: 1445534,
+              description: "lorem ipsum dolor sit amet",
+            },
+          ],
+        },
+      ],
+    },
+  ];
   return (
     <div className="w100 df flc full_analystic">
       <div className="w100 df flc full_analystic-header">
-        <p className="w100 df aic jcsb">
+        <div className="w100 df aic jcsb">
           <span className="df flc">
             <small style={{ color: "#a1a1a1" }}>Umumiy summa</small>
             <NumericFormat
@@ -276,7 +487,7 @@ export const StatisticsIncome = () => {
             />
           </span>
           {DateRange()}
-        </p>
+        </div>
         <label className="w100 df aic" style={{ gap: "var(--gap3)" }}>
           <p className="df aic" style={{ gap: "5px" }}>
             <GoDotFill style={{ color: "#80ed99" }} />
@@ -296,11 +507,16 @@ export const StatisticsIncome = () => {
 };
 
 export const StatisticDetails = () => {
+  // const bills = useSelector((state) => state?.activeB);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(acNavStatus([0]));
+  }, [dispatch]);
   const getItems = (panelStyle) => [
     {
       key: "1",
       label: (
-        <label className=" df aic jcsb dropdown-label">
+        <span className=" df aic jcsb dropdown-label">
           <span className="df flc">
             Ecommerce{" "}
             <small style={{ color: "#aaa8" }}>04.04.2024, 15:05</small>
@@ -310,10 +526,10 @@ export const StatisticDetails = () => {
             displayType="text"
             thousandSeparator={","}
           />
-        </label>
+        </span>
       ),
       children: (
-        <p class="w100 df flc dropdown-list">
+        <p className="w100 df flc dropdown-list">
           <p>
             <span>title</span> <span>value</span>
           </p>
@@ -336,7 +552,7 @@ export const StatisticDetails = () => {
     {
       key: "2 ",
       label: (
-        <label className=" df aic jcsb dropdown-label">
+        <span className=" df aic jcsb dropdown-label">
           <span className="df flc">
             Ecommerce{" "}
             <small style={{ color: "#aaa8" }}>04.04.2024, 15:05</small>
@@ -346,10 +562,10 @@ export const StatisticDetails = () => {
             displayType="text"
             thousandSeparator={","}
           />
-        </label>
+        </span>
       ),
       children: (
-        <p class="w100 df flc dropdown-list">
+        <p className="w100 df flc dropdown-list">
           <p>
             <span>title</span> <span>value</span>
           </p>
@@ -372,7 +588,7 @@ export const StatisticDetails = () => {
     {
       key: "3",
       label: (
-        <label className=" df aic jcsb dropdown-label">
+        <span className=" df aic jcsb dropdown-label">
           <span className="df flc">
             Ecommerce{" "}
             <small style={{ color: "#aaa8" }}>04.04.2024, 15:05</small>
@@ -382,10 +598,10 @@ export const StatisticDetails = () => {
             displayType="text"
             thousandSeparator={","}
           />
-        </label>
+        </span>
       ),
       children: (
-        <p class="w100 df flc dropdown-list">
+        <p className="w100 df flc dropdown-list">
           <p>
             <span>title</span> <span>value</span>
           </p>

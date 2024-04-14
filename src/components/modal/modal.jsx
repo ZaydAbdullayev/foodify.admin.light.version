@@ -265,9 +265,9 @@ const UniversalModal = ({
           ? `u_modal_container ${pay && "open"}`
           : `u_modal_container ${open && "open"}`
       }>
-      <div className="u_modal_box">
+      <div className="w100 df aic jcc u_modal_box">
         <form
-          className={`u_modal ${
+          className={`df flc aic u_modal ${
             darkMode ? "dark-mode" : color ? "dark-color-mode" : ""
           }`}
           onSubmit={fetchValues}>
@@ -277,7 +277,7 @@ const UniversalModal = ({
             {loading ? <LoadingBtn /> : "Qo'shish"}
           </button>
         </form>
-        <i onClick={() => setClose()} aria-label="close modal"></i>
+        <i onClick={() => setClose()} aria-label="df aic jcc close modal"></i>
       </div>
     </div>
   );

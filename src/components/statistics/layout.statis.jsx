@@ -80,9 +80,14 @@ export const Statistics = memo(() => {
         </div>
       </div>
       <div className="df aic jcc statistic_product">
-        <DonutChart data={defaultPie} billsData={billsData} />
+        <DonutChart
+          data={defaultPie}
+          billsData={billsData}
+          hint="total"
+          ty="type"
+        />
         <div className="df flc item-info">
-          {data?.every((item) => item?.value === 0) ? (
+          {data?.every((item) => item?.amount === 0) ? (
             <p>
               <GoDotFill style={{ color: "#353535" }} />
               <span>Ma'lumot yo'q</span>
@@ -92,7 +97,7 @@ export const Statistics = memo(() => {
               return (
                 <p
                   key={`${item?.type}_${item?.id}`}
-                  style={{ opacity: item?.value <= 0 ? 0.2 : 1 }}>
+                  style={{ opacity: item?.amount <= 0 ? 0.2 : 1 }}>
                   <GoDotFill style={{ color: item?.cl }} />
                   <b>{item?.type}</b>
                 </p>
@@ -162,10 +167,7 @@ export const DataBill = () => {
   const defaultPie =
     bd?.innerData?.length > 0
       ? data?.data
-      : [
-          { type: "Malumot yo'q", direction: "top", cl: "#333", value: 360 },
-          { type: "Malumot yo'q", direction: "top", cl: "#333", value: 360 },
-        ];
+      : [{ type: "Malumot yo'q", direction: "top", cl: "#333", amount: 360 }];
 
   return { data: data?.data, defaultPie: defaultPie, billsData: bd?.innerData };
 };

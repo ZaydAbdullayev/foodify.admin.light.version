@@ -243,6 +243,10 @@
   background: #17b1ee80;
 }
 
+:where(.css-dev-only-do-not-override-1faqezx).ant-space-compact-block >button{
+  width: 100%;
+}
+
 .nav_menu {
   display: none;
 }
