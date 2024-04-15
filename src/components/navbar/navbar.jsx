@@ -5,10 +5,10 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import { acOpenMadal, acCloseModal } from "../../redux/modal";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { acSearch } from "../../redux/search";
-import { acMedia } from "../../redux/media";
 import { UniversalFilterBox } from "../filter/filter";
 import { acOpenUModal } from "../../redux/u-modal";
 import { Dropdown } from "antd";
+import { useFetchDataQuery } from "../../service/fetch.service";
 // import { setRelease } from "../../redux/deleteFoods";
 // import { notification } from "antd";
 
@@ -26,50 +26,35 @@ import { FcSafe } from "react-icons/fc";
 export const Navbar = () => {
   const user = JSON.parse(localStorage.getItem("user")) || [];
   const dep = JSON.parse(localStorage.getItem("department")) || [];
+  const { data: cx = [] } = useFetchDataQuery({
+    url: `get/cashbox/${user?.user?.id}`,
+    tags: ["cashbox"],
+  });
+
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const name = user?.user?.username?.split("_")?.join(" ");
   const w_name = user?.user?.name?.split("_")?.join(" ");
   const status = useSelector((state) => state.status);
-  const media = useSelector((state) => state.media);
   const location = useLocation();
   // const delDocuments = useSelector((state) => state.delRouter);
   // const [api, contextHolder] = notification.useNotification();
 
-  const items = [
-    {
-      label: "1st menu item",
-      key: "1st menu item",
-      icon: <FcSafe />,
-    },
-    {
-      label: "2nd menu item",
-      key: "2nd menu item",
-      icon: <FcSafe />,
-    },
-    {
-      label: "3rd menu item",
-      key: "3rd menu item",
-      icon: <FcSafe />,
-      danger: true,
-    },
-    {
-      label: "4rd menu item",
-      key: "4rd menu item",
-      icon: <FcSafe />,
-      danger: true,
-      disabled: true,
-    },
-  ];
-  const [activeCash, setActiveCash] = useState(items[0]?.key);
+  const items = cx?.data?.map((item) => ({
+    key: item?.name,
+    label: item?.name,
+    icon: <FcSafe />,
+  }));
+  const [activeCash, setActiveCash] = useState(items?.[0]?.key);
   const handleMenuClick = (e) => {
     console.log("click", e);
     setActiveCash(e.key);
+    JSON?.stringify(localStorage.setItem("cashbox", e.key));
   };
 
   const menuProps = {
-    items,
+    items: items || [],
     onClick: handleMenuClick,
   };
 
@@ -105,7 +90,7 @@ export const Navbar = () => {
   };
 
   return (
-    <div className="navbar">
+    <div className="w100 df aic navbar">
       <span
         className="backword"
         onClick={() => {
@@ -117,9 +102,7 @@ export const Navbar = () => {
         }}>
         <SlArrowLeft />
       </span>
-      <div
-        className="nav_menu"
-        onClick={() => dispatch(acMedia(media ? false : true))}>
+      <div className="nav_menu">
         <img src={logo} alt="" />
       </div>
       {status?.includes(0) && (
@@ -144,7 +127,12 @@ export const Navbar = () => {
           <UniversalFilterBox />
           {location?.search?.split("title=").length && (
             <span className="page-title">
-              {location?.search?.split("title=")[1]?.split("%20").join(" ")}
+              {location?.search
+                ?.split("title=")[1]
+                ?.split("%E2%84")
+                .join("№")
+                .split("%20")
+                .join(" ")}
             </span>
           )}
         </form>
@@ -164,7 +152,8 @@ export const Navbar = () => {
         </form>
       )}
 
-      {status?.length === 0 && <i></i>}
+      <i className="line-block"></i>
+
       <div className="profile">
         {["owner", "manager", "cashier"].includes(dep) && (
           <span onClick={() => navigate("/orders/tables")}>
@@ -184,6 +173,12 @@ export const Navbar = () => {
           aria-label="target nothification page">
           <FaBell />
         </span>
+        <Dropdown.Button
+          menu={menuProps}
+          placement="bottom"
+          icon={<MdOutlineTransferWithinAStation />}>
+          {activeCash}
+        </Dropdown.Button>
         <img
           src={user?.user?.img || default_img}
           alt="user_photo"
@@ -194,7 +189,7 @@ export const Navbar = () => {
       <div
         className={modal ? "modal_box" : "modal_box close_modal"}
         onMouseLeave={closeModal}>
-        <div className="user">
+        <div className="df aic jcsb user">
           <b>{dep === "owner" ? name : w_name}</b>
           <figure>
             <img src={user?.user?.img || default_img} alt="user_photo" />
@@ -205,13 +200,6 @@ export const Navbar = () => {
             </button>
           </figure>
         </div>
-        <Dropdown.Button
-          menu={menuProps}
-          style={{ width: "100%" }}
-          placement="bottom"
-          icon={<MdOutlineTransferWithinAStation />}>
-          {activeCash}
-        </Dropdown.Button>
         <ul>
           <Link to="/" aria-label="Ma'lumotlarim">
             Ma'lumotlarim

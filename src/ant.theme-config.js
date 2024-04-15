@@ -28,5 +28,8 @@ export const themeConfig = {
       itemSelectedBg: "#444",
       trackBg: "#333",
     },
+    Dropdown: {
+      zIndexPopup: 9999,
+    },
   },
 };

@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from "react";
 import "./statistics.css";
-import { DonutChart, LineChartC } from "./statistics";
+import { DonutChart } from "./statistics";
 import { useFetchDataQuery } from "../../service/fetch.service";
 import { useDispatch, useSelector } from "react-redux";
 import { acNavStatus } from "../../redux/navbar.status";
@@ -20,8 +20,7 @@ import { CgArrowsExchange } from "react-icons/cg";
 const { RangePicker } = DatePicker;
 
 export const Statistics = memo(() => {
-  const { data, defaultPie, billsData } = DataBill();
-  const { date } = useSelector((state) => state.uSearch);
+  const { data, defaultPie, billsData, sd_v } = DataBill();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
@@ -41,7 +40,10 @@ export const Statistics = memo(() => {
           <IoWallet />{" "}
           <small>
             <small>
-              <AnimatedNumber value={23344443} formatValue={formatValue} />
+              <AnimatedNumber
+                value={sd_v?.balance || 0}
+                formatValue={formatValue}
+              />
             </small>
           </small>
         </span>
@@ -69,7 +71,7 @@ export const Statistics = memo(() => {
               <div className="details">
                 <div className="number">
                   <AnimatedNumber
-                    value={item.value || 23344443}
+                    value={sd_v?.[item?.type] || 0}
                     formatValue={formatValue}
                   />
                 </div>
@@ -113,7 +115,7 @@ export const Statistics = memo(() => {
 const statsData = [
   {
     id: 3,
-    type: "incomes",
+    type: "income",
     label: "Kirimlar",
     icon: <FaMoneyBillAlt />,
     extra: <LuTrendingDown />,
@@ -122,7 +124,7 @@ const statsData = [
   },
   {
     id: 2,
-    type: "expenses",
+    type: "expense",
     label: "Chiqimlar",
     icon: <FaMoneyBillAlt />,
     extra: <LuTrendingUp />,
@@ -131,7 +133,7 @@ const statsData = [
   },
   {
     id: 4,
-    type: "debt",
+    type: "debts",
     label: "Qarzlar",
     icon: <FcDebt />,
     bg: "purple",
@@ -139,7 +141,7 @@ const statsData = [
   },
   {
     id: 5,
-    type: "credit",
+    type: "credits",
     label: "Bank kartalari",
     icon: <GiCardExchange />,
     bg: "blue",
@@ -159,7 +161,7 @@ export const DataBill = () => {
     tags: ["report"],
   });
 
-  const { data: iedc = [] } = useFetchDataQuery({
+  const { data: st_v = [] } = useFetchDataQuery({
     url: `/get/moneyInfo/${user?.id}/${date?.start}/${date?.end}`,
     tags: ["report"],
   });
@@ -167,9 +169,14 @@ export const DataBill = () => {
   const defaultPie =
     bd?.innerData?.length > 0
       ? data?.data
-      : [{ type: "Malumot yo'q", direction: "top", cl: "#333", amount: 360 }];
+      : [{ type: "Malumot yo'q", cl: "#333", amount: 0 }];
 
-  return { data: data?.data, defaultPie: defaultPie, billsData: bd?.innerData };
+  return {
+    data: data?.data,
+    defaultPie: defaultPie,
+    billsData: bd?.innerData,
+    sd_v: st_v?.data,
+  };
 };
 
 export const DateRange = () => {

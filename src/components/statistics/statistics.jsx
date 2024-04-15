@@ -10,11 +10,13 @@ import { ResponsiveContainer, CartesianGrid } from "recharts";
 export const DonutChart = ({ data, billsData, short, hint, tl = null, ty }) => {
   const [activeI, setActiveI] = React.useState(null);
   const navigate = useNavigate();
+  const df_Pie =
+    data?.length > 0 ? data : [{ type: "Malumot yo'q", cl: "#333", amount: 0 }];
 
   console.log("donut-data", data);
 
   const total = CalculateTotalQuantity(data, "amount") || 1;
-  const totalp = CalculateTotalQuantity(billsData, hint) || data?.[0]?.amount;
+  const totalp = CalculateTotalQuantity(df_Pie, hint) || data?.[0]?.amount;
   console.log("totalp", hint, totalp);
   const formatValue = (value) => {
     return value
@@ -22,6 +24,18 @@ export const DonutChart = ({ data, billsData, short, hint, tl = null, ty }) => {
       ?.toString()
       ?.replace(/\d(?=(\d{3})+$)/g, "$&,");
   };
+
+  const drs = [
+    "right",
+    "left",
+    "bottom",
+    "rightTop",
+    "leftTop",
+    "rightBottom",
+    "bottomLeft",
+    "bottomRight",
+    "leftBottom",
+  ];
 
   return (
     <div className="donut-chart-container">
@@ -52,7 +66,7 @@ export const DonutChart = ({ data, billsData, short, hint, tl = null, ty }) => {
               title={`${slice?.[ty]} - ${formatValue(slice?.amount)}`}
               color={slice?.cl}
               key={`${slice?.cl}_${index}`}
-              placement={slice?.direction}>
+              placement={drs?.[index]}>
               <g
                 className={`${
                   activeI !== index && activeI !== null ? "passive" : "active"
@@ -96,57 +110,18 @@ export const DonutChart = ({ data, billsData, short, hint, tl = null, ty }) => {
         )}
         <small>
           💵{" "}
-          <AnimatedNumber value={tl ? tl : totalp} formatValue={formatValue} />
+          <AnimatedNumber
+            value={totalp - data?.[activeI]?.amount}
+            formatValue={formatValue}
+          />
         </small>
       </label>
     </div>
   );
 };
 
-const data = [
-  {
-    name: "00:00",
-    incomes: 2400,
-    other_incomes: 2400,
-  },
-  {
-    name: "03:30",
-    incomes: 1398,
-    other_incomes: 2210,
-  },
-  {
-    name: "07:00",
-    incomes: 9800,
-    other_incomes: 2290,
-  },
-  {
-    name: "10:30",
-    incomes: 3908,
-    other_incomes: 2000,
-  },
-  {
-    name: "14:00",
-    incomes: 4800,
-    other_incomes: 2181,
-  },
-  {
-    name: "17:30",
-    incomes: 3800,
-    other_incomes: 2500,
-  },
-  {
-    name: "21:00",
-    incomes: 4300,
-    other_incomes: 2100,
-  },
-  {
-    name: "23:59",
-    incomes: 4800,
-    other_incomes: 2900,
-  },
-];
 
-export const LineChartC = () => {
+export const LineChartC = ({ data }) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart

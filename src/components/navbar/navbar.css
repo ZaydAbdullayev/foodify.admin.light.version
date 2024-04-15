@@ -4,12 +4,8 @@
 
 .navbar {
   position: relative;
-  width: 100%;
   height: var(--nwh);
   padding: 0 var(--pd3);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   border-bottom: 1px solid #cccccf56;
   background: #454545;
 }
@@ -123,8 +119,6 @@
   filter: invert(100%) sepia(0%) saturate(2%) hue-rotate(150deg)
     brightness(106%) contrast(101%);
   cursor: pointer;
-  /* filter: invert(46%) sepia(27%) saturate(2933%) hue-rotate(216deg)
-    brightness(102%) contrast(101%); */
 }
 
 .profile > img {
@@ -173,17 +167,18 @@
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   gap: 10px;
   transition: all 0.5s ease;
-  z-index: 9999;
+  z-index: 99999;
 }
 
 .close_modal {
   top: -100%;
 }
 
+.line-block{
+  flex: 1;
+}
+
 .user {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 0 4%;
 }
 
@@ -243,8 +238,21 @@
   background: #17b1ee80;
 }
 
-:where(.css-dev-only-do-not-override-1faqezx).ant-space-compact-block >button{
-  width: 100%;
+:where(.css-dev-only-do-not-override-1elae4f).ant-space-compact-block{
+  width: auto;
+}
+
+:where(.css-dev-only-do-not-override-1elae4f).ant-btn-compact-item:not(
+    .ant-btn-compact-last-item
+  ).ant-btn-compact-first-item {
+  display: none;
+}
+
+:where(.css-dev-only-do-not-override-1elae4f).ant-btn-compact-item:not(
+    .ant-btn-compact-first-item
+  ).ant-btn-compact-last-item {
+    border-radius: 5px;
+    border-color: #9397e8;
 }
 
 .nav_menu {
@@ -255,9 +263,10 @@
   height: calc(var(--nwh) - 15px);
   aspect-ratio: 1/1;
   object-fit: cover;
+  background: #353535;
 }
 
-.page-title{
+.page-title {
   font-size: var(--fs4);
   color: #fff;
 }

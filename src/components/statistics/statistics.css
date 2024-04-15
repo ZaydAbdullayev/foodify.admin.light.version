@@ -139,7 +139,8 @@
   font-size: var(--fs5);
 }
 
-.full_analystic {
+.full_analystic,
+.full_analystic-box {
   padding: 2%;
   background: #383838;
   gap: var(--gap6);
@@ -159,6 +160,43 @@
   font-size: var(--fs4);
 }
 
+.full_analystic-box {
+  margin-top: 1%;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--gap2);
+}
+
+._analystic-box-item {
+  width: calc(100% / 2 - (var(--gap2) / 2));
+  color: #fff;
+  background: #282828;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+._analystic-box-item > :where(label, p) {
+  padding: 1.5% 4%;
+  font-size: var(--fs6);
+  border-bottom: 1px solid #494949;
+}
+
+._analystic-box-item > label {
+  gap: var(--gap5);
+}
+
+._analystic-box-item > label > p {
+  flex: 1;
+}
+
+._analystic-box-item > :nth-child(even) {
+  background: #333;
+}
+
+._analystic-box-item > p:last-child {
+  border-bottom: none;
+}
+
 .donut-chart-container {
   position: relative;
   text-align: center;
@@ -170,7 +208,7 @@
   border-radius: 50%;
 }
 .donut-chart.once {
-  transform: rotate(-90deg) scale(0.85);
+  transform: rotate(-90deg) scale(0.8);
 }
 
 .donut-chart-container path {

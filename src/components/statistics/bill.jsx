@@ -15,6 +15,7 @@ import { DataBill, DateRange } from "./layout.statis";
 import { acAddBill } from "../../redux/active";
 import { acNavStatus } from "../../redux/navbar.status";
 import { IoMdArrowDropright } from "react-icons/io";
+import { CalculateTotalQuantity } from "../../service/calc.service";
 
 export const BillsReport = () => {
   const { data = [], billsData = [], defaultPie } = DataBill();
@@ -25,7 +26,7 @@ export const BillsReport = () => {
       <div className="w100 df aic jcc bills-report-header">
         <DonutChart data={defaultPie} billsData={billsData} hint={"total"} />
         <div className="df flc item-info">
-          {data?.every((item) => item?.value === 0) ? (
+          {data?.every((item) => item?.amount === 0) ? (
             <p>
               <GoDotFill style={{ color: "#353535" }} />
               <span>Ma'lumot yo'q</span>
@@ -35,7 +36,7 @@ export const BillsReport = () => {
               return (
                 <p
                   key={`${item?.type}_${item?.id}`}
-                  style={{ opacity: item?.value <= 0 ? 0.2 : 1 }}>
+                  style={{ opacity: item?.amount <= 0 ? 0.2 : 1 }}>
                   <GoDotFill style={{ color: item?.cl }} />
                   <b>{item?.type}</b>
                 </p>
@@ -54,7 +55,9 @@ export const BillsReport = () => {
               className="df flc jcc bills-item"
               onClick={() => {
                 dispatch(acAddBill(bill));
-                navigate(`/one-bill-report/${bill?.id}`);
+                navigate(
+                  `/one-bill-report/${bill?.id}?title=#${bill?.id}%20-%20buyurtma`
+                );
               }}
               key={bill?.id}>
               <div className="bills-item__title">
@@ -103,6 +106,10 @@ export const BillsReport = () => {
 
 export const BillReportById = () => {
   const bills = useSelector((state) => state?.activeB);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(acNavStatus([0]));
+  }, [dispatch]);
   const time = new Date(bills?.receivedAt);
   const close =
     bills?.closed_at !== "0000-00-00" ? new Date(bills?.closed_at) : null;
@@ -113,7 +120,6 @@ export const BillReportById = () => {
   console.log("pd", parsedD, ingD);
   return (
     <div className="w100 df aic flc single-bill-report">
-      <span>#{bills?.id}</span>
       <div className="w100 df aic _bill-info">
         <label>
           <small>Buyurtma raqami</small>
@@ -226,7 +232,7 @@ export const StatisticsExpenses = () => {
           billsData={billsData}
           hint={"amount"}
           short={true}
-          type="name"
+          ty="name"
         />
         <div className="df flc item-info">
           {e?.data?.every((item) => item?.amount === 0) ? (
@@ -258,7 +264,7 @@ export const StatisticsExpenses = () => {
                 navigate(`/statistic-details?title=${expense?.name}`)
               }>
               <big>{expense?.name}</big>
-              <big>
+              <big style={{ color: expense?.cl }}>
                 <NumericFormat
                   value={expense?.amount}
                   displayType="text"
@@ -286,6 +292,12 @@ const ds = [
 ];
 
 export const StatisticsIncome = () => {
+  const user = JSON?.parse(localStorage?.getItem("user"))?.user || {};
+  const { date } = useSelector((state) => state.uSearch);
+  const { data: e = [] } = useFetchDataQuery({
+    url: `/get/incomeFromSales/${user?.id}/${date?.start}/${date?.end}`,
+    tags: ["report"],
+  });
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(acNavStatus([0]));
@@ -474,35 +486,124 @@ export const StatisticsIncome = () => {
       ],
     },
   ];
+  const data = [
+    {
+      name: "00:00",
+      incomes: 2400,
+      other_incomes: 2400,
+    },
+    {
+      name: "03:30",
+      incomes: 1398,
+      other_incomes: 2210,
+    },
+    {
+      name: "07:00",
+      incomes: 9800,
+      other_incomes: 2290,
+    },
+    {
+      name: "10:30",
+      incomes: 3908,
+      other_incomes: 2000,
+    },
+    {
+      name: "14:00",
+      incomes: 4800,
+      other_incomes: 2181,
+    },
+    {
+      name: "17:30",
+      incomes: 3800,
+      other_incomes: 2500,
+    },
+    {
+      name: "21:00",
+      incomes: 4300,
+      other_incomes: 2100,
+    },
+    {
+      name: "23:59",
+      incomes: 4800,
+      other_incomes: 2900,
+    },
+  ];
+
   return (
-    <div className="w100 df flc full_analystic">
-      <div className="w100 df flc full_analystic-header">
-        <div className="w100 df aic jcsb">
-          <span className="df flc">
-            <small style={{ color: "#a1a1a1" }}>Umumiy summa</small>
-            <NumericFormat
-              value={23344443}
-              displayType="text"
-              thousandSeparator={","}
-            />
-          </span>
-          {DateRange()}
+    <>
+      <div className="w100 df flc full_analystic">
+        <div className="w100 df flc full_analystic-header">
+          <div className="w100 df aic jcsb">
+            <span className="df flc">
+              <small style={{ color: "#a1a1a1" }}>Umumiy summa</small>
+              <NumericFormat
+                value={23344443}
+                displayType="text"
+                thousandSeparator={","}
+              />
+            </span>
+            {DateRange()}
+          </div>
+          <label className="w100 df aic" style={{ gap: "var(--gap3)" }}>
+            <p className="df aic" style={{ gap: "5px" }}>
+              <GoDotFill style={{ color: "#80ed99" }} />
+              <span>Chiqimlar</span>
+            </p>
+            <p className="df aic" style={{ gap: "5px" }}>
+              <GoDotFill style={{ color: "#c1121f" }} />
+              <span>Kirimlar</span>
+            </p>
+          </label>
         </div>
-        <label className="w100 df aic" style={{ gap: "var(--gap3)" }}>
-          <p className="df aic" style={{ gap: "5px" }}>
-            <GoDotFill style={{ color: "#80ed99" }} />
-            <span>Chiqimlar</span>
-          </p>
-          <p className="df aic" style={{ gap: "5px" }}>
-            <GoDotFill style={{ color: "#c1121f" }} />
-            <span>Kirimlar</span>
-          </p>
-        </label>
+        <div className="w100 full_analystic-chart">
+          <LineChartC data={data} />
+        </div>
       </div>
-      <div className="w100 full_analystic-chart">
-        <LineChartC />
+      <div className="w100 df  full_analystic-box">
+        {[
+          {
+            label: "Satuvdan kelgan pul",
+            type: "incomeFromSales",
+            cl: "#80ed99",
+          },
+          { label: "Boshqa kelgan pul", type: "other_income", cl: "#c1121f" },
+        ]?.map((label, ind) => {
+          return (
+            <div
+              className="df aic flc _analystic-box-item"
+              key={`${label?.cl}_${ind}`}>
+              <label className="w100 df aic">
+                <p>{label?.label}</p>
+                <NumericFormat
+                  value={CalculateTotalQuantity(
+                    e?.data?.[label.type] || [],
+                    "amount"
+                  )}
+                  displayType="text"
+                  thousandSeparator={","}
+                  style={{ color: label.cl }}
+                />
+                <IoIosArrowForward style={{ color: label.cl }} />
+              </label>
+              {(e?.data?.[label.type] || [])?.map((item, ind) => {
+                return (
+                  <p key={`${item?.type}_${ind}`} className="w100 df aic jcsb">
+                    <small>{item?.type}</small>
+                    <small>
+                      <NumericFormat
+                        value={item?.amount}
+                        displayType="text"
+                        thousandSeparator={","}
+                      />
+                    </small>
+                  </p>
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
-    </div>
+    </>
   );
 };
 
