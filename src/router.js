@@ -45,7 +45,6 @@ export const Router = () => {
   const nothificate = useSelector((state) => state.nothificate);
   const location = useLocation();
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (nothificate) {
       var audioContext = new (window.AudioContext ||

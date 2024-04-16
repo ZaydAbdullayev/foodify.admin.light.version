@@ -40,15 +40,15 @@ export const DonutChart = ({ data, billsData, short, hint, tl = null, ty }) => {
   return (
     <div className="donut-chart-container">
       <svg
-        className={`donut-chart` + (data?.length === 1 && " once")}
+        className={`donut-chart` + (df_Pie?.length === 1 && " once")}
         width="400"
         height="400"
-        style={{ background: data?.length === 1 ? data[0]?.cl : "" }}>
-        {data?.map((slice, index) => {
+        style={{ background: df_Pie?.length === 1 ? df_Pie[0]?.cl : "" }}>
+        {df_Pie?.map((slice, index) => {
           const startAngle =
             index === 0
               ? 0
-              : data
+              : df_Pie
                   .slice(0, index)
                   .reduce((acc, curr) => acc + (curr.amount / total) * 360, 0);
           const endAngle =
@@ -111,7 +111,7 @@ export const DonutChart = ({ data, billsData, short, hint, tl = null, ty }) => {
         <small>
           💵{" "}
           <AnimatedNumber
-            value={totalp - data?.[activeI]?.amount}
+            value={totalp - df_Pie?.[activeI]?.amount}
             formatValue={formatValue}
           />
         </small>
@@ -119,7 +119,6 @@ export const DonutChart = ({ data, billsData, short, hint, tl = null, ty }) => {
     </div>
   );
 };
-
 
 export const LineChartC = ({ data }) => {
   return (

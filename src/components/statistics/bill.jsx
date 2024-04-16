@@ -206,23 +206,16 @@ export const StatisticsExpenses = () => {
     tags: ["report"],
   });
   console.log("e", e?.data);
-  const { data = [], billsData = [], defaultPie } = DataBill();
+  const billsData = (e?.data || []).map((item) => [
+    ...billsData,
+    ...item?.details,
+  ]);
+  console.log("billsData", billsData);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(acNavStatus([0]));
   }, [dispatch]);
-
-  const sd = [
-    {
-      name: "Chiqimlar",
-      value: 23344443,
-    },
-    {
-      name: "Kirimlar",
-      value: 4234334,
-    },
-  ];
 
   return (
     <div className="w100 df flc bills-report">
@@ -232,7 +225,7 @@ export const StatisticsExpenses = () => {
           billsData={billsData}
           hint={"amount"}
           short={true}
-          ty="name"
+          ty=""
         />
         <div className="df flc item-info">
           {e?.data?.every((item) => item?.amount === 0) ? (
@@ -282,15 +275,6 @@ export const StatisticsExpenses = () => {
   );
 };
 
-const ds = [
-  {
-    amount: 2294713,
-    cl: "#0088FE",
-    direction: "top",
-    type: "To`langan",
-  },
-];
-
 export const StatisticsIncome = () => {
   const user = JSON?.parse(localStorage?.getItem("user"))?.user || {};
   const { date } = useSelector((state) => state.uSearch);
@@ -303,189 +287,6 @@ export const StatisticsIncome = () => {
     dispatch(acNavStatus([0]));
   }, [dispatch]);
 
-  const ds = [
-    {
-      type: "Satuvdan kelgan pul",
-      transactions: [
-        {
-          name: "Plastik kartadan",
-          details: [
-            {
-              id: "1",
-              name: "Kassir",
-              date: "2021-09-10, 12:00",
-              type: "order-payment",
-              group: "",
-              user: "Kassir",
-              payment_type: "credit card",
-              orderNumber: "A1",
-              price: 245534,
-              description: "lorem ipsum dolor sit amet",
-            },
-            {
-              id: "1",
-              name: "Owner",
-              date: "2021-09-10, 12:00",
-              type: "order-payment",
-              group: "",
-              user: "owner",
-              payment_type: "credit card",
-              orderNumber: "B1",
-              price: 1445534,
-              description: "lorem ipsum dolor sit amet",
-            },
-          ],
-        },
-        {
-          name: "Naqd puldan",
-          details: [
-            {
-              id: "1",
-              name: "Kassir",
-              date: "2021-09-10, 12:00",
-              type: "order-payment",
-              group: "",
-              user: "Kassir",
-              payment_type: "cash",
-              orderNumber: "C5",
-              price: 245534,
-              description: "lorem ipsum dolor sit amet",
-            },
-            {
-              id: "1",
-              name: "Owner",
-              date: "2021-09-10, 12:00",
-              type: "order-payment",
-              group: "",
-              user: "owner",
-              payment_type: "cash",
-              orderNumber: "A6",
-              price: 1445534,
-              description: "lorem ipsum dolor sit amet",
-            },
-          ],
-        },
-        {
-          name: "Pul o'tkazmasi",
-          details: [
-            {
-              id: "1",
-              name: "Kassir",
-              date: "2021-09-10, 12:00",
-              type: "order-payment",
-              group: "",
-              user: "Kassir",
-              payment_type: "viaApp",
-              orderNumber: "A10",
-              price: 245534,
-              description: "lorem ipsum dolor sit amet",
-            },
-            {
-              id: "1",
-              name: "Owner",
-              date: "2021-09-10, 12:00",
-              type: "order-payment",
-              group: "",
-              user: "owner",
-              payment_type: "viaApp",
-              orderNumber: "B8",
-              price: 1445534,
-              description: "lorem ipsum dolor sit amet",
-            },
-          ],
-        },
-      ],
-      other_income: [
-        {
-          name: "Plastik kartadan",
-          details: [
-            {
-              id: "1",
-              name: "Kassir",
-              date: "2021-09-10, 12:00",
-              type: "order-payment",
-              group: "",
-              user: "Kassir",
-              payment_type: "credit card",
-              orderNumber: "A1",
-              price: 245534,
-              description: "lorem ipsum dolor sit amet",
-            },
-            {
-              id: "1",
-              name: "Owner",
-              date: "2021-09-10, 12:00",
-              type: "order-payment",
-              group: "",
-              user: "owner",
-              payment_type: "credit card",
-              orderNumber: "B1",
-              price: 1445534,
-              description: "lorem ipsum dolor sit amet",
-            },
-          ],
-        },
-        {
-          name: "Naqd puldan",
-          details: [
-            {
-              id: "1",
-              name: "Kassir",
-              date: "2021-09-10, 12:00",
-              type: "order-payment",
-              group: "",
-              user: "Kassir",
-              payment_type: "cash",
-              orderNumber: "C5",
-              price: 245534,
-              description: "lorem ipsum dolor sit amet",
-            },
-            {
-              id: "1",
-              name: "Owner",
-              date: "2021-09-10, 12:00",
-              type: "order-payment",
-              group: "",
-              user: "owner",
-              payment_type: "cash",
-              orderNumber: "A6",
-              price: 1445534,
-              description: "lorem ipsum dolor sit amet",
-            },
-          ],
-        },
-        {
-          name: "Pul o'tkazmasi",
-          details: [
-            {
-              id: "1",
-              name: "Kassir",
-              date: "2021-09-10, 12:00",
-              type: "order-payment",
-              group: "",
-              user: "Kassir",
-              payment_type: "viaApp",
-              orderNumber: "A10",
-              price: 245534,
-              description: "lorem ipsum dolor sit amet",
-            },
-            {
-              id: "1",
-              name: "Owner",
-              date: "2021-09-10, 12:00",
-              type: "order-payment",
-              group: "",
-              user: "owner",
-              payment_type: "viaApp",
-              orderNumber: "B8",
-              price: 1445534,
-              description: "lorem ipsum dolor sit amet",
-            },
-          ],
-        },
-      ],
-    },
-  ];
   const data = [
     {
       name: "00:00",

@@ -119,7 +119,7 @@ export const Home = () => {
     return () => {
       socket.off(params?.s);
     };
-  }, [params?.s]);
+  }, [params?.s, dispatch]);
 
   const orderAccept = (order, ac) => {
     try {
