@@ -242,7 +242,7 @@
   width: auto;
 }
 
-:where(.css-dev-only-do-not-override-1elae4f).ant-btn-compact-item:not(
+.change-cashbox.none-screen :where(.css-dev-only-do-not-override-1elae4f).ant-btn-compact-item:not(
     .ant-btn-compact-last-item
   ).ant-btn-compact-first-item {
   display: none;
@@ -252,7 +252,6 @@
     .ant-btn-compact-first-item
   ).ant-btn-compact-last-item {
     border-radius: 5px;
-    border-color: #9397e8;
 }
 
 .nav_menu {

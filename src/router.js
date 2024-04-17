@@ -32,13 +32,12 @@ import { Result, Button } from "antd";
 import { MobileInvoice } from "./page/mobile/mobile.transaction.jsx";
 import { Chat } from "./page/chat/chat.jsx";
 import audio from "./assets/images/nothification.mp3";
-import {
-  BillReportById,
-  BillsReport,
-  StatisticDetails,
-} from "./components/statistics/bill.jsx";
+import { BillReportById, BillsReport } from "./components/statistics/bill.jsx";
+import { StatisticDetails } from "./components/statistics/bill.jsx";
 import { StatisticsIncome } from "./components/statistics/bill.jsx";
 import { StatisticsExpenses } from "./components/statistics/bill.jsx";
+import { ReportMain } from "./page/reports/reports.jsx";
+import { ReportDetails } from "./page/reports/reports.details.jsx";
 
 export const Router = () => {
   // const dep = useSelector((state) => state.permission);
@@ -117,7 +116,11 @@ export const Router = () => {
             path="update-order/:type/:number/:id/:ProductId/:queue"
             element={<Orders />}
           />
-
+          <Route
+            path="/report/:title/view/:label/:method/:type/:resId"
+            element={<ReportDetails />}
+          />
+          <Route path="report/details" element={<ReportDetails />} />
           {/* ============== pages of the modal ================= */}
           <Route path="add/product" element={<Addproduct />} />
           <Route path="workers/add" element={<AddWorker />} />
@@ -131,6 +134,7 @@ export const Router = () => {
           <Route path="statistic/incomes" element={<StatisticsIncome />} />
           <Route path="statistic-details" element={<StatisticDetails />} />
           <Route path="chat-restaurant-staff" element={<Chat />} />
+          <Route path="all-reports" element={<ReportMain />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>

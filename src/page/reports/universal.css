@@ -1,70 +1,36 @@
-.storage_body_item > :where(label, p) {
-  font-size: var(--fs7);
-  text-align: center;
-  gap: 0;
+.report-conatiner {
+  gap: 5px;
 }
 
-.storage_body_item > p {
-  border-right: 1px solid #eee2;
-}
-
-.storage_body_item > p:last-child {
-  border-right: none;
-}
-
-.storage_body_item {
-  border-bottom: 1px solid #eee2;
-}
-
-.storage_body_item:last-child {
-  border-bottom: none;
-}
-
-.reports_item > :where(p, label) {
-  height: calc(var(--univslH) * 2);
+.reports-box,
+.report-title {
+  padding: 1% 3%;
   flex-wrap: wrap;
+  gap: var(--gap3);
+  background: #434343;
+  color: #fff;
 }
 
-.reports_item > :where(p, label) > p {
-  width: 100%;
+.report-title > p {
+  font-size: var(--fs4);
 }
 
-.reports_item > :where(p, label) > span {
-  width: 50%;
-  border-top: 1px solid #eee2;
+.report-item {
+  width: calc(100% / 2 - (var(--gap3) / 2));
+  padding: 1% 2%;
+  background: #383838;
+  font-size: var(--fs6);
+  cursor: pointer;
 }
 
-.reports_item > :where(p, label) > :nth-child(2) {
-  border-right: 1px solid #eee2;
-}
-.reports_span {
-  width: 50%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+.report-item.success {
+  background: #70e000;
 }
 
-.reports_span:first-child {
-  border-right: 1px solid #eee2;
-  padding-right: 5%;
+.report-item.warning {
+  background: #9397e8;
 }
 
-.reports_item > :where(p, label) > :where(p, span) {
-  height: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.reports_item > label {
-  border-right: 1px solid #eee2;
-}
-
-.reports_item > label:last-child {
-  border-right: none;
-}
-
-.small-font .storage_body_item > :where(p, label) {
-  font-size: var(--fs8);
+.report-item.info {
+  background: #555;
 }

@@ -38,6 +38,7 @@ export const Navbar = () => {
   const w_name = user?.user?.name?.split("_")?.join(" ");
   const status = useSelector((state) => state.status);
   const location = useLocation();
+  const [cashA, setCashA] = useState(false);
   // const delDocuments = useSelector((state) => state.delRouter);
   // const [api, contextHolder] = notification.useNotification();
 
@@ -51,6 +52,10 @@ export const Navbar = () => {
     console.log("click", e);
     setActiveCash(e.key);
     JSON?.stringify(localStorage.setItem("cashbox", e.key));
+    setCashA(true);
+    setTimeout(() => {
+      setCashA(false);
+    }, 1000);
   };
 
   const menuProps = {
@@ -160,14 +165,6 @@ export const Navbar = () => {
             <img src={addOrder} alt="icon" aria-label="icon" />
           </span>
         )}
-
-        {/*dep === "owner" && (
-          <span
-            onClick={() => navigate("/statistics")}
-            aria-label="target statistics page">
-            <ImStatsBars />
-          </span>
-        )*/}
         <span
           onClick={() => navigate("/nothifications")}
           aria-label="target nothification page">
@@ -176,6 +173,7 @@ export const Navbar = () => {
         <Dropdown.Button
           menu={menuProps}
           placement="bottom"
+          className={`change-cashbox ${cashA ? "" : "none-screen"}`}
           icon={<MdOutlineTransferWithinAStation />}>
           {activeCash}
         </Dropdown.Button>
