@@ -20,7 +20,12 @@
   padding: 1% 2%;
   background: #383838;
   font-size: var(--fs6);
+  gap: var(--gap5);
   cursor: pointer;
+}
+
+.report-item > p > span {
+  color: #9c9999;
 }
 
 .report-item.success {
@@ -33,4 +38,53 @@
 
 .report-item.info {
   background: #555;
+}
+
+.filter-open-btn {
+  padding: 0.6%;
+  aspect-ratio: 1/1;
+  font-size: var(--fs5);
+  background: #333;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.filters {
+  gap: 5px;
+  flex: 1;
+}
+
+.filters > label {
+  background: #252525;
+  padding: 1.5%;
+  border-radius: 5px;
+}
+
+.filters > label > * {
+  width: 100%;
+  background: #252525;
+  outline: none;
+}
+
+.filters :where(.css-dev-only-do-not-override-1elae4f).ant-picker-outlined {
+  width: 100%;
+  background: #252525;
+}
+
+.filters-button {
+  padding: 2%;
+  background: #9397e8;
+  border: none;
+  border-radius: 5px;
+  font-size: var(--fs6);
+  color: #fff;
+}
+
+.filter-close-btn {
+  font-size: var(--fs5);
+  cursor: pointer;
+}
+
+.filter-close-btn:hover {
+  color: #f00;
 }

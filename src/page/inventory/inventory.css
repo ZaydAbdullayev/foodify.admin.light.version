@@ -1,0 +1,21 @@
+.inventory-box,
+.inventory-title {
+  padding: 1%;
+  gap: var(--gap3);
+  color: #fff;
+}
+
+.inventory-title {
+  background: #353535;
+}
+
+.inventory-item {
+  width: calc(100% / 2 - (var(--gap3) / 2));
+  padding: 1%;
+  background: #353535;
+  font-size: var(--fs6);
+
+  svg {
+    font-size: var(--fs5);
+  }
+}

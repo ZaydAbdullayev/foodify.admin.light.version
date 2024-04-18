@@ -8,6 +8,7 @@ export const ReportMain = () => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || {};
   const { date } = useSelector((state) => state.uSearch);
   const navigate = useNavigate();
+  const sd = ["Asds", "fasfs", "fasfs", "fasfs"];
   const reportsD = [
     {
       name: "Foyda va Zarar hisoboti",
@@ -27,7 +28,7 @@ export const ReportMain = () => {
     {
       name: "Bo'limlar hisoboti",
       type: "department",
-      path: ``,
+      path: `/report/dep/view/department/get/departmentSales/${user?.id}?start=${date?.start}&&end=${date?.end}`,
     },
   ];
   return (

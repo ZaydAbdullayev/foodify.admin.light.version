@@ -6,9 +6,7 @@
   position: fixed;
   top: 0;
   right: -100%;
-  width: 100%;
   height: 100dvh;
-  display: flex;
   justify-content: flex-end;
   background: #0009;
   color: #eee;
@@ -223,5 +221,12 @@
   .payment_type {
     width: calc(100% / 3 - var(--gap6) + 3px);
     aspect-ratio: 2/1.2;
+  }
+}
+
+@media (max-width: 450px) {
+  .add_payment__box {
+    max-width: none;
+    padding: 3%;
   }
 }

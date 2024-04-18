@@ -63,7 +63,7 @@ export const Payment = () => {
       {ordersData?.innerData?.[type] ? (
         ordersData?.innerData?.[type]?.map((item, index) => {
           const reverseIndex = ordersData?.innerData?.[type]?.length - index;
-          const p_data = JSON?.parse(item?.product_data);
+          const p_data = JSON?.parse(item?.product_data || "[]");
           const payment_data = Object.values(p_data)[0]?.pd;
           const closedTime =
             item?.closed_at !== "0000-00-00"
@@ -73,7 +73,7 @@ export const Payment = () => {
             <div className="payment_item" key={item.id}>
               <i
                 className={
-                  item.payment_status === 1
+                  item?.payment_status === 1
                     ? `payment_tick`
                     : `payment_tick not_paid`
                 }></i>

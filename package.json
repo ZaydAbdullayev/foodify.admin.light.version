@@ -1,5 +1,5 @@
 {
-  "name": "yandexadmin",
+  "name": "foodifyadmin",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -30,7 +30,7 @@
     "url": "^0.11.3",
     "util": "^0.12.5",
     "web-vitals": "^2.1.4",
-    "yandexadmin": "github:ZaydAbdullayev/yandex-admin"
+    "foodifyadmin": "github:ZaydAbdullayev/foodify-admin"
   },
   "scripts": {
     "start": "react-scripts start",

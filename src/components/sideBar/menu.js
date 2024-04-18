@@ -113,35 +113,3 @@ export const Menu_customer = [
       : false,
   },
 ];
-
-      const data = [
-        {
-          id: "43",
-          name: "Chiqimlar",
-          amount: 324342332,
-          details: [
-            {
-              id: "1",
-              name: "Kassa",
-              date: "2021-09-10, 12:00",
-              type: "expense-income",
-              group: "purchase",
-              user: "Kassir",
-              payment_type: "cash",
-              price: 245534,
-              description: "lorem ipsum dolor sit amet",
-            },
-            {
-              id: "1",
-              name: "admin",
-              date: "2021-09-10, 12:00",
-              type: "expense-income",
-              group: "purchase",
-              user: "owner",
-              payment_type: "credit card",
-              price: 1445534,
-              description: "lorem ipsum dolor sit amet",
-            },
-          ],
-        },
-      ];

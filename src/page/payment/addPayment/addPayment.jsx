@@ -45,7 +45,7 @@ export const AddPayment = memo(({ active, actives }) => {
       1: orderData?.total || 0,
     });
     const productdata =
-      orderData.product_data && JSON.parse(orderData.product_data);
+      orderData?.product_data && JSON.parse(orderData?.product_data);
     const payment_data = productdata
       ? Object.values(productdata)[0]?.pd || []
       : [];
@@ -108,11 +108,7 @@ export const AddPayment = memo(({ active, actives }) => {
 
   return (
     <div
-      className={
-        actives
-          ? "add_payment__container open_details"
-          : "add_payment__container"
-      }>
+      className={`w100 df add_payment__container ${actives && "open_details"}`}>
       <div className="add_payment__box">
         <div className="add_payment__header">
           <pre>
@@ -169,7 +165,7 @@ export const AddPayment = memo(({ active, actives }) => {
           <p>
             <span className="p_name">Jami</span>
             <NumericFormat
-              value={orderData.total}
+              value={orderData?.total}
               displayType={"text"}
               thousandSeparator=","
               suffix={" so'm"}
