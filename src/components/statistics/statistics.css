@@ -17,7 +17,7 @@
   padding: 0.8% 3%;
   background: #353535;
   justify-content: space-between;
-  z-index: 9999;
+  z-index: 999;
 }
 
 .statistic_header > span {
@@ -407,12 +407,21 @@
     --pie-w: calc(300px + (500 - 300) * (100vw - 320px) / (1440 - 320));
   }
 
+  .dashboard-stat {
+    width: 90%;
+  }
+
   .wrapper_item {
     width: 100%;
+  }
+  .statistic_header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .statistic_product {
     width: 100%;
     height: 500px;
+    flex-direction: column;
   }
 }

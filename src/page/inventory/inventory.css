@@ -9,6 +9,10 @@
   background: #353535;
 }
 
+.inventory-box {
+  flex-wrap: wrap;
+}
+
 .inventory-item {
   width: calc(100% / 2 - (var(--gap3) / 2));
   padding: 1%;
@@ -17,5 +21,80 @@
 
   svg {
     font-size: var(--fs5);
+  }
+}
+
+.inventory-history-box {
+  flex-wrap: wrap;
+}
+
+.inventory-table-container {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 3% 0;
+}
+
+.inventory-table {
+  border-collapse: collapse;
+  border-color: transparent;
+}
+
+.inventory-table > thead > tr {
+  height: 80px;
+  background: #353535;
+  border-bottom: 1px solid #999;
+}
+
+.inventory-table > thead > tr > th {
+  font-weight: 700;
+}
+
+.inventory-table > thead > tr > th,
+.inventory-table > tbody > tr > :where(td, th) {
+  font-size: var(--fs7);
+  padding: 0 20px;
+  color: #fff;
+  text-wrap: wrap;
+  white-space: wrap;
+}
+
+.inventory-table > tbody > tr {
+  height: 60px;
+  border-bottom: 1px solid #999;
+  transition: all 0.1s ease;
+  background: #444;
+}
+
+.inventory-table > tbody > tr:last-child {
+  border-bottom-color: transparent;
+}
+
+.inventory-table > tbody > tr:hover {
+  background: #666;
+}
+
+@media (max-width: 900px) {
+  .inventory-table-container {
+    padding: 1.5% 1% 0;
+    overflow-x: auto;
+  }
+
+  .inventory-table-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .inventory-table {
+    min-width: 900px;
+  }
+}
+
+@media (max-width: 600px) {
+  .inventory-box {
+    gap: var(--gap5);
+  }
+
+  .inventory-item {
+    width: 100%;
+    padding: 2% 3%;
   }
 }

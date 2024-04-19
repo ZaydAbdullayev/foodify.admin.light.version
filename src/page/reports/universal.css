@@ -88,3 +88,18 @@
 .filter-close-btn:hover {
   color: #f00;
 }
+
+@media (max-width: 600px) {
+  .report-title{
+    flex-direction: column;
+    gap: var(--gap5);
+  }
+  .reports-box {
+    padding: 2% 3%;
+    gap: var(--gap6);
+  }
+  .report-item {
+    width: 100%;
+    padding: 2% 3%;
+  }
+}

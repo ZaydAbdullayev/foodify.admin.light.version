@@ -150,20 +150,22 @@ export const ReportDetails = () => {
                       {hint?.name}
                     </p>
                   )}
-                  {(details?.data?.[hint?.type] || [])?.map((rep, ind) => {
-                    return (
-                      <label
-                        className={`df aic jcsb report-item ${rep?.st || ""}`}
-                        key={`${rep?.type}_${ind}`}>
-                        <p>{rep?.type}</p>
-                        <span>
-                          {rep?.value
-                            ?.toString()
-                            ?.replace(/\d(?=(\d{3})+$)/g, "$& ") || 0}
-                        </span>
-                      </label>
-                    );
-                  })}
+                  {(details?.data?.[hint?.type] || details?.data)?.map(
+                    (rep, ind) => {
+                      return (
+                        <label
+                          className={`df aic jcsb report-item ${rep?.st || ""}`}
+                          key={`${rep?.type}_${ind}`}>
+                          <p>{rep?.type}</p>
+                          <span>
+                            {rep?.value
+                              ?.toString()
+                              ?.replace(/\d(?=(\d{3})+$)/g, "$& ") || 0}
+                          </span>
+                        </label>
+                      );
+                    }
+                  )}
                 </>
               );
             })
@@ -240,7 +242,7 @@ const labels = {
     },
   ],
   orders: [{ type: "orders" }],
-  department: [],
+  department: [{ type: "department" }],
 };
 
 const o_types = [

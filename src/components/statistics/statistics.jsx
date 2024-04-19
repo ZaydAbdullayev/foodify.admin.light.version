@@ -10,10 +10,11 @@ import { ResponsiveContainer, CartesianGrid } from "recharts";
 export const DonutChart = ({ data, billsData, short, hint, tl = null, ty }) => {
   const [activeI, setActiveI] = React.useState(null);
   const navigate = useNavigate();
-  const df_Pie =
-    data?.length > 0 ? data : [{ type: "Malumot yo'q", cl: "#333", amount: 0 }];
+  const df_Pie = data?.every((p) => p.amount === 0)
+    ? [{ type: "Malumot yo'q", cl: "#333", amount: 0 }]
+    : data?.filter((p) => p.amount > 0);
 
-  console.log("donut-data", data);
+  console.log("donut-data", df_Pie);
 
   const total = CalculateTotalQuantity(data, "amount") || 1;
   const totalp = CalculateTotalQuantity(df_Pie, hint) || data?.[0]?.amount;
@@ -109,11 +110,7 @@ export const DonutChart = ({ data, billsData, short, hint, tl = null, ty }) => {
           </span>
         )}
         <small>
-          💵{" "}
-          <AnimatedNumber
-            value={totalp - df_Pie?.[activeI]?.amount}
-            formatValue={formatValue}
-          />
+          💵 <AnimatedNumber value={totalp} formatValue={formatValue} />
         </small>
       </label>
     </div>

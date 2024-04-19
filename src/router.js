@@ -38,7 +38,11 @@ import { StatisticsIncome } from "./components/statistics/bill.jsx";
 import { StatisticsExpenses } from "./components/statistics/bill.jsx";
 import { ReportMain } from "./page/reports/reports.jsx";
 import { ReportDetails } from "./page/reports/reports.details.jsx";
-import { Inventory } from "./page/inventory/inventory.jsx";
+import {
+  Inventory,
+  InventoryDetail,
+  InventoryHistory,
+} from "./page/inventory/inventory.jsx";
 
 export const Router = () => {
   // const dep = useSelector((state) => state.permission);
@@ -137,6 +141,12 @@ export const Router = () => {
           <Route path="chat-restaurant-staff" element={<Chat />} />
           <Route path="restaurant-reports" element={<ReportMain />} />
           <Route path="restaurant-inventory" element={<Inventory />} />
+          <Route
+            path="restaurant-inventory/history"
+            element={<InventoryHistory />}
+          />
+          <Route path="restaurant-inventory/add-inventory" element={<Inventory />} />
+          <Route path="restaurant-detail/:id" element={<InventoryDetail />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>

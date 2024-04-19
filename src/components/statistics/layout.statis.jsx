@@ -85,7 +85,7 @@ export const Statistics = memo(() => {
         <DonutChart
           data={defaultPie}
           billsData={billsData}
-          hint="total"
+          hint="amount"
           ty="type"
         />
         <div className="df flc item-info">

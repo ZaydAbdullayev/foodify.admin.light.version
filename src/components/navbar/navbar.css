@@ -262,7 +262,6 @@
   height: calc(var(--nwh) - 15px);
   aspect-ratio: 1/1;
   object-fit: cover;
-  background: #353535;
 }
 
 .page-title {
