@@ -56,7 +56,9 @@ export const Statistics = memo(() => {
               key={`${item.id}_${item?.bg}`}
               className={`dashboard-stat ${item?.bg}`}
               onClick={() =>
-                navigate(`statistic/${item?.path}?title=${item?.label}`)
+                navigate(
+                  `statistic/${item?.path}?title=${item?.label}&&point=${item?.point}`
+                )
               }>
               <div className="df flc aic visual">
                 {item?.extra ? (
@@ -121,6 +123,7 @@ const statsData = [
     extra: <LuTrendingDown />,
     bg: "green",
     path: "incomes",
+    point: "",
   },
   {
     id: 2,
@@ -130,22 +133,25 @@ const statsData = [
     extra: <LuTrendingUp />,
     bg: "red",
     path: "expenses",
+    point: "/get/expenseTransactions",
   },
   {
     id: 4,
     type: "debts",
-    label: "Qarzlar",
+    label: "Yetkazuvchilarga qarzlar",
     icon: <FcDebt />,
     bg: "purple",
-    path: "debt",
+    path: "debts",
+    point: "/get/debts/supplires",
   },
   {
     id: 5,
     type: "credits",
-    label: "Bank kartalari",
+    label: "Yetkazuchilardagi haqlar",
     icon: <GiCardExchange />,
     bg: "blue",
-    path: "no_payment",
+    path: "credits",
+    point: "/get/credits/suppliers",
   },
 ];
 
@@ -160,9 +166,16 @@ export const DataBill = () => {
     url: `/get/resOrders/${user?.id}/${date?.start}/${date?.end}`,
     tags: ["report"],
   });
-
   const { data: st_v = [] } = useFetchDataQuery({
     url: `/get/moneyInfo/${user?.id}/${date?.start}/${date?.end}`,
+    tags: ["report"],
+  });
+  const { data: db = [] } = useFetchDataQuery({
+    url: `/get/debts/supplires/${user?.id}/${date?.start}/${date?.end}`,
+    tags: ["report"],
+  });
+  const { data: dp = [] } = useFetchDataQuery({
+    url: `/get/credits/supplires/${user?.id}/${date?.start}/${date?.end}`,
     tags: ["report"],
   });
 
@@ -176,6 +189,8 @@ export const DataBill = () => {
     defaultPie: defaultPie,
     billsData: bd?.innerData,
     sd_v: st_v?.data,
+    db: db?.data,
+    dp: dp?.data,
   };
 };
 

@@ -37,10 +37,10 @@ export const Navbar = () => {
   const name = user?.user?.username?.split("_")?.join(" ");
   const w_name = user?.user?.name?.split("_")?.join(" ");
   const status = useSelector((state) => state.status);
-  const location = useLocation();
+  const lc = useLocation();
   const [cashA, setCashA] = useState(false);
-  // const delDocuments = useSelector((state) => state.delRouter);
-  // const [api, contextHolder] = notification.useNotification();
+  const searchParams = new URLSearchParams(lc.search);
+  const title = searchParams.get("title");
 
   const items = cx?.data?.map((item) => ({
     key: item?.name,
@@ -130,16 +130,7 @@ export const Navbar = () => {
             </button>
           )}
           <UniversalFilterBox />
-          {location?.search?.split("title=").length && (
-            <span className="page-title">
-              {location?.search
-                ?.split("title=")[1]
-                ?.split("%E2%84")
-                .join("№")
-                .split("%20")
-                .join(" ")}
-            </span>
-          )}
+          {title?.length && <span className="page-title">{title || ""}</span>}
         </form>
       )}
 

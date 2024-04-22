@@ -156,9 +156,9 @@ export const ReportDetails = () => {
                         <label
                           className={`df aic jcsb report-item ${rep?.st || ""}`}
                           key={`${rep?.type}_${ind}`}>
-                          <p>{rep?.type}</p>
+                          <p>{rep?.type || rep?.name}</p>
                           <span>
-                            {rep?.value
+                            {(rep?.value || rep?.total || rep?.amount || 0)
                               ?.toString()
                               ?.replace(/\d(?=(\d{3})+$)/g, "$& ") || 0}
                           </span>

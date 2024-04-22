@@ -278,6 +278,9 @@
   font-size: var(--fs6);
   cursor: pointer;
 }
+.bills-item > big {
+  font-size: var(--fs6);
+}
 .bills-item > div {
   display: flex;
   align-items: center;

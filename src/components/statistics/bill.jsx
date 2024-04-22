@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./statistics.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
 import { LineChartC } from "./statistics";
 import { Collapse, theme } from "antd";
@@ -201,15 +201,35 @@ export const BillReportById = () => {
 export const StatisticsExpenses = () => {
   const user = JSON?.parse(localStorage?.getItem("user"))?.user || {};
   const { date } = useSelector((state) => state.uSearch);
+  const lc = useLocation();
+  const { name } = useParams();
+  const searchParams = new URLSearchParams(lc.search);
+  const point = searchParams.get("point");
   const { data: e = [] } = useFetchDataQuery({
-    url: `/get/expenseTransactions/${user?.id}/${date?.start}/${date?.end}`,
+    url: `${point}/${user?.id}/${date?.start}/${date?.end}`,
     tags: ["report"],
   });
   console.log("e", e?.data);
-  const billsData = (e?.data || []).map((item) => [
-    ...billsData,
-    ...item?.details,
-  ]);
+  const initialBillsData = (e?.data || []).flatMap(
+    (item) => item?.details || []
+  );
+
+  const keys = {
+    expenses: {
+      name: "name",
+      amount: "amount",
+    },
+    debts: {
+      name: "supplier",
+      amount: "debt",
+    },
+    credits: {
+      name: "supplier",
+      amount: "credit",
+    },
+  };
+  console.log("initialBillsData", initialBillsData);
+  const billsData = [...initialBillsData]; // Create a copy of initialBillsData
   console.log("billsData", billsData);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -223,12 +243,12 @@ export const StatisticsExpenses = () => {
         <DonutChart
           data={e?.data}
           billsData={billsData}
-          hint={"amount"}
+          hint={keys?.[name]?.amount}
           short={true}
           ty=""
         />
         <div className="df flc item-info">
-          {e?.data?.every((item) => item?.amount === 0) ? (
+          {e?.data?.every((item) => item?.[keys?.[name]?.amount] === 0) ? (
             <p>
               <GoDotFill style={{ color: "#353535" }} />
               <span>Ma'lumot yo'q</span>
@@ -237,10 +257,12 @@ export const StatisticsExpenses = () => {
             e?.data?.map((item, ind) => {
               return (
                 <p
-                  key={`${item?.name}_${ind}`}
-                  style={{ opacity: item?.amount <= 0 ? 0.2 : 1 }}>
+                  key={`${item?.[keys?.[name]?.name]}_${ind}`}
+                  style={{
+                    opacity: item?.[keys?.[name]?.amount] <= 0 ? 0.2 : 1,
+                  }}>
                   <GoDotFill style={{ color: item?.cl }} />
-                  <b>{item?.name}</b>
+                  <b>{item?.[keys?.[name]?.name]}</b>
                 </p>
               );
             })
@@ -248,18 +270,20 @@ export const StatisticsExpenses = () => {
         </div>
       </div>
       <div className="w100 df aic bills-report-box">
-        {e?.data?.map((expense) => {
+        {e?.data?.map((expense, ind) => {
           return (
             <div
               className="df aic jcsb bills-item"
-              key={expense?.name}
+              key={`${expense?.[keys?.[name]?.name]}_${ind}`}
               onClick={() =>
-                navigate(`/statistic-details?title=${expense?.name}`)
+                navigate(
+                  `/statistic-details?title=${expense?.[keys?.[name]?.name]}`
+                )
               }>
-              <big>{expense?.name}</big>
+              <big>{expense?.[keys?.[name]?.name]}</big>
               <big style={{ color: expense?.cl }}>
                 <NumericFormat
-                  value={expense?.amount}
+                  value={expense?.[keys?.[name]?.amount]}
                   displayType="text"
                   thousandSeparator={","}
                 />

@@ -29,7 +29,7 @@
 }
 
 .report-item.success {
-  background: #70e000;
+  background: #0bbe05;
 }
 
 .report-item.warning {
@@ -90,7 +90,7 @@
 }
 
 @media (max-width: 600px) {
-  .report-title{
+  .report-title {
     flex-direction: column;
     gap: var(--gap5);
   }

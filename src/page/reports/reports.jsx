@@ -28,7 +28,7 @@ export const ReportMain = () => {
     {
       name: "Bo'limlar hisoboti",
       type: "department",
-      path: `/report/dep/view/department/get/departmentSales/${user?.id}?start=${date?.start}&&end=${date?.end}`,
+      path: `/report/Bo'limlar%20hisoboti/view/department/get/departmentSales/${user?.id}?start=${date?.start}&&end=${date?.end}`,
     },
   ];
   return (
