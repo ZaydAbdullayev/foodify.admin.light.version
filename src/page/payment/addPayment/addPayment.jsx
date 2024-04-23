@@ -57,7 +57,7 @@ export const AddPayment = memo(({ active, actives }) => {
     const trsn = {
       res_id: user.id,
       transaction_group: "income",
-      cashier_receiver: dep,
+      cashbox_receiver: dep,
       activity_kind: "income",
       payment_type: type.value,
       amount: price ? price : orderData?.total,

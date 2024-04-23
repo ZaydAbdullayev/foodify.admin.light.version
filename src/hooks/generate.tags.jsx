@@ -188,10 +188,25 @@ export const DynamicTable = ({ data, index }) => {
   return <Table dataSource={data} columns={columns} key={key + index} />;
 };
 
-export const CheckBox = ({ name, label, description = "", value }) => {
+export const CheckBox = ({
+  name,
+  label,
+  description = "",
+  value,
+  checkType,
+  disabled,
+  id,
+}) => {
+  const vl = id ? `${id}_${value}` : value;
   return (
     <label className="universal-checkbox">
-      <input type="radio" name={name} required value={value} />
+      <input
+        type="radio"
+        name={name}
+        required
+        value={vl}
+        onChange={(s) => checkType(s.target.value, name)}
+      />
       <span className="checkmark">
         <span>{label}</span>
         <span style={{ color: "#eee6" }}>{description}</span>

@@ -9,6 +9,7 @@ import { usePostDataMutation } from "../../service/fetch.service";
 import useNotification from "antd/es/notification/useNotification";
 import { ClearForm } from "../../service/form.service";
 import { Segmented } from "antd";
+import { NumericFormat } from "react-number-format";
 
 import { ImCalendar } from "react-icons/im";
 import { BsCashCoin } from "react-icons/bs";
@@ -19,7 +20,8 @@ const UniversalModal = lazy(() => import("../../components/modal/modal"));
 export const MobileInvoice = () => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || [];
   const [postData] = usePostDataMutation();
-  const [type, setType] = useState("");
+  const [type, setType] = useState("invoices");
+  const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
   const acItem = useSelector((state) => state.activeThing);
   const [api, contexHolder] = useNotification();
@@ -64,22 +66,54 @@ export const MobileInvoice = () => {
     },
   ];
 
+  const ctgData = {
+    invoices: {
+      income: "income",
+      expense: "expense",
+    },
+    invoice_supp: {
+      income: "payment_to_the_supp",
+      expense: "payment_from_the_supp",
+    },
+    transfer_cash: {
+      transfer: "transfer",
+    },
+  };
+
   useEffect(() => {
     dispatch(acNavStatus([0, 1, 2, 3]));
   }, [dispatch]);
 
-  const handleButtonClick = async (type) => {
+  const handleButtonClick = async (t_type) => {
     // Diğer işlemler
     const formdata = new FormData(document.querySelector(".mobile-invoice"));
     const value = Object.fromEntries(formdata.entries());
+    const supp = value?.supplier?.split("_");
+    if (type === "transfer_cash") {
+      const { data = [] } = await postData({
+        url: `/add/transaction`,
+        data: {
+          ...value,
+          res_id: user?.id,
+          worker: user?.name || user?.username,
+          worker_id: user?.user_id || user?.id,
+          transaction_type: "income",
+          transaction_category: ctgData?.[type]?.[t_type] || "",
+        },
+        tags: ["cashbox-transaction"],
+      });
+    }
     const { data = [] } = await postData({
       url: `/add/transaction`,
       data: {
         ...value,
+        supplier: supp?.[1] || "",
+        supplier_id: supp?.[0] || "",
         res_id: user?.id,
         worker: user?.name || user?.username,
         worker_id: user?.user_id || user?.id,
-        transaction_type: type,
+        transaction_type: t_type === "transfer" ? "expense" : t_type,
+        transaction_category: ctgData?.[type]?.[t_type] || "",
       },
       tags: ["cashbox-transaction"],
     });
@@ -94,26 +128,32 @@ export const MobileInvoice = () => {
     }
   };
 
-  const activityType_data = [
+  const type_data = [
     {
-      title: `Kassa ${type === "Kassa orasida almashinuv" ? "dan" : ""}`,
+      title: `Kassa ${type === "transfer_cash" ? "dan" : ""}`,
       data: cashboxData?.data,
-      name: "cashbox",
+      name: type !== "transfer_cash" ? "cashbox_receiver" : "cashbox_sender",
     },
     {
       title:
-        type === "To'lovlar"
+        type === "invoices"
           ? "Harakat turi"
-          : type === "Yetkazuvchiga to'lov"
+          : type === "invoice_supp"
           ? "Yetkazuvchi tanlang"
           : "Kassaga",
       data:
-        type === "To'lovlar"
+        type === "invoices"
           ? activityData
-          : type === "Yetkazuvchiga to'lov"
+          : type === "invoice_supp"
           ? suppData?.data
           : cashboxData?.data,
-      name: "activity_kind",
+      name:
+        type === "invoices"
+          ? "activity_kind"
+          : type === "invoice_supp"
+          ? "supplier"
+          : "cashbox_receiver",
+      disabled,
     },
     {
       title: "Harakat guruhi",
@@ -127,6 +167,15 @@ export const MobileInvoice = () => {
       name: "payment_type",
     },
   ];
+
+  const checkType = (st, name) => {
+    if (st && name === "transaction_group") {
+      setDisabled("activity_kind");
+    } else if (st && name === "activity_kind") {
+      setDisabled("transaction_group");
+    }
+    console.log(disabled);
+  };
 
   return (
     <>
@@ -142,9 +191,9 @@ export const MobileInvoice = () => {
           }}>
           <Segmented
             options={[
-              "To'lovlar",
-              "Yetkazuvchiga to'lov",
-              "Kassa orasida almashinuv",
+              { label: "To'lovlar", value: "invoices" },
+              { label: "Yetkazuvchiga to'lov", value: "invoice_supp" },
+              { label: "Kassa orasida almashinuv", value: "transfer_cash" },
             ]}
             className="segmented"
             onChange={(e) => setType(e)}
@@ -152,16 +201,21 @@ export const MobileInvoice = () => {
           />
         </ConfigProvider>
         <div className="mobile-invoice-content">
-          {activityType_data.map((item, ind) => (
+          {type_data.map((item, ind) => (
             <div className="activity-type" key={ind}>
-              <p>{item.title} * :</p>
+              <p style={{ opacity: disabled === item.name ? 0.5 : 1 }}>
+                {item.title} * :
+              </p>
               <div className="activity-types">
                 {item.data?.map((inner, ind) => (
                   <CheckBox
                     key={`${inner.name}_${ind}`}
                     label={inner.name}
                     value={inner.name}
+                    id={item.name === "supplier" ? inner.id : null}
                     name={item.name}
+                    checkType={checkType}
+                    disabled={disabled}
                   />
                 ))}
                 {item.add && (
@@ -184,7 +238,12 @@ export const MobileInvoice = () => {
               <label>
                 <BsCashCoin />
                 <div className="activity-types">
-                  <input type="number" name="amount" placeholder="Miqdori" />
+                  <NumericFormat
+                    name="amount"
+                    placeholder="Miqdori"
+                    required
+                    thousandSeparator=","
+                  />
                 </div>
               </label>
               <label>
@@ -201,20 +260,18 @@ export const MobileInvoice = () => {
         </div>
         <div className="_invoice-footer">
           <div className="history-screen"></div>
-          {type === "Kassa orasida almashinuv" ? (
-            <button
-              type="button"
-              onClick={() => handleButtonClick("transaction")}>
+          {type === "transfer_cash" ? (
+            <button type="button" onClick={() => handleButtonClick("transfer")}>
               O'tkazish
             </button>
           ) : (
             <div className="activity-btn">
-              <button type="button" onClick={() => handleButtonClick("income")}>
-                – CHIQIM
-              </button>
               <button
                 type="button"
                 onClick={() => handleButtonClick("expense")}>
+                – CHIQIM
+              </button>
+              <button type="button" onClick={() => handleButtonClick("income")}>
                 KIRIM +
               </button>
             </div>
