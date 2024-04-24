@@ -131,7 +131,7 @@ export const LineChartC = ({ data }) => {
           bottom: 0,
         }}>
         <CartesianGrid strokeDasharray="3 3" stroke="#aaa5" />
-        <XAxis dataKey="name" fontSize={14} />
+        <XAxis dataKey="date" fontSize={14} />
         <YAxis />
         <Tooltip
           labelFormatter={(value) => {

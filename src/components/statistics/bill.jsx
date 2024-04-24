@@ -16,6 +16,7 @@ import { acAddBill } from "../../redux/active";
 import { acNavStatus } from "../../redux/navbar.status";
 import { IoMdArrowDropright } from "react-icons/io";
 import { CalculateTotalQuantity } from "../../service/calc.service";
+import { CalculateTotalCH } from "../../service/calc.service";
 
 export const BillsReport = () => {
   const { data = [], billsData = [], defaultPie } = DataBill();
@@ -306,6 +307,10 @@ export const StatisticsIncome = () => {
     url: `/get/incomeFromSales/${user?.id}/${date?.start}/${date?.end}`,
     tags: ["report"],
   });
+  const { data: l = [] } = useFetchDataQuery({
+    url: `/get/incomeForPeriod/${user?.id}/${date?.start}/${date?.end}`,
+    tags: ["report"],
+  });
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(acNavStatus([0]));
@@ -313,44 +318,44 @@ export const StatisticsIncome = () => {
 
   const data = [
     {
-      name: "00:00",
-      incomes: 2400,
-      other_incomes: 2400,
+      date: "00:00",
+      incomes: 0,
+      other_incomes: 0,
     },
     {
-      name: "03:30",
-      incomes: 1398,
-      other_incomes: 2210,
+      date: "03:30",
+      incomes: 0,
+      other_incomes: 0,
     },
     {
-      name: "07:00",
-      incomes: 9800,
-      other_incomes: 2290,
+      date: "07:00",
+      incomes: 0,
+      other_incomes: 0,
     },
     {
-      name: "10:30",
-      incomes: 3908,
-      other_incomes: 2000,
+      date: "10:30",
+      incomes: 0,
+      other_incomes: 0,
     },
     {
-      name: "14:00",
-      incomes: 4800,
-      other_incomes: 2181,
+      date: "14:00",
+      incomes: 0,
+      other_incomes: 0,
     },
     {
-      name: "17:30",
-      incomes: 3800,
-      other_incomes: 2500,
+      date: "17:30",
+      incomes: 0,
+      other_incomes: 0,
     },
     {
-      name: "21:00",
-      incomes: 4300,
-      other_incomes: 2100,
+      date: "21:00",
+      incomes: 0,
+      other_incomes: 0,
     },
     {
-      name: "23:59",
-      incomes: 4800,
-      other_incomes: 2900,
+      date: "23:59",
+      incomes: 0,
+      other_incomes: 0,
     },
   ];
 
@@ -362,7 +367,11 @@ export const StatisticsIncome = () => {
             <span className="df flc">
               <small style={{ color: "#a1a1a1" }}>Umumiy summa</small>
               <NumericFormat
-                value={23344443}
+                value={CalculateTotalCH(
+                  e?.data,
+                  "incomeFromSales",
+                  "other_income"
+                )}
                 displayType="text"
                 thousandSeparator={","}
               />
@@ -381,7 +390,7 @@ export const StatisticsIncome = () => {
           </label>
         </div>
         <div className="w100 full_analystic-chart">
-          <LineChartC data={data} />
+          <LineChartC data={l?.data || data} />
         </div>
       </div>
       <div className="w100 df  full_analystic-box">
