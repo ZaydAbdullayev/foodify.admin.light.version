@@ -6,7 +6,6 @@ import { LoadingBtn } from "../../../components/loading/loading";
 import { enqueueSnackbar as es } from "notistack";
 import { useFetchDataQuery } from "../../../service/fetch.service";
 import { usePatchDataMutation } from "../../../service/fetch.service";
-import { usePostDataMutation } from "../../../service/fetch.service";
 
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
@@ -30,7 +29,6 @@ export const AddPayment = memo(({ active, actives }) => {
     tags: ["order"],
   });
   const [patchData] = usePatchDataMutation();
-  const [postData] = usePostDataMutation();
   const [price, setPrice] = useState({ df_v: 0, extra: 0 });
   const navigate = useNavigate();
 
@@ -54,17 +52,6 @@ export const AddPayment = memo(({ active, actives }) => {
 
   const addPayment = async () => {
     setLoading(true);
-    const trsn = {
-      res_id: user.id,
-      transaction_group: "income",
-      cashbox_receiver: dep,
-      activity_kind: "income",
-      payment_type: type.value,
-      amount: price ? price : orderData?.total,
-      description: "",
-      transaction_type: "income",
-      transaction_category: "food_income",
-    };
     try {
       const res = await patchData({
         url: `/update/payment/status/${orderData.id}`,
@@ -84,15 +71,7 @@ export const AddPayment = memo(({ active, actives }) => {
         },
         tags: ["order"],
       });
-      const second_res = await postData({
-        url: "add/transaction",
-        data: trsn,
-        tags: ["cashbox-transaction"],
-      });
-      if (
-        res.data.message === "All Orders" &&
-        second_res.data.message === "All Orders"
-      ) {
+      if (res.data.message === "All Orders") {
         es("To'lov qilindi!", { variant: "success" });
       }
       if (res.error) {

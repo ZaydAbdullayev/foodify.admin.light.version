@@ -21,7 +21,6 @@ export const MobileInvoice = () => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || [];
   const [postData] = usePostDataMutation();
   const [type, setType] = useState("invoices");
-  const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
   const acItem = useSelector((state) => state.activeThing);
   const [api, contexHolder] = useNotification();
@@ -39,30 +38,18 @@ export const MobileInvoice = () => {
     tags: ["suplier"],
   });
 
-  const activityData = [
-    {
-      name: "Operativ",
-    },
-    {
-      name: "Sarmoya",
-    },
-    {
-      name: "Pul",
-    },
-  ];
-
   const paymentData = [
     {
       name: "Naqd",
     },
     {
-      name: "Plastik",
+      name: "Plastik karta",
     },
     {
-      name: "Bank",
+      name: "Bank hisob raqami",
     },
     {
-      name: "Elektron",
+      name: "Elektron ilovalar",
     },
   ];
 
@@ -70,10 +57,11 @@ export const MobileInvoice = () => {
     invoices: {
       income: "income",
       expense: "expense",
+      invoice_payment: "invoicePayment",
     },
     invoice_supp: {
-      income: "payment_to_the_supp",
-      expense: "payment_from_the_supp",
+      income: "paymentToSupplier",
+      expense: "invoicePaymentFromSupplier",
     },
     transfer_cash: {
       transfer: "transfer",
@@ -143,17 +131,16 @@ export const MobileInvoice = () => {
           : "Kassaga",
       data:
         type === "invoices"
-          ? activityData
+          ? null
           : type === "invoice_supp"
           ? suppData?.data
           : cashboxData?.data,
       name:
         type === "invoices"
-          ? "activity_kind"
+          ? null
           : type === "invoice_supp"
           ? "supplier"
           : "cashbox_receiver",
-      disabled,
     },
     {
       title: "Harakat guruhi",
@@ -167,15 +154,6 @@ export const MobileInvoice = () => {
       name: "payment_type",
     },
   ];
-
-  const checkType = (st, name) => {
-    if (st && name === "transaction_group") {
-      setDisabled("activity_kind");
-    } else if (st && name === "activity_kind") {
-      setDisabled("transaction_group");
-    }
-    console.log(disabled);
-  };
 
   return (
     <>
@@ -201,34 +179,33 @@ export const MobileInvoice = () => {
           />
         </ConfigProvider>
         <div className="mobile-invoice-content">
-          {type_data.map((item, ind) => (
-            <div className="activity-type" key={ind}>
-              <p style={{ opacity: disabled === item.name ? 0.5 : 1 }}>
-                {item.title} * :
-              </p>
-              <div className="activity-types">
-                {item.data?.map((inner, ind) => (
-                  <CheckBox
-                    key={`${inner.name}_${ind}`}
-                    label={inner.name}
-                    value={inner.name}
-                    id={item.name === "supplier" ? inner.id : null}
-                    name={item.name}
-                    checkType={checkType}
-                    disabled={disabled}
-                  />
-                ))}
-                {item.add && (
-                  <span
-                    className="add-tr-group"
-                    onClick={() => dispatch(acOpenUModal())}>
-                    +
-                  </span>
-                )}
-              </div>
-              <IoIosArrowForward />
-            </div>
-          ))}
+          {type_data.map(
+            (item, ind) =>
+              item?.name !== null && (
+                <div className="activity-type" key={ind}>
+                  <p>{item.title} * :</p>
+                  <div className="activity-types">
+                    {item.data?.map((inner, ind) => (
+                      <CheckBox
+                        key={`${inner.name}_${ind}`}
+                        label={inner.name}
+                        value={inner.name}
+                        id={item.name === "supplier" ? inner.id : null}
+                        name={item.name}
+                      />
+                    ))}
+                    {item.add && (
+                      <span
+                        className="add-tr-group"
+                        onClick={() => dispatch(acOpenUModal())}>
+                        +
+                      </span>
+                    )}
+                  </div>
+                  <IoIosArrowForward />
+                </div>
+              )
+          )}
           <div className="activity-type activity-inputs">
             <p>Tafsilot :</p>
             <label className="activity-types short">
