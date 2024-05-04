@@ -6,7 +6,8 @@
 }
 
 .inventory-title {
-  background: #353535;
+  height: 40px;
+  background: #787aff;
 }
 
 .inventory-box {
@@ -18,7 +19,7 @@
   padding: 1%;
   background: #353535;
   font-size: var(--fs6);
-
+  cursor: pointer;
   svg {
     font-size: var(--fs5);
   }
@@ -34,7 +35,12 @@
   padding: 30px 3% 0;
 }
 
-.inventory-table {
+.add-table-box {
+  padding: 1% 4%;
+}
+
+.inventory-table,
+.inventory-add-table {
   border-collapse: collapse;
   border-color: transparent;
 }
@@ -42,35 +48,97 @@
 .inventory-table > thead > tr {
   height: 80px;
   background: #353535;
-  border-bottom: 1px solid #999;
 }
 
-.inventory-table > thead > tr > th {
-  font-weight: 700;
-}
-
-.inventory-table > thead > tr > th,
-.inventory-table > tbody > tr > :where(td, th) {
+.inventory-table tr > :where(td, th),
+.inventory-add-table tr > :where(td, th) {
   font-size: var(--fs7);
   padding: 0 20px;
   color: #fff;
   text-wrap: wrap;
   white-space: wrap;
+  font-weight: 400;
+}
+
+.inventory-add-table tr > :where(td, th) {
+  padding: 5px 20px;
+  border-right: 1px solid #eee4;
+  border-bottom: 1px solid #eee4;
+}
+
+.inventory-add-table > thead > tr > :where(td, th) {
+  padding: 10px 20px;
+  background: #3c3c3c;
+}
+
+.inventory-add-table tr > :where(td, th):last-child {
+  border-right-color: transparent;
 }
 
 .inventory-table > tbody > tr {
   height: 60px;
-  border-bottom: 1px solid #999;
   transition: all 0.1s ease;
   background: #444;
+}
+
+.inventory-table > tbody > :nth-child(even) {
+  background: #3d3d3d;
 }
 
 .inventory-table > tbody > tr:last-child {
   border-bottom-color: transparent;
 }
 
-.inventory-table > tbody > tr:hover {
-  background: #666;
+.get-inventory-info {
+  max-width: 500px;
+  width: 100%;
+  padding: 1.3% 2%;
+  margin: 0 auto;
+  background: #393939;
+  color: #fff;
+  gap: var(--gap3);
+  border-radius: 15px;
+  z-index: 999;
+}
+
+.inventory-modal-item {
+  gap: var(--gap5);
+}
+
+.inventory-modal-item > small {
+  padding-left: 2%;
+  font-size: var(--fs8);
+}
+
+.inventory-save {
+  height: 33px;
+  border-radius: 5px;
+  background: #787aff;
+  color: #fff;
+  font-size: var(--fs7);
+  border: none;
+}
+
+.inventory-add-title {
+  padding: 2% 4%;
+  color: #fff;
+}
+
+.inventory-title-filter {
+  gap: var(--gap5);
+}
+
+.finish-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #787aff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: var(--fs7);
+  cursor: pointer;
 }
 
 @media (max-width: 900px) {

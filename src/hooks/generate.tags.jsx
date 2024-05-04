@@ -189,7 +189,7 @@ export const DynamicTable = ({ data, index }) => {
 };
 
 export const CheckBox = ({ name, label, description = "", value, id }) => {
-  const vl = id ? `${id}_${value}` : value;
+  const vl = id ? `${value}/_${id}` : value;
   return (
     <label className="universal-checkbox">
       <input type="radio" name={name} required value={vl} />

@@ -10,6 +10,7 @@ import useNotification from "antd/es/notification/useNotification";
 import { ClearForm } from "../../service/form.service";
 import { Segmented } from "antd";
 import { NumericFormat } from "react-number-format";
+import middlewareService from "../../middleware/form.middleware";
 
 import { ImCalendar } from "react-icons/im";
 import { BsCashCoin } from "react-icons/bs";
@@ -75,8 +76,8 @@ export const MobileInvoice = () => {
   const handleButtonClick = async (t_type) => {
     // Diğer işlemler
     const formdata = new FormData(document.querySelector(".mobile-invoice"));
-    const value = Object.fromEntries(formdata.entries());
-    const supp = value?.supplier?.split("_");
+    const vl = Object.fromEntries(formdata.entries());
+    const value = middlewareService(vl, api.error);
     if (type === "transfer_cash") {
       const { data = [] } = await postData({
         url: `/add/transaction`,
@@ -95,8 +96,6 @@ export const MobileInvoice = () => {
       url: `/add/transaction`,
       data: {
         ...value,
-        supplier: supp?.[1] || "",
-        supplier_id: supp?.[0] || "",
         res_id: user?.id,
         worker: user?.name || user?.username,
         worker_id: user?.user_id || user?.id,
