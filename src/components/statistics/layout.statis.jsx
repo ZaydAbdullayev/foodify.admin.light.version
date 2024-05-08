@@ -4,7 +4,7 @@ import { DonutChart } from "./statistics";
 import { useFetchDataQuery } from "../../service/fetch.service";
 import { useDispatch, useSelector } from "react-redux";
 import { acNavStatus } from "../../redux/navbar.status";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AnimatedNumber from "animated-number-react";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
@@ -198,20 +198,28 @@ export const DateRange = () => {
   const { date } = useSelector((state) => state.uSearch);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const lc = useLocation().search;
   const uploadData = (e, fieldName) => {
     const newValue = e;
+    const time = {
+      start: date?.start,
+      end: date?.end,
+    };
     if (fieldName === "date") {
       const rewordValue = JSON.parse(newValue);
-      navigate(`?start=${rewordValue.start}&&end=${rewordValue.end}`);
+      if (lc === "") {
+        navigate(`?start=${rewordValue.start}&&end=${rewordValue.end}`);
+      } else {
+        const searchParams = new URLSearchParams(lc);
+        searchParams.set("start", rewordValue.start);
+        searchParams.set("end", rewordValue.end);
+        navigate(`?${searchParams.toString()}`);
+      }
     } else {
       navigate(`?${fieldName}=${newValue}`);
     }
     if (fieldName === "date")
       return dispatch(acGetNewData(fieldName, JSON.parse(newValue)));
-    const time = {
-      start: date?.start,
-      end: date?.end,
-    };
     if (fieldName === "start" || fieldName === "end") {
       time[fieldName] = newValue;
       dispatch(acGetNewData("date", time));

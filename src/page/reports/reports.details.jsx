@@ -24,7 +24,6 @@ export const ReportDetails = () => {
   const start = searchParams.get("start");
   const end = searchParams.get("end");
   const filter = searchParams.get("filter");
-  console.log("filter", filter);
 
   const trees = [
     {
@@ -58,6 +57,27 @@ export const ReportDetails = () => {
     url: `${method}/${type}/${resId}/${start}/${end}?start=${start}&&end=${end}&&filter=${filter}`,
     tags: ["report"],
   });
+
+  // to set the data of the search query
+  const search = () => {
+    let search = "";
+    if (billType?.length > 0) {
+      search += `&&order_types[]=${billType.join(",")}`;
+    }
+    if (payType?.length > 0) {
+      search += `&&pay_types[]=${payType.join(",")}`;
+    }
+    if (waiter?.length > 0) {
+      search += `&&waiters[]=${waiter.join(",")}`;
+    }
+    if (hall?.length > 0) {
+      search += `&&halls[]=${hall.join(",")}`;
+    }
+    if (table?.length > 0) {
+      search += `&&tables[]=${table.join(",")}`;
+    }
+    return search;
+  };
 
   return (
     <>
@@ -145,6 +165,7 @@ export const ReportDetails = () => {
                 <>
                   {hint?.name && (
                     <p
+                      key={hint?.name}
                       className="df aic report-item info"
                       style={{ width: "100%" }}>
                       {hint?.name}
