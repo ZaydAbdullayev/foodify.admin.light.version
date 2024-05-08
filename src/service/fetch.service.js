@@ -92,11 +92,4 @@ export const usePatchDataMutation = (props) =>
 export const useDelDataMutation = (props) =>
   api.endpoints.delData.useMutation(props);
 
-export const useCFDQuery = (url, tag) => {
-  return api.endpoints.fetchData.useQuery({
-    url: url,
-    tags: tag || [],
-  });
-};
-
 export default api;

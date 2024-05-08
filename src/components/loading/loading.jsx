@@ -6,14 +6,13 @@ export const Loading = memo(() => {
   return <div className="loading"></div>;
 });
 
-export const LoadingBtn = () => {
+export const LoadingBtn = ({ s = "" }) => {
   return (
-    <div className="loading_btn">
+    <div className={`loading_btn ${s}`}>
       <BiLoader />
     </div>
   );
 };
-
 
 // export const Router = () => {
 //   const department = useSelector((state) => state.permission);

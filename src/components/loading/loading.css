@@ -12,6 +12,10 @@
   font-size: var(--fs1);
 }
 
+.loading_btn.small {
+  font-size: var(--fs3);
+}
+
 .loading_btn > svg {
   animation: loader 1s linear infinite;
 }

@@ -142,7 +142,7 @@ const statsData = [
     icon: <FcDebt />,
     bg: "purple",
     path: "debts",
-    point: "/get/debts/supplires",
+    point: "/get/totalPaid/suppliers",
   },
   {
     id: 5,

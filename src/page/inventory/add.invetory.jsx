@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./inventory.css";
 import { InputNumber, Segmented, Select } from "antd";
-import { useCFDQuery, useFetchDataQuery } from "../../service/fetch.service";
+import { useFetchDataQuery } from "../../service/fetch.service";
 import { usePostDataMutation } from "../../service/fetch.service";
 import { useLocation } from "react-router-dom";
 import { LoadingBtn } from "../../components/loading/loading";
@@ -20,7 +20,6 @@ export const AddInventory = () => {
   const [filter, setFilter] = useState("all");
   const [newData, setNewData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [snc, setSnc] = useState(false);
 
   const { data: ingredients = {}, isLoading } = useFetchDataQuery({
     url: `get/storageItems/${user?.id}/${st_id}`,
@@ -36,29 +35,24 @@ export const AddInventory = () => {
     tags: ["groups"],
   });
 
-  const syncData = async (status) => {
+  const syncData = async () => {
     try {
       setLoading(true);
-      if (!status) {
-        const uData = {
-          old_data: JSON.stringify(ingredients?.data),
-          new_data: JSON.stringify(newData),
-          storage_id: st_id,
-          st_name: st_name,
-          res_id: user?.id,
-          number: num,
-          description: desc,
-        };
-        const { data = null } = await postData({
-          url: `/sync/storage`,
-          data: uData,
-          tags: ["inventory"],
-        });
-        if (data.message === "syncStorage has been added") {
-          setSnc(status);
-        }
-      } else {
-        setSnc(status);
+      const uData = {
+        old_data: JSON.stringify(ingredients?.data),
+        new_data: JSON.stringify(newData),
+        storage_id: st_id,
+        st_name: st_name,
+        res_id: user?.id,
+        number: num,
+        description: desc,
+      };
+      const { data = null } = await postData({
+        url: `/sync/storage`,
+        data: uData,
+        tags: ["inventory"],
+      });
+      if (data.message === "syncStorage has been added") {
       }
     } catch (error) {
       console.log(error);
@@ -81,13 +75,17 @@ export const AddInventory = () => {
               { label: "Ovqatlar", value: "p" },
             ]}
           />
-          <Segmented
+
+          <Select
             aria-label="place for choose option"
-            block
-            defaultValue={(type === "i" ? g?.data : ct?.data)?.[0]?.name}
-            options={(type === "i" ? g?.data : ct?.data)?.map(
-              (item) => item?.name
-            )}
+            defaultValue={{
+              label: (type === "i" ? g?.data : ct?.data)?.[0]?.name,
+              value: (type === "i" ? g?.data : ct?.data)?.[0]?.name,
+            }}
+            options={(type === "i" ? g?.data : ct?.data)?.map((item) => ({
+              label: item?.name,
+              value: item?.name,
+            }))}
           />
         </div>
       </div>
@@ -136,7 +134,9 @@ export const AddInventory = () => {
         )}
       </div>
 
-      <button className="finish-btn">Yakunlash</button>
+      <button className="relative finish-btn" onClick={() => syncData()}>
+        {loading ? <LoadingBtn s={"small"} /> : "Yakunlash"}
+      </button>
     </div>
   );
 };
