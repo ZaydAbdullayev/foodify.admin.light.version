@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./universal.css";
 import { DateRange } from "../../components/statistics/layout.statis";
 import { useLocation, useParams } from "react-router-dom";
 import { useFetchDataQuery } from "../../service/fetch.service";
@@ -7,9 +6,16 @@ import { usePostDataMutation } from "../../service/fetch.service";
 import { Tree } from "antd";
 import { useNavigate } from "react-router-dom";
 import { LoadingBtn } from "../../components/loading/loading";
-
 import { MdFilterAlt } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
+import {
+  o_types,
+  pay_types,
+  waiters,
+  halls,
+  tables,
+  labels,
+} from "./reports.details";
 
 export const ReportDetails = () => {
   const [billType, setBillType] = useState([]);
@@ -97,17 +103,17 @@ export const ReportDetails = () => {
     }
     return search;
   };
-  useEffect(() => {
-    getData();
-  }, []);
 
   const getData = async () => {
     const { data = {} } = await postData({
       url: `${method}/${type}/${resId}/${start}/${end}?query${search()}`,
       tags: ["report"],
     });
-    console.log(data);
   };
+
+  useEffect(() => {
+    getData();
+  }, [billType, payType, waiter, hall, table, dep, category]);
 
   return (
     <>
@@ -267,136 +273,3 @@ export const ReportDetails = () => {
     </>
   );
 };
-
-// /filter/billsReport/:resId/:start/:end
-
-const labels = {
-  profit_loss: [
-    {
-      type: "profits",
-    },
-    {
-      name: "Operativ faoliyatlar",
-      type: "expense",
-    },
-  ],
-  cashflow: [
-    {
-      name: "Operativ faoliyatlar",
-      type: "expense",
-    },
-    {
-      name: "Investitsiyalar",
-      type: "investment",
-    },
-    {
-      name: "Finans faoliyatlar",
-      type: "finance",
-    },
-  ],
-  orders: [{ type: "orders" }],
-  department: [{ type: "department" }],
-  canceled: [{ type: "canceled" }],
-};
-
-const o_types = [
-  {
-    title: "Buyurtma turlari",
-    key: "order_types",
-    children: [
-      {
-        title: "Ochiq",
-        key: "opened",
-      },
-      {
-        title: "Yopilgan",
-        key: "closed",
-      },
-      {
-        title: "To'langan",
-        key: "paid",
-      },
-      {
-        title: "To'lanmagan",
-        key: "unpaid",
-      },
-      {
-        title: "Qarz",
-        key: "debt",
-      },
-      {
-        title: "O'chirilgan",
-        key: "deleted",
-      },
-      {
-        title: "To'langan va Qarz",
-        key: "paidDebt",
-      },
-      {
-        title: "To'lanmagan va Qarz",
-        key: "unpaidDebt",
-      },
-      {
-        title: "To'langan, To'lanmagan va Qarz",
-        key: "unpaidPaidDebt",
-      },
-    ],
-  },
-];
-
-const pay_types = [
-  {
-    title: "To'lov turlari",
-    key: "pay_types",
-    children: [
-      {
-        title: "Naqd",
-        key: "cash",
-      },
-      {
-        title: "Plastik karta",
-        key: "card",
-      },
-      {
-        title: "Pul o'tkazma",
-        key: "viaApp",
-      },
-      {
-        title: "Qarz",
-        key: "debt",
-      },
-      {
-        title: "Depozit",
-        key: "deposit",
-      },
-      {
-        title: "To'lanmaydigan",
-        key: "unpaid",
-      },
-    ],
-  },
-];
-
-const waiters = [
-  {
-    title: "Ofitsiantlar",
-    key: "waiters",
-    children: [],
-  },
-];
-
-const halls = [
-  {
-    title: "Zallar",
-    key: "halls",
-    children: [],
-  },
-];
-
-const tables = [
-  {
-    title: "Stollar",
-    key: "tables",
-    children: [],
-  },
-];

@@ -8,7 +8,6 @@ export const ReportMain = () => {
   const user = JSON.parse(localStorage.getItem("user"))?.user || {};
   const { date } = useSelector((state) => state.uSearch);
   const navigate = useNavigate();
-  const sd = ["Asds", "fasfs", "fasfs", "fasfs"];
   const reportsD = [
     {
       name: "Foyda va Zarar hisoboti",
@@ -29,6 +28,16 @@ export const ReportMain = () => {
       name: "Bo'limlar hisoboti",
       type: "department",
       path: `/report/Bo'limlar%20hisoboti/view/department/get/departmentSales/${user?.id}?start=${date?.start}&&end=${date?.end}`,
+    },
+    {
+      name: "Bekor qilingan taomlar",
+      type: "canceled",
+      path: `/report/Bekor%20qilingan%20taomlar/view/canceled/get/rejectedFoodsFull/${user?.id}?start=${date?.start}&&end=${date?.end}`,
+    },
+    {
+      name: "Pul oqimi hisoboti",
+      type: "cashflow",
+      path: ``,
     },
   ];
   return (
