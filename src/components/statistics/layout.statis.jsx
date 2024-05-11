@@ -93,7 +93,7 @@ export const Statistics = memo(() => {
         <div className="df flc item-info">
           {data?.every((item) => item?.amount === 0) ? (
             <p>
-              <GoDotFill style={{ color: "#353535" }} />
+              <GoDotFill style={{ color: "var(--cl22)" }} />
               <span>Ma'lumot yo'q</span>
             </p>
           ) : (
@@ -250,7 +250,7 @@ export const DateRange = () => {
             aria-label="select data from"
             onChange={(date, dateString) => uploadData(dateString, "start")}
           />{" "}
-          <CgArrowsExchange style={{ color: "#eee" }} />{" "}
+          <CgArrowsExchange style={{ color: "var(--cl10)" }} />{" "}
           <DatePicker
             defaultValue={dayjs(date.end)}
             aria-label="select data to"

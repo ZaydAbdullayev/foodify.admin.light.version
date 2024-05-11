@@ -238,7 +238,7 @@ export const Chat = () => {
                     onClick={() => getChat(inUser)}>
                     <div
                       className="df aic jcc user-img"
-                      style={{ background: inUser?.bg || "#666" }}>
+                      style={{ background: inUser?.bg || "var(--cl6)" }}>
                       {inUser?.img ? (
                         <img
                           src="https://via.placeholder.com/40"

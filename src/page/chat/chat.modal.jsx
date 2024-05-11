@@ -41,7 +41,7 @@ const ChatModal = ({ getChat, activeAcc, setAddNewChat }) => {
                   onClick={() => getChat(user, add)}>
                   <div
                     className="df aic jcc user-img"
-                    style={{ background: user?.bg || "#666" }}>
+                    style={{ background: user?.bg || "var(--cl6)" }}>
                     {user?.name?.charAt(0)?.toUpperCase()}
                   </div>
                   <div className="df flc user-info">

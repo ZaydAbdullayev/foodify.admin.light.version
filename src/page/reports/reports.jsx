@@ -22,12 +22,7 @@ export const ReportMain = () => {
     {
       name: "Buyurtmalar hisoboti",
       type: "orders",
-      path: `/report/Buyurtmalar%20hisoboti/view/orders/get/resOrders/${user?.id}?start=${date?.start}&&end=${date?.end}`,
-    },
-    {
-      name: "Bo'limlar hisoboti",
-      type: "department",
-      path: `/report/Bo'limlar%20hisoboti/view/department/get/departmentSales/${user?.id}?start=${date?.start}&&end=${date?.end}`,
+      path: `/report/Buyurtmalar%20hisoboti/view/orders/filter/billsReport/${user?.id}?start=${date?.start}&&end=${date?.end}`,
     },
     {
       name: "Bekor qilingan taomlar",
@@ -38,6 +33,11 @@ export const ReportMain = () => {
       name: "Pul oqimi hisoboti",
       type: "cashflow",
       path: ``,
+    },
+    {
+      name: "Bo'limlar hisoboti",
+      type: "department",
+      path: `/report/Bo'limlar%20hisoboti/view/department/get/departmentSales/${user?.id}?start=${date?.start}&&end=${date?.end}`,
     },
   ];
   return (

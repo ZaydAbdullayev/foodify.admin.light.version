@@ -12,6 +12,7 @@ import { MdFilterAlt } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 
 export const ReportDetails = () => {
+  const [details, setDetails] = useState([]);
   const [billType, setBillType] = useState([]);
   const [payType, setPayType] = useState([]);
   const [waiter, setWaiter] = useState([]);
@@ -20,6 +21,7 @@ export const ReportDetails = () => {
   const [dep, setDep] = useState([]);
   const [category, setCategory] = useState([]);
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [postData] = usePostDataMutation();
   const lc = useLocation();
   const navigate = useNavigate();
@@ -33,44 +35,45 @@ export const ReportDetails = () => {
       propertyes: billType,
       actions: setBillType,
       data: o_types,
+      permission: ["orders"],
     },
     {
       propertyes: payType,
       actions: setPayType,
       data: pay_types,
+      permission: ["orders"],
     },
     {
       propertyes: waiter,
       actions: setWaiter,
       data: waiters,
+      permission: ["orders", "report", "canceled"],
     },
     {
       propertyes: hall,
       actions: setHall,
       data: halls,
+      permission: ["orders", "report"],
     },
     {
       propertyes: table,
       actions: setTable,
       data: tables,
+      permission: ["orders", "report"],
     },
     {
       propertyes: dep,
       actions: setDep,
-      data: [],
+      data: department,
+      permission: ["report", "canceled"],
     },
     {
       propertyes: category,
       actions: setCategory,
-      data: [],
+      data: categories,
+      permission: ["report", "canceled"],
     },
   ];
-
-  const { data: details = {}, isLoading } = useFetchDataQuery({
-    url: `${method}/${type}/${resId}/${start}/${end}`,
-    tags: ["report"],
-  });
-
   // to set the data of the search query
   const search = () => {
     let search = "";
@@ -102,11 +105,17 @@ export const ReportDetails = () => {
   }, []);
 
   const getData = async () => {
-    const { data = {} } = await postData({
-      url: `${method}/${type}/${resId}/${start}/${end}?query${search()}`,
-      tags: ["report"],
-    });
-    console.log(data);
+    try {
+      const { data = {} } = await postData({
+        url: `${method}/${type}/${resId}/${start}/${end}?query${search()}`,
+        tags: ["report"],
+      });
+      setDetails(data);
+    } catch (err) {
+      alert("Malumot yuklanmadi");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -114,14 +123,14 @@ export const ReportDetails = () => {
       <div className="w100 df flc report-conatiner">
         <div className="w100 df aic jcsb report-title">
           <p>{title}</p>
-          {label !== "orders" ? (
-            DateRange()
-          ) : (
+          {["orders", "canceled", "courses"].includes(label) ? (
             <span
               className="df aic jcc filter-open-btn"
               onClick={() => setOpen(true)}>
               <MdFilterAlt />
             </span>
+          ) : (
+            DateRange()
           )}
         </div>
         <div className="w100 df aic reports-box">
@@ -238,27 +247,35 @@ export const ReportDetails = () => {
             <label className="w100 df aic">{DateRange()}</label>
             {trees?.map((tree, ind) => {
               return (
-                <label className="w100 df aic" key={ind}>
-                  <Tree
-                    checkable
-                    onCheck={(vl) => tree?.actions(vl)}
-                    checkedKeys={tree?.propertyes}
-                    onSelect={(vl) =>
-                      tree?.actions((prev) => {
-                        if (prev?.includes(vl[0])) {
-                          return prev?.filter((v) => v !== vl[0]);
-                        } else {
-                          return [...prev, vl[0]];
-                        }
-                      })
-                    }
-                    treeData={tree?.data}
-                  />
-                </label>
+                tree.permission?.includes(label) && (
+                  <label className="w100 df aic" key={ind}>
+                    <Tree
+                      checkable
+                      onCheck={(vl) => tree?.actions(vl)}
+                      checkedKeys={tree?.propertyes}
+                      onSelect={(vl) =>
+                        tree?.actions((prev) => {
+                          if (prev?.includes(vl[0])) {
+                            return prev?.filter((v) => v !== vl[0]);
+                          } else {
+                            return [...prev, vl[0]];
+                          }
+                        })
+                      }
+                      treeData={tree?.data}
+                    />
+                  </label>
+                )
               );
             })}
           </div>
-          <button className="w100 filters-button" onClick={() => navigate()}>
+          <button
+            className="w100 filters-button"
+            onClick={() => {
+              getData();
+              setOpen(false);
+              setIsLoading(true);
+            }}>
             Filterlash
           </button>
         </div>
@@ -397,6 +414,22 @@ const tables = [
   {
     title: "Stollar",
     key: "tables",
+    children: [],
+  },
+];
+
+const department = [
+  {
+    title: "Bo'limlar",
+    key: "department",
+    children: [],
+  },
+];
+
+const categories = [
+  {
+    title: "Kategoriyalar",
+    key: "category",
     children: [],
   },
 ];

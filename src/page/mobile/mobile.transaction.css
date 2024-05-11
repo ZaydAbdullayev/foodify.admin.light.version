@@ -5,7 +5,7 @@
 .mobile-invoice > p {
   inline-size: 100%;
   padding: 0.5% 1.5%;
-  background: #353535;
+  background: var(--cl22);
   border-radius: 10px 10px 0 0;
   font-size: var(--fs5);
 }
@@ -14,9 +14,9 @@
   display: flex;
   flex-direction: column;
   padding: 0 2%;
-  background: #454545;
-  border-left: 4px solid #353535;
-  border-right: 4px solid #353535;
+  background: var(--cl12);
+  border-left: 4px solid var(--cl22);
+  border-right: 4px solid var(--cl22);
 }
 
 .activity-type {
@@ -26,8 +26,8 @@
   display: flex;
   align-items: flex-start;
   gap: var(--gap3);
-  background: #454545;
-  border-bottom: 0.13rem solid #353535;
+  background: var(--cl12);
+  border-bottom: 0.13rem solid var(--cl22);
 }
 
 .activity-type:last-child {
@@ -38,7 +38,7 @@
   inline-size: 150px;
   margin-top: 2px;
   font-size: var(--fs6);
-  color: #fff;
+  color: var(--cl1);
 }
 
 .activity-types {
@@ -61,11 +61,11 @@
 .activity-types > :where(textarea, input) {
   height: calc(40px + (60 - 40) * (100vw - 320px) / (1440 - 320));
   padding: 0.5% 1%;
-  background: #454545;
-  border: 1px solid #5cdbd380;
+  background: var(--cl12);
+  border: 1px solid var(--cl30);
   border-radius: 7px;
   font-size: var(--fs6);
-  color: #fff;
+  color: var(--cl1);
   resize: none;
 }
 
@@ -79,7 +79,7 @@
 }
 
 .activity-types :where(textarea, input):focus {
-  border: 1px solid #5cdbd3;
+  border: 1px solid var(--cl44);
 }
 
 .activity-type > svg {
@@ -88,7 +88,7 @@
   right: 0;
   transform: translateY(-50%);
   font-size: var(--fs4);
-  color: #5cdbd3;
+  color: var(--cl44);
   cursor: pointer;
 }
 
@@ -111,7 +111,7 @@
   transform: translateY(-50%);
   width: 4px;
   height: 94%;
-  background: #353535;
+  background: var(--cl22);
   border-radius: 10px;
 }
 
@@ -138,7 +138,7 @@
   height: calc(35px + (50 - 35) * (100vw - 320px) / (1440 - 320));
   flex: 1;
   padding: 0 3%;
-  border: 1px solid #5cdbd380;
+  border: 1px solid var(--cl30);
 }
 
 ._invoice-footer {
@@ -147,16 +147,16 @@
   align-items: center;
   padding: var(--gap6);
   gap: var(--gap2);
-  background: #454545;
+  background: var(--cl12);
   border-radius: 0 0 10px 10px;
-  border: 4px solid #353535;
+  border: 4px solid var(--cl22);
 }
 
 .history-screen {
   width: calc(70% - var(--gap2));
   height: 100px;
   padding: 1%;
-  border: 1px solid #5cdbd380;
+  border: 1px solid var(--cl30);
   border-radius: 10px;
 }
 
@@ -176,7 +176,7 @@
   border: none;
   border-radius: 7px;
   font-size: var(--fs6);
-  color: #fff;
+  color: var(--cl1);
   cursor: pointer;
   letter-spacing: 1px;
   z-index: 99;
@@ -194,7 +194,7 @@
 }
 
 .activity-btn > button:nth-child(2) {
-  background: #4caf50;
+  background: var(--cl45);
 }
 
 .activity-btn > :first-child {
@@ -212,17 +212,17 @@
 
 .activity-btn > :last-child::after {
   left: -7%;
-  background: #4caf50;
+  background: var(--cl45);
 }
 
 ._invoice-footer > button {
   width: 30%;
   height: calc(35px + (50 - 35) * (100vw - 320px) / (1440 - 320));
-  background: #36cfc9;
+  background: var(--cl15);
   border: none;
   border-radius: 50px 5px 50px 5px;
   font-size: var(--fs6);
-  color: #fff;
+  color: var(--cl1);
   letter-spacing: 1px;
 }
 
@@ -238,10 +238,10 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: 1px solid #36cfc9;
+  border: 1px solid var(--cl15);
   border-radius: 7px;
   font-size: var(--fs3);
-  color: #ddd;
+  color: var(--cl7);
 }
 
 @media (max-width: 980px) {

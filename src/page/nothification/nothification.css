@@ -11,8 +11,8 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: var(--gap3);
-  color: #484d53;
-  /* text-shadow: 1px 1px 3px #444; */
+  color: var(--cl47);
+  /* text-shadow: 1px 1px 3px var(--cl5); */
   font-weight: bold;
   letter-spacing: 1px;
 }
@@ -64,7 +64,7 @@
   top: 2%;
   right: 0;
   font-size: var(--fs7);
-  color: #111;
+  color: var(--cl46);
 }
 
 .nathification-table {
@@ -83,12 +83,12 @@
 .y-line {
   height: 100%;
   width: 4px;
-  background: #484d53;
+  background: var(--cl47);
   border-radius: 30px;
 }
 /* 
 .seen .y-line {
-  background: #eee;
+  background: var(--cl10);
 } */
 
 .nothification-item-info {

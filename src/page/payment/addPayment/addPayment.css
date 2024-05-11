@@ -9,7 +9,7 @@
   height: 100dvh;
   justify-content: flex-end;
   background: #0009;
-  color: #eee;
+  color: var(--cl10);
   transition: all 0.3s ease-in-out;
   z-index: 9999;
 }
@@ -30,7 +30,7 @@
   max-width: calc(340px + (400 - 340) * (100vw - 320px) / (1440 - 320));
   width: 100%;
   height: 100%;
-  background: #333;
+  background: var(--cl4);
   padding: 1%;
   display: flex;
   flex-direction: column;
@@ -59,8 +59,8 @@
   width: 100%;
   padding: 1% 3%;
   margin-top: 3%;
-  background: #11b911;
-  color: #eee;
+  background: var(--cl58);
+  color: var(--cl10);
   border: none;
   border-radius: 10px;
   font-size: var(--fs5);
@@ -94,7 +94,7 @@
   padding: var(--pd5);
   gap: var(--gap5);
   font-size: var(--fs6);
-  background: #222;
+  background: var(--cl11);
 }
 
 .add_payment__item .p_name {
@@ -112,15 +112,15 @@
   height: var(--bwh);
   border: none;
   font-size: var(--fs5);
-  color: #fff;
+  color: var(--cl1);
 }
 
 .change_payment > :first-child {
-  background: #fc0;
+  background: var(--cl56);
 }
 
 .change_payment > :last-child {
-  background: #f00;
+  background: var(--cl39);
 }
 
 .add_payment__footer {
@@ -148,7 +148,7 @@
   border-radius: 15px;
   gap: var(--gap6);
   font-size: var(--fs6);
-  border: 1px solid #ccc;
+  border: 1px solid var(--cl13);
   cursor: pointer;
 }
 
@@ -157,9 +157,9 @@
 }
 
 .payment_type.active {
-  background: #eee;
-  color: #222;
-  border-color: #222;
+  background: var(--cl10);
+  color: var(--cl11);
+  border-color: var(--cl11);
 }
 
 .payment_type-options {
@@ -177,7 +177,7 @@
 }
 
 .payment_type-options::-webkit-scrollbar-thumb {
-  background: #111;
+  background: var(--cl46);
   border-radius: 10px;
 }
 
@@ -208,8 +208,8 @@
   align-items: center;
   justify-content: center;
   font-size: var(--fs5);
-  color: #fff;
-  background: #11b911;
+  color: var(--cl1);
+  background: var(--cl58);
   border-radius: 10px;
 }
 

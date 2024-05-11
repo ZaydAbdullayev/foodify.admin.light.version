@@ -195,7 +195,7 @@ export const CheckBox = ({ name, label, description = "", value, id }) => {
       <input type="radio" name={name} required value={vl} />
       <span className="checkmark">
         <span>{label}</span>
-        <span style={{ color: "#eee6" }}>{description}</span>
+        <span style={{ color: "var(--cl3)" }}>{description}</span>
       </span>
     </label>
   );

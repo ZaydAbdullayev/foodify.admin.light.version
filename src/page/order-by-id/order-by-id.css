@@ -9,14 +9,14 @@
   padding: var(--pd3);
   display: flex;
   flex-direction: column;
-  color: #fff;
-  background: #333;
+  color: var(--cl1);
+  background: var(--cl4);
   gap: var(--gap);
 }
 
 .order_box > p {
   font-size: var(--fs2);
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--cl13);
   line-height: 1.7;
 }
 
@@ -57,7 +57,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: var(--cl1);
 }
 
 .item_status span {
@@ -78,7 +78,7 @@
 
 .item_status > span > :nth-child(2) {
   margin-left: -10px;
-  color: #fc0;
+  color: var(--cl56);
   font-size: var(--fs2);
 }
 
@@ -92,8 +92,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #353434;
-  color: #fff;
+  background: var(--cl57);
+  color: var(--cl1);
   border-top: 1px solid #ccc5;
   z-index: 999;
 }
@@ -102,9 +102,9 @@
   width: calc(100% / 3 - var(--gap2));
   height: 40px;
   background: none;
-  border: 1px solid #eee4;
+  border: 1px solid var(--cl48);
   border-radius: 20px;
-  color: #fff;
+  color: var(--cl1);
   font-size: var(--fs5);
   letter-spacing: 1px;
 }

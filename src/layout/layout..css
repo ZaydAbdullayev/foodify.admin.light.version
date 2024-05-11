@@ -2,7 +2,7 @@
   width: 100%;
   height: 100%;
   display: flex;
-  background: #484848;
+  background: var(--cl32);
   /* overflow: hidden; */
 }
 
@@ -16,7 +16,7 @@ main > :first-child {
   top: 0;
   left: 0;
   z-index: 9999;
-  background: #484848;
+  background: var(--cl32);
 }
 
 .aside {

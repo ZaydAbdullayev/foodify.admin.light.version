@@ -13,9 +13,9 @@
   padding: var(--pd3) var(--pd3) calc(var(--pd3) * 2);
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: var(--cl1);
   gap: var(--gap3);
-  color: #111;
+  color: var(--cl46);
 }
 
 .check_body_header {
@@ -67,12 +67,12 @@
 
 .lines {
   width: 100%;
-  border-bottom: 1px dashed #000;
+  border-bottom: 1px dashed var(--cl2);
   line-height: 1.8;
 }
 
 .lined {
   width: 100%;
-  border-bottom: 1px dotted #000;
+  border-bottom: 1px dotted var(--cl2);
   line-height: 1.8;
 }

@@ -23,14 +23,14 @@
 
 .search_container > p {
   font-size: var(--fs4);
-  color: #ddd;
+  color: var(--cl7);
 }
 
 .search_box {
   max-width: 600px;
   width: 100%;
   height: 40px;
-  background: #999;
+  background: var(--cl27);
   border-radius: 30px;
   overflow: hidden;
 }
@@ -42,11 +42,11 @@
   border: none;
   outline: none;
   font-size: var(--fs5);
-  color: #333;
+  color: var(--cl4);
 }
 
 .search_box > input::placeholder {
-  color: #555;
+  color: var(--cl29);
 }
 
 .search_box > button {
@@ -55,7 +55,7 @@
   background: transparent;
   border: none;
   font-size: var(--fs5);
-  color: #ddd;
+  color: var(--cl7);
 }
 
 .more {
@@ -63,14 +63,14 @@
   top: 0;
   right: 0;
   padding: 0% 1%;
-  background: #5496d4;
+  background: var(--cl60);
   border-radius: 5px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 5px;
   font-size: var(--fs8);
-  color: #fff;
+  color: var(--cl1);
 }
 
 /* ==================== filter by category ===================== */
@@ -89,16 +89,16 @@
 }
 
 .search_src::-webkit-scrollbar-thumb {
-  background: #ddd;
+  background: var(--cl7);
   width: 5px;
 }
 
 .search_src > a {
   padding: 0.5% 1.5%;
   font-size: var(--fs6);
-  color: #ddd;
+  color: var(--cl7);
   background: none;
-  border: 1px solid #999;
+  border: 1px solid var(--cl27);
   border-right: none;
   letter-spacing: 1px;
   text-transform: capitalize;
@@ -110,13 +110,13 @@
 
 .search_src > a:last-child {
   border-radius: 0 10px 10px 0;
-  border-right: 1px solid #999;
+  border-right: 1px solid var(--cl27);
 }
 
 .search_src > a:hover,
 .search_src > a:focus {
-  background: #ddd;
-  color: #333;
+  background: var(--cl7);
+  color: var(--cl4);
 }
 
 /* =================== All products =================== */
@@ -135,7 +135,7 @@
   gap: var(--gap2);
   background: #aaa5;
   border-radius: 15px;
-  color: #fff;
+  color: var(--cl1);
   font-size: var(--fs5);
 }
 
@@ -205,9 +205,9 @@
   height: 35px;
   padding: 0 1%;
   border: none;
-  background: #555;
+  background: var(--cl29);
   font-size: var(--fs6);
-  color: #fff;
+  color: var(--cl1);
   border-radius: 10px;
 }
 
@@ -219,8 +219,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #32ff09a2;
-  color: #fff;
+  background: var(--cl61);
+  color: var(--cl1);
 }
 
 ._count.active::after {
@@ -243,7 +243,7 @@
   width: calc(100% / 1.5);
   display: flex;
   align-items: center;
-  border: 1px solid #555;
+  border: 1px solid var(--cl29);
   border-radius: 10px;
   overflow: hidden;
 }
@@ -253,7 +253,7 @@
   text-align: center;
   padding: 1px 0 5px;
   background: transparent;
-  color: #fff;
+  color: var(--cl1);
   cursor: pointer;
 }
 
@@ -270,13 +270,13 @@
 .update_btn {
   display: flex;
   flex-direction: column;
-  color: #33ff09;
+  color: var(--cl62);
   font-size: var(--fs5);
   cursor: pointer;
 }
 
 .update_btn > :first-child {
-  color: #33ff09;
+  color: var(--cl62);
 }
 
 .update_btn > :nth-child(2) {

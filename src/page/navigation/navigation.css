@@ -19,7 +19,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.6s ease-in-out;
-  color: #eee;
+  color: var(--cl10);
   overflow: hidden;
 }
 
@@ -34,13 +34,13 @@
   align-items: center;
   justify-content: center;
   font-size: var(--fs4, 16px);
-  background: #333;
+  background: var(--cl4);
   opacity: 1;
   transition: opacity 0.3s ease-in-out, color 0.6s ease-in-out; /* Renk değişikliği için transition eklendi */
 }
 
 .navigation_item.active > p {
-  color: #333;
+  color: var(--cl4);
   opacity: 0;
 }
 
@@ -52,13 +52,13 @@
   flex-wrap: wrap;
   gap: var(--space);
   transition: width 0.5s ease-in-out, height 0.5s ease-in-out;
-  color: #333;
+  color: var(--cl4);
 }
 
 .navigation_item.active ._item__piece-box {
   width: 100%;
   height: 100%;
-  color: #eee; /* .navigation_item__piece active olduğunda #eee olarak değiştirildi */
+  color: var(--cl10); /* .navigation_item__piece active olduğunda var(--cl10)olarak değiştirildi */
 }
 
 ._item__piece-box.active {
@@ -73,7 +73,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #333;
+  background: var(--cl4);
   color: inherit; /* Başlangıçta #333 olarak ayarlandı */
   transition: transform 0.5s ease-in-out, opacity 0.3s ease-in-out,
     color 2s ease-in-out;

@@ -47,9 +47,9 @@
   flex-direction: column;
   align-items: center;
   gap: var(--gap6);
-  background: #454545;
+  background: var(--cl12);
   border-radius: 20px;
-  color: #fff;
+  color: var(--cl1);
   z-index: 99;
 }
 
@@ -63,17 +63,17 @@
   padding: 0 3%;
   border: 1px solid transparent;
   border-radius: 10px;
-  background: #535353;
+  background: var(--cl69);
   font-size: var(--fs6);
   letter-spacing: 1px;
-  color: #fff;
+  color: var(--cl1);
 }
 
 .add_worker > select > option {
   line-height: 2;
   font-size: var(--fs6);
-  background: #535353;
-  color: #fff;
+  background: var(--cl69);
+  color: var(--cl1);
   border: none;
   border-radius: 10px;
 }
@@ -84,8 +84,8 @@
   padding: 0 3%;
   border: none;
   border-radius: 10px;
-  background: #787aff;
-  color: #fff;
+  background: var(--cl18);
+  color: var(--cl1);
   font-size: var(--fs6);
 }
 
@@ -100,9 +100,9 @@
   align-items: center;
   flex-wrap: wrap;
   padding: 2% 3%;
-  /* border: 1px solid #aaa; */
+  /* border: 1px solid var(--cl9); */
   border-radius: 10px;
-  background: #535353;
+  background: var(--cl69);
   font-size: var(--fs6);
   letter-spacing: 1px;
   gap: 6px 0;
@@ -111,12 +111,12 @@
 .deparments :where(.css-dev-only-do-not-override-1oj2w71).ant-tag-checkable {
   background-color: #aaa9 !important;
   border-color: transparent;
-  color: #fff !important;
+  color: var(--cl1) !important;
   opacity: 0.3;
 }
 .deparments :where(.css-dev-only-do-not-override-1oj2w71).ant-tag-checkable-checked {
   background-color: #aaa9 !important;
-  color: #fff !important;
+  color: var(--cl1) !important;
   opacity: 1;
 }
 
@@ -130,8 +130,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #d12c2c;
-  color: #fff;
+  background: var(--cl17);
+  color: var(--cl1);
   font-size: var(--fs6);
   cursor: pointer;
 }

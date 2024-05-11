@@ -10,7 +10,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--gap2);
-  color: #fff;
+  color: var(--cl1);
 }
 
 .payment_header {
@@ -29,11 +29,11 @@
   width: 200px;
   height: 40px;
   background: none;
-  border: 1px solid #ddd;
+  border: 1px solid var(--cl7);
   border-radius: 10px;
   padding: 0 1%;
   font-size: var(--fs5);
-  color: #fff;
+  color: var(--cl1);
   outline: none;
 }
 
@@ -44,7 +44,7 @@
   padding: 1% 1.5% 1.5%;
   display: flex;
   flex-direction: column;
-  background: #333;
+  background: var(--cl4);
   border-radius: 10px;
   line-height: 1.4;
 }
@@ -55,14 +55,14 @@
   right: 5px;
   width: 0;
   height: 0;
-  border: 10px solid #11b911;
+  border: 10px solid var(--cl58);
   border-block-end: 5px solid transparent;
   border-inline-start: 25px solid transparent;
   border-start-end-radius: 7px;
 }
 
 .payment_tick.not_paid {
-  border: 10px solid #fe0;
+  border: 10px solid var(--cl59);
   border-block-end: 5px solid transparent;
   border-inline-start: 25px solid transparent;
 }
@@ -91,7 +91,7 @@
 
 .payment_item > :nth-child(3) > :last-child {
   font-size: var(--fs7);
-  color: #eee;
+  color: var(--cl10);
   font-weight: 500;
 }
 
@@ -105,7 +105,7 @@
 }
 
 .p_data_box > p {
-  color: #eee !important;
+  color: var(--cl10)!important;
   font-size: var(--fs6);
   border-bottom: 1px solid #ccc4;
 }
@@ -116,7 +116,7 @@
   display: flex;
   align-items: center;
   gap: var(--gap6);
-  color: #eee9;
+  color: var(--cl3);
 }
 
 .p_name {
@@ -135,8 +135,8 @@
   padding: 2% 0;
   border-radius: 5px;
   background: none;
-  border: 1px solid #eee;
-  color: #fff;
+  border: 1px solid var(--cl10);
+  color: var(--cl1);
   font-size: var(--fs6);
 }
 

@@ -22,7 +22,7 @@
   flex-wrap: wrap;
   line-height: 1.8;
   border-right: 1px solid #ccc4;
-  background: #333;
+  background: var(--cl4);
   z-index: 9999;
 }
 
@@ -31,8 +31,8 @@
   overflow-x: auto;
   display: flex;
   align-items: center;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  border-top: 1px solid var(--cl13);
+  border-bottom: 1px solid var(--cl13);
 }
 
 .res_category_box > span {
@@ -43,15 +43,15 @@
   font-size: var(--fs6);
   text-wrap: nowrap;
   white-space: nowrap;
-  color: #fff;
-  background: #333;
+  color: var(--cl1);
+  background: var(--cl4);
   letter-spacing: 1px;
-  border-right: 1px solid #ccc;
+  border-right: 1px solid var(--cl13);
 }
 
 .res_category_box .active {
-  background: #ccc;
-  color: #333;
+  background: var(--cl13);
+  color: var(--cl4);
 }
 
 .res_category > p,
@@ -59,7 +59,7 @@
   padding: 1% 5%;
   inline-size: 100%;
   font-size: var(--fs3);
-  color: #fff;
+  color: var(--cl1);
 }
 
 .res_menu {
@@ -69,7 +69,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  background: #222;
+  background: var(--cl11);
 }
 
 .res_menu::-webkit-scrollbar {
@@ -95,21 +95,21 @@
   justify-content: center;
   text-align: center;
   font-size: var(--fs5);
-  color: #fff;
-  background: #333;
+  color: var(--cl1);
+  background: var(--cl4);
   letter-spacing: 1px;
   border-radius: 15px;
 }
 
 .res_menu_item:active {
-  background: #222;
+  background: var(--cl11);
   transform: scale(1.1);
 }
 
 .res_menu_item > span {
   font-size: var(--fs6);
   line-height: 2;
-  color: #ccc;
+  color: var(--cl13);
 }
 
 .res_menu_item > i {
@@ -123,7 +123,7 @@
   width: calc(var(--tik) * 1.5);
   height: calc(var(--tik) * 1.5);
   border-radius: 50%;
-  background: #f00;
+  background: var(--cl39);
 }
 
 .order_list_item {
@@ -146,7 +146,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #333;
+  background: var(--cl4);
   border-top: 1px solid #ccc9;
   z-index: 99999;
 }
@@ -158,9 +158,9 @@
   display: flex;
   align-items: center;
   gap: var(--gap6);
-  color: #fff;
+  color: var(--cl1);
   letter-spacing: 1px;
-  background: #111;
+  background: var(--cl46);
   border-radius: 10px;
   border: none;
   cursor: pointer;

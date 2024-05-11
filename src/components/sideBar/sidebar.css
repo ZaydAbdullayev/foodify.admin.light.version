@@ -7,9 +7,9 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #353535;
+  background: var(--cl22);
   transition: all 0.5 ease;
-  border-right: 1px solid #cccccc3f;
+  border-right: 1px solid var(--cl49);
 }
 
 .shrink {
@@ -17,7 +17,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #353535;
+  background: var(--cl22);
   transition: all 0.5 ease;
 }
 
@@ -44,8 +44,8 @@
 
 .shrink .shrink_box {
   padding: 25% 5%;
-  border-top: 1px solid #cccccc2f;
-  border-bottom: 1px solid #cccccc2f;
+  border-top: 1px solid var(--cl49);
+  border-bottom: 1px solid var(--cl49);
   justify-content: center;
 }
 
@@ -54,8 +54,8 @@
   display: flex;
   align-items: center;
   font-size: calc(var(--fs3) + 1px);
-  color: #fff !important;
-  border-bottom: 1px solid #cccccc2f;
+  color: var(--cl1) !important;
+  border-bottom: 1px solid var(--cl49);
   padding: 3% 5%;
 }
 
@@ -87,7 +87,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--pd1);
-  border-bottom: 1px solid #cccccc2f;
+  border-bottom: 1px solid var(--cl49);
 }
 
 .shrink_box > button {
@@ -95,7 +95,7 @@
   background: none;
   border: none;
   font-size: var(--fs4);
-  color: #fff !important;
+  color: var(--cl1) !important;
 }
 
 .menu_box {
@@ -114,7 +114,7 @@
   font-size: var(--fs4);
   font-weight: 500;
   padding: var(--pd2);
-  color: #fff;
+  color: var(--cl1);
 }
 
 .menu_container {
@@ -128,7 +128,7 @@
   display: flex;
   align-items: center;
   font-size: var(--fs5);
-  color: #fff;
+  color: var(--cl1);
   z-index: 99;
   text-align: center;
 }
@@ -145,7 +145,7 @@
   left: 0;
   width: 0%;
   height: 100%;
-  background: #17b2ea63;
+  background: var(--cl23);
   z-index: -9;
   border-radius: 0 10px 10px 0;
   transition: all 0.5s;
@@ -153,12 +153,12 @@
 
 .active_menu {
   position: relative;
-  color: #787aff;
+  color: var(--cl18);
   z-index: 9;
 }
 
 .menu_box_item:hover {
-  color: #787aff;
+  color: var(--cl18);
 }
 
 .menu_box_item::after {
@@ -173,7 +173,7 @@
 }
 
 .active_menu::after {
-  background: #fff;
+  background: var(--cl1);
 }
 
 .menu_box_item > i {
@@ -225,8 +225,8 @@
   left: 0;
   width: var(--menu-size);
   height: var(--menu-size);
-  background: #787aff;
-  color: #fff;
+  background: var(--cl18);
+  color: var(--cl1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -313,7 +313,7 @@
 
 .inner_menu-item > a {
   font-size: var(--fs6);
-  color: #fff;
+  color: var(--cl1);
   transition: all 0.3s ease;
 }
 
@@ -322,7 +322,7 @@
 }
 
 .inner_menu-item > a:hover {
-  color: #333;
+  color: var(--cl4);
 }
 
 @media (max-width: 600px) {
@@ -331,7 +331,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background: #222;
+    background: var(--cl11);
     padding: 0;
     height: 100%;
   }

@@ -14,7 +14,7 @@
 
 .universal-checkbox > input:checked + label {
   background: #787aff42;
-  border: 1px solid #787aff;
+  border: 1px solid var(--cl18);
 }
 
 .checkmark {
@@ -30,15 +30,15 @@
   border-radius: 7px;
   line-height: 1.5;
   font-size: var(--fs7);
-  color: #eee9;
+  color: var(--cl3);
   transition: all 0.3s ease;
-  border: 1px solid #5cdbd380;
+  border: 1px solid var(--cl30);
 }
 
 .universal-checkbox > input:checked + .checkmark {
-  background: #5cdbd342;
-   color: #fff ;
-  border: 1px solid #36cfc9;
+  background: var(--cl31);
+   color: var(--cl1) ;
+  border: 1px solid var(--cl15);
 }
 .universal-checkbox > input:checked + .checkmark::after {
   content: "";
@@ -47,7 +47,7 @@
   inset-inline-end: 2px;
   width: 0;
   height: 0;
-  border: 10px solid #36cfc9;
+  border: 10px solid var(--cl15);
   border-block-end: 10px solid transparent;
   border-inline-start: 10px solid transparent;
   border-start-end-radius: 7px;

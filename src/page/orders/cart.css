@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #222;
+  background: var(--cl11);
   overflow-y: auto;
   z-index: 9999;
   transition: all 0.3s ease-in-out;
@@ -32,7 +32,7 @@
   inline-size: 100%;
   text-align: center;
   font-size: var(--fs4);
-  color: #fff;
+  color: var(--cl1);
   line-height: 1.8;
   border-bottom: 1px solid #ccc7;
 }
@@ -42,7 +42,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #eee;
+  color: var(--cl10);
   flex: 1;
 }
 
@@ -96,9 +96,9 @@
 
 .update_item :where(button, input) {
   height: var(--wh1);
-  background: #ccc;
+  background: var(--cl13);
   border-radius: 10px;
-  color: #111;
+  color: var(--cl46);
   border: none;
   font-size: var(--fs4);
 }
@@ -124,17 +124,17 @@
   display: flex;
   align-items: center;
   gap: var(--gap3);
-  background: #ccc;
+  background: var(--cl13);
   font-size: var(--fs6);
   border-radius: 30px;
   font-weight: 600;
-  color: #222;
+  color: var(--cl11);
   cursor: pointer;
 }
 
 .takeaway.active {
   background: lime;
-  color: #fff;
+  color: var(--cl1);
 }
 
 .takeaway > svg {
@@ -170,7 +170,7 @@
     font-weight: 400;
     display: flex;
     font-size: var(--fs6);
-    color: #ccc;
+    color: var(--cl13);
   }
 
   .cart_body__item > :nth-child(2) {

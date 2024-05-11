@@ -47,7 +47,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--gap6);
-  background: #333;
+  background: var(--cl4);
   border-radius: 15px;
   z-index: 9;
 }
@@ -61,9 +61,9 @@
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
-  background: #eee;
+  background: var(--cl10);
   font-size: calc(var(--fs1) * 2);
-  color: #333;
+  color: var(--cl4);
 }
 
 .product_img input[type="file"] {
@@ -84,9 +84,9 @@
   justify-content: center;
   border: none;
   border-radius: 5px;
-  background: #eee;
+  background: var(--cl10);
   font-size: var(--fs6);
-  color: #333;
+  color: var(--cl4);
 }
 /* ==================== show product by id ==================== */
 .product_item {
@@ -96,10 +96,10 @@
   flex-direction: column;
   align-items: center;
   gap: var(--gap5);
-  background: #333;
+  background: var(--cl4);
   border-radius: 10px;
   font-size: var(--fs5);
-  color: #eee;
+  color: var(--cl10);
 }
 
 .product_item > h3 {
@@ -110,7 +110,7 @@
 
 .product_item > span {
   font-size: var(--fs7);
-  color: #eee9;
+  color: var(--cl3);
 }
 
 .product_item > div {
@@ -122,7 +122,7 @@
 
 .product_item > div > i {
   flex: 1;
-  border-bottom: 1px dashed #eee9;
+  border-bottom: 1px dashed var(--cl3);
 }
 
 .product_item > div > ol {
@@ -138,7 +138,7 @@
   gap: var(--gap5);
   line-height: 1.5;
   counter-increment: item-counter;
-  border-bottom: 1px solid #eee2;
+  border-bottom: 1px solid var(--cl47);
 }
 
 .product_item > div > ol > li::before {

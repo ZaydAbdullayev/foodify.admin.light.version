@@ -35,8 +35,8 @@
   align-items: center;
   justify-content: center;
   gap: var(--gap5);
-  background: #787aff;
-  color: #fff;
+  background: var(--cl18);
+  color: var(--cl1);
   font-size: var(--fs6);
   border-radius: 10px;
 }
@@ -72,7 +72,7 @@
   font-size: var(--fs7);
   text-transform: uppercase;
   border: 1px solid transparent;
-  color: #545454;
+  color: var(--cl68);
 }
 
 .worker input {
@@ -80,8 +80,8 @@
   height: var(--bwh);
   padding: 0 10px;
   border: none;
-  background: #eee;
-  color: #222;
+  background: var(--cl10);
+  color: var(--cl11);
   font-size: var(--fs6);
   border-radius: 10px;
 }
@@ -93,7 +93,7 @@
 }
 
 .workers_body > :nth-child(odd) {
-  background: #eee2;
+  background: var(--cl47);
 }
 
 .w_pin {
@@ -130,7 +130,7 @@
 .universal_key {
   border: none;
   background: #787aff !important;
-  color: #fff;
+  color: var(--cl1);
 }
 
 .universal_key {

@@ -29,7 +29,7 @@ export const BillsReport = () => {
         <div className="df flc item-info">
           {data?.every((item) => item?.amount === 0) ? (
             <p>
-              <GoDotFill style={{ color: "#353535" }} />
+              <GoDotFill style={{ color: "var(--cl22)" }} />
               <span>Ma'lumot yo'q</span>
             </p>
           ) : (
@@ -251,7 +251,7 @@ export const StatisticsExpenses = () => {
         <div className="df flc item-info">
           {e?.data?.every((item) => item?.[keys?.[name]?.amount] === 0) ? (
             <p>
-              <GoDotFill style={{ color: "#353535" }} />
+              <GoDotFill style={{ color: "var(--cl22)" }} />
               <span>Ma'lumot yo'q</span>
             </p>
           ) : (

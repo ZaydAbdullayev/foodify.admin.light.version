@@ -8,7 +8,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  color: #fff;
+  color: var(--cl1);
 }
 
 .my-order-main > p {
@@ -35,7 +35,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--gap6);
-  border-right: 1px solid #eee4;
+  border-right: 1px solid var(--cl48);
 }
 
 .my-order-display:last-child {
@@ -48,7 +48,7 @@
   align-items: center;
   justify-content: space-between;
   font-size: var(--fs5);
-  background: #787aff;
+  background: var(--cl18);
   border-radius: 6px;
 }
 
@@ -59,7 +59,7 @@
   flex-direction: column;
   align-items: center;
   transition: all 0.3s ease;
-  background: #0002;
+  background: var(--cl20);
   border-radius: 9px;
 }
 
@@ -71,20 +71,20 @@
   align-items: center;
   gap: var(--gap6);
   font-size: var(--fs6);
-  color: #fff;
-  background: #444;
-  border: 1px solid #eee4;
+  color: var(--cl1);
+  background: var(--cl5);
+  border: 1px solid var(--cl48);
   border-radius: 9px;
   transition: all 0.3s ease;
 }
 
 ._item-frame:hover {
-  border: 1px solid #eee;
+  border: 1px solid var(--cl10);
 }
 
 ._item-frame > :where(p, span) {
   inline-size: var(--my-order-w);
-  border-right: 1px solid #eee4;
+  border-right: 1px solid var(--cl48);
 }
 
 ._item-frame > :where(:nth-child(4), :nth-child(5)) {
@@ -98,7 +98,7 @@
   align-items: center;
   justify-content: center;
   font-size: var(--fs5);
-  color: #222;
+  color: var(--cl11);
   border-radius: 50%;
 }
 
@@ -129,7 +129,7 @@
 }
 
 ._item-tool > div:hover {
-  background: #454545;
+  background: var(--cl12);
   border-radius: 9px;
 }
 .total_price {
@@ -141,9 +141,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #111;
+  background: var(--cl46);
   font-size: var(--fs4);
-  border-top: 1px solid #ccc;
+  border-top: 1px solid var(--cl13);
 }
 
 @media (max-width: 768px) {
